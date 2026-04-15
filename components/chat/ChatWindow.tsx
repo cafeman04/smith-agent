@@ -61,8 +61,26 @@ export function ChatWindow() {
           {salespersonJoined && salespersonName ? salespersonName[0].toUpperCase() : "SM"}
         </div>
         <div>
-          <p className="font-semibold text-sm text-slate-900 tracking-tight">
+          <p className="font-semibold text-sm text-slate-900 tracking-tight flex items-center gap-1.5">
             {salespersonJoined && salespersonName ? salespersonName : "Smith Motors Assistant"}
+            {!salespersonJoined && (
+              <span className="relative group inline-flex items-center">
+                <svg
+                  className="w-3.5 h-3.5 text-slate-400 cursor-default"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                <span className="pointer-events-none absolute left-1/2 -translate-x-1/2 top-5 z-50 w-64 rounded bg-slate-800 px-3 py-2 text-xs text-slate-100 leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
+                  Alex draws on your dealership&apos;s live inventory, financing rate tables, and the full context of your conversation to answer questions and make recommendations — no outside data is used.
+                </span>
+              </span>
+            )}
           </p>
           <p className="text-xs flex items-center gap-1 text-emerald-600">
             <span className="w-1.5 h-1.5 bg-emerald-500 inline-block" />
