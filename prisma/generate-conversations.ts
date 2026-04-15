@@ -66,7 +66,7 @@ const HANDOFF_THRESHOLD = 0.72;
 interface Scenario {
   label: string;
   targetOutcome: "ACTIVE" | "HANDED_OFF" | "CLOSED";
-  systemHint: string;   // guidance injected into the generation prompt
+  systemHint: string;
 }
 
 const SCENARIOS: Scenario[] = [
@@ -134,6 +134,19 @@ const SCENARIOS: Scenario[] = [
 
 // ─── Generation prompt ────────────────────────────────────────────
 
+interface VehicleRow {
+  id: string;
+  vin: string;
+  make: string;
+  model: string;
+  year: number;
+  trim: string | null;
+  color: string | null;
+  msrp: number;
+  features: string;
+  daysOnLot: number;
+}
+
 function buildGenerationPrompt(scenario: Scenario, vehicle: VehicleRow): string {
   return `You are generating a realistic synthetic customer service conversation for a car dealership AI system called Smith Motors.
 
@@ -164,19 +177,6 @@ Write the conversation now:`;
 }
 
 // ─── DB helpers ───────────────────────────────────────────────────
-
-interface VehicleRow {
-  id: string;
-  vin: string;
-  make: string;
-  model: string;
-  year: number;
-  trim: string | null;
-  color: string | null;
-  msrp: number;
-  features: string;
-  daysOnLot: number;
-}
 
 async function getRandomVehicle(): Promise<VehicleRow> {
   const count = await prisma.vehicle.count({ where: { status: "AVAILABLE" } });
@@ -221,12 +221,11 @@ function parseConversation(raw: string): Turn[] {
     } else if (trimmed.startsWith("AGENT:")) {
       turns.push({ role: "ASSISTANT", content: trimmed.slice("AGENT:".length).trim() });
     }
-    // ignore blank lines / commentary
   }
   return turns.filter((t) => t.content.length > 0);
 }
 
-// ─── Detect whether conversation ended in handoff ────────────────
+// ─── Detect whether conversation ended in handoff ─────────────────
 
 const HANDOFF_PHRASES = [
   /speak (with|to) (a |an )?(human|person|salesperson|someone|agent)/i,
@@ -245,7 +244,34 @@ function detectHandoff(turns: Turn[]): boolean {
   );
 }
 
-// ─── Core: generate one conversation and write to DB ─────────────
+function extractUrgencySignals(turns: Turn[]): string[] {
+  const signals: string[] = [];
+  const patterns = [
+    /this\s+(week|weekend)/i,
+    /by\s+(end\s+of\s+(the\s+)?month|friday|saturday|sunday)/i,
+    /need(s)?\s+(it\s+)?(asap|soon|quickly|right away)/i,
+    /today|tomorrow/i,
+    /before\s+(the\s+)?(holidays|weekend|end\s+of\s+month)/i,
+  ];
+  for (const t of turns) {
+    if (t.role !== "USER") continue;
+    for (const p of patterns) {
+      const m = t.content.match(p);
+      if (m) signals.push(`"${m[0]}"`);
+    }
+  }
+  return [...new Set(signals)].slice(0, 3);
+}
+
+function randomFloat(min: number, max: number): number {
+  return Math.round((min + Math.random() * (max - min)) * 10) / 10;
+}
+
+function turnOffset(): number {
+  return 60000 + Math.floor(Math.random() * 120000); // 1–3 min between turns
+}
+
+// ─── Core: generate one conversation and write to DB ──────────────
 
 async function generateOne(scenarioIndex: number, globalIndex: number): Promise<void> {
   const scenario = SCENARIOS[scenarioIndex % SCENARIOS.length];
@@ -281,7 +307,7 @@ async function generateOne(scenarioIndex: number, globalIndex: number): Promise<
     return;
   }
 
-  // ── Compute intent scores per user turn ──────────────────────────
+  // ── Compute intent ────────────────────────────────────────────
   const userTurns    = turns.filter((t) => t.role === "USER");
   const intentDeltas = userTurns.map((t) => scoreMessage(t.content));
   const finalIntent  = computeSessionIntent(intentDeltas);
@@ -291,68 +317,48 @@ async function generateOne(scenarioIndex: number, globalIndex: number): Promise<
     ? "HANDED_OFF"
     : scenario.targetOutcome === "ACTIVE" ? "ACTIVE" : "CLOSED";
 
-  // Spread timestamps realistically: conversation starts at a random time in
-  // the last 60 days, turns are ~1–3 min apart
   const sessionStart = new Date(Date.now() - Math.random() * 60 * 86400000);
+  const customerId   = await getOrCreateCustomer(globalIndex);
 
-  // ── Create ChatSession ────────────────────────────────────────────
-  const customerId = await getOrCreateCustomer(globalIndex);
-
+  // ── ChatSession ───────────────────────────────────────────────
   const session = await prisma.chatSession.create({
     data: {
       customerId,
       status,
-      intentScore:     finalIntent,
+      intentScore:      finalIntent,
       handoffTriggered: wasHandedOff,
-      handoffAt:       wasHandedOff ? new Date(sessionStart.getTime() + turns.length * 90000) : undefined,
-      createdAt:       sessionStart,
-      updatedAt:       new Date(sessionStart.getTime() + turns.length * 90000),
+      handoffAt:        wasHandedOff ? new Date(sessionStart.getTime() + turns.length * 90000) : undefined,
+      createdAt:        sessionStart,
+      updatedAt:        new Date(sessionStart.getTime() + turns.length * 90000),
       summary: wasHandedOff
         ? `Customer discussed the ${vehicle.year} ${vehicle.make} ${vehicle.model}. Intent score: ${finalIntent.toFixed(2)}. Generated conversation — see messages for full context.`
         : undefined,
     },
   });
 
-  // ── Insert messages ───────────────────────────────────────────────
+  // ── Messages ──────────────────────────────────────────────────
   let userTurnIdx = 0;
   for (let i = 0; i < turns.length; i++) {
     const turn      = turns[i];
-    const createdAt = new Date(sessionStart.getTime() + i * faker_turnOffset());
+    const createdAt = new Date(sessionStart.getTime() + i * turnOffset());
     const delta     = turn.role === "USER" ? intentDeltas[userTurnIdx++] : undefined;
 
     await prisma.message.create({
-      data: {
-        sessionId:   session.id,
-        role:        turn.role,
-        content:     turn.content,
-        intentDelta: delta,
-        createdAt,
-      },
+      data: { sessionId: session.id, role: turn.role, content: turn.content, intentDelta: delta, createdAt },
     });
   }
 
-  // ── Vehicle mention ───────────────────────────────────────────────
+  // ── Vehicle mention ───────────────────────────────────────────
   await prisma.chatVehicleMention.create({
-    data: {
-      sessionId:   session.id,
-      vehicleId:   vehicle.id,
-      mentionedAt: sessionStart,
-      sentiment:   Math.min(0.3 + finalIntent, 1.0),
-    },
+    data: { sessionId: session.id, vehicleId: vehicle.id, mentionedAt: sessionStart, sentiment: Math.min(0.3 + finalIntent, 1.0) },
   });
 
-  // ── ConversionEvent: chat_started ────────────────────────────────
+  // ── ConversionEvent: chat_started ────────────────────────────
   await prisma.conversionEvent.create({
-    data: {
-      sessionId:  session.id,
-      customerId,
-      eventType:  "chat_started",
-      metadata:   JSON.stringify({ make: vehicle.make, model: vehicle.model, scenario: scenario.label }),
-      occurredAt: sessionStart,
-    },
+    data: { sessionId: session.id, customerId, eventType: "chat_started", metadata: JSON.stringify({ make: vehicle.make, model: vehicle.model, scenario: scenario.label }), occurredAt: sessionStart },
   });
 
-  // ── If handed off: create assignment ─────────────────────────────
+  // ── Assignment (if handed off) ────────────────────────────────
   if (wasHandedOff) {
     const salespersonId = await getAnySalespersonId();
     const handoffAt     = new Date(sessionStart.getTime() + turns.length * 90000);
@@ -396,47 +402,11 @@ async function generateOne(scenarioIndex: number, globalIndex: number): Promise<
     });
 
     await prisma.conversionEvent.create({
-      data: {
-        sessionId:  session.id,
-        customerId,
-        eventType:  "handoff",
-        metadata:   JSON.stringify({ salespersonId, intentScore: finalIntent, scenario: scenario.label }),
-        occurredAt: handoffAt,
-      },
+      data: { sessionId: session.id, customerId, eventType: "handoff", metadata: JSON.stringify({ salespersonId, intentScore: finalIntent, scenario: scenario.label }), occurredAt: handoffAt },
     });
   }
 
-  const msgWord = turns.length === 1 ? "turn" : "turns";
-  console.log(`    ✓ ${turns.length} ${msgWord}, intentScore=${finalIntent.toFixed(2)}, status=${status}`);
-}
-
-// ─── Helpers ──────────────────────────────────────────────────────
-
-function faker_turnOffset(): number {
-  return 60000 + Math.floor(Math.random() * 120000); // 1–3 min between turns
-}
-
-function randomFloat(min: number, max: number): number {
-  return Math.round((min + Math.random() * (max - min)) * 10) / 10;
-}
-
-function extractUrgencySignals(turns: Turn[]): string[] {
-  const signals: string[] = [];
-  const patterns = [
-    /this\s+(week|weekend)/i,
-    /by\s+(end\s+of\s+(the\s+)?month|friday|saturday|sunday)/i,
-    /need(s)?\s+(it\s+)?(asap|soon|quickly|right away)/i,
-    /today|tomorrow/i,
-    /before\s+(the\s+)?(holidays|weekend|end\s+of\s+month)/i,
-  ];
-  for (const t of turns) {
-    if (t.role !== "USER") continue;
-    for (const p of patterns) {
-      const m = t.content.match(p);
-      if (m) signals.push(`"${m[0]}"`);
-    }
-  }
-  return [...new Set(signals)].slice(0, 3);
+  console.log(`    ✓ ${turns.length} turns, intentScore=${finalIntent.toFixed(2)}, status=${status}`);
 }
 
 // ─── Main ─────────────────────────────────────────────────────────

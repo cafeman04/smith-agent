@@ -43,20 +43,20 @@ const VEHICLE_CATALOGUE = [
   { make: "BMW",   model: "3 Series",year: 2023, trim: "330i xDrive",       color: "Alpine White",      msrp: 52000, features: ["xDrive AWD","Sport Package","Harman Kardon Audio","Heads-Up Display","Park Assist","Live Cockpit Pro"] },
   { make: "BMW",   model: "X5",      year: 2024, trim: "xDrive40i",         color: "Brooklyn Grey",     msrp: 71500, features: ["xDrive AWD","4-Zone Climate","Panoramic Roof","Driving Assist Pro","Gesture Control","Bowers & Wilkins Audio"] },
   // Chevrolet
-  { make: "Chevrolet",model: "Equinox",year: 2024, trim: "LT AWD",          color: "Red Hot",           msrp: 32000, features: ["AWD","Chevy Safety Assist","MyLink Display","Heated Seats","Remote Start","Wireless Charging"] },
-  { make: "Chevrolet",model: "Silverado",year: 2024, trim: "LT Trail Boss 4x4", color: "Northsky Blue", msrp: 57500, features: ["4x4","2\" Lift","Multi-Flex Tailgate","Duramax Diesel","Super Cruise","14\" Display"] },
-  { make: "Chevrolet",model: "Colorado",year: 2024, trim: "ZR2 4x4",         color: "Radiant Red Tintcoat",msrp: 48200,features: ["4x4","Multimatic DSSV Shocks","Locking Diffs","32\" AT Tires","Bose Audio","Off-Road Camera"] },
+  { make: "Chevrolet",model: "Equinox",  year: 2024, trim: "LT AWD",            color: "Red Hot",              msrp: 32000, features: ["AWD","Chevy Safety Assist","MyLink Display","Heated Seats","Remote Start","Wireless Charging"] },
+  { make: "Chevrolet",model: "Silverado",year: 2024, trim: "LT Trail Boss 4x4", color: "Northsky Blue",        msrp: 57500, features: ["4x4","2\" Lift","Multi-Flex Tailgate","Duramax Diesel","Super Cruise","14\" Display"] },
+  { make: "Chevrolet",model: "Colorado", year: 2024, trim: "ZR2 4x4",           color: "Radiant Red Tintcoat", msrp: 48200, features: ["4x4","Multimatic DSSV Shocks","Locking Diffs","32\" AT Tires","Bose Audio","Off-Road Camera"] },
   // Subaru
   { make: "Subaru",model: "Outback", year: 2024, trim: "Wilderness",        color: "Geyser Blue",       msrp: 39300, features: ["AWD","2.4\" Ground Clearance","All-Terrain Tires","11.6\" Display","EyeSight","X-Mode"] },
   { make: "Subaru",model: "WRX",     year: 2024, trim: "TR",                color: "WR Blue Pearl",     msrp: 34200, features: ["AWD","2.4L Turbo","Brembo Brakes","Recaro Seats","12\" Display","STI Pedals"] },
   // Jeep
-  { make: "Jeep",  model: "Wrangler",year: 2024, trim: "Rubicon 4xe",       color: "Hydro Blue",        msrp: 62800, features: ["4x4","Plug-In Hybrid","Sway Bar Disconnect","Rock-Trac 4WD","12\" Uconnect","Sky One-Touch Top"] },
-  { make: "Jeep",  model: "Grand Cherokee",year: 2024, trim: "Summit Reserve 4xe", color: "Velvet Red", msrp: 73400, features: ["PHEV","Quadra-Drive II","McIntosh Audio","Digital Rearview Mirror","Night Vision","Air Suspension"] },
+  { make: "Jeep",  model: "Wrangler",     year: 2024, trim: "Rubicon 4xe",              color: "Hydro Blue",  msrp: 62800, features: ["4x4","Plug-In Hybrid","Sway Bar Disconnect","Rock-Trac 4WD","12\" Uconnect","Sky One-Touch Top"] },
+  { make: "Jeep",  model: "Grand Cherokee",year: 2024, trim: "Summit Reserve 4xe",      color: "Velvet Red",  msrp: 73400, features: ["PHEV","Quadra-Drive II","McIntosh Audio","Digital Rearview Mirror","Night Vision","Air Suspension"] },
   // Kia
-  { make: "Kia",   model: "Telluride",year: 2024, trim: "SX-Prestige X-Line",color: "Everlasting Silver",msrp: 54800, features: ["AWD","3rd Row","Meridian Audio","Nappa Leather","Heads-Up Display","Highway Driving Assist 2"] },
-  { make: "Kia",   model: "EV6",     year: 2024, trim: "GT-Line AWD",        color: "Runway Red",        msrp: 48300, features: ["Electric","AWD","310mi Range","800V Charging","Augmented Reality HUD","Meridian Audio"] },
+  { make: "Kia",   model: "Telluride",year: 2024, trim: "SX-Prestige X-Line", color: "Everlasting Silver", msrp: 54800, features: ["AWD","3rd Row","Meridian Audio","Nappa Leather","Heads-Up Display","Highway Driving Assist 2"] },
+  { make: "Kia",   model: "EV6",      year: 2024, trim: "GT-Line AWD",        color: "Runway Red",         msrp: 48300, features: ["Electric","AWD","310mi Range","800V Charging","Augmented Reality HUD","Meridian Audio"] },
   // Porsche
-  { make: "Porsche",model: "Cayenne",year: 2024, trim: "S AWD",             color: "Jet Black",         msrp: 89900, features: ["AWD","2.9L Twin-Turbo V6","PASM Sport Suspension","Bose Surround","14-Way Sport Seats","Night Vision"] },
+  { make: "Porsche",model: "Cayenne", year: 2024, trim: "S AWD",              color: "Jet Black",          msrp: 89900, features: ["AWD","2.9L Twin-Turbo V6","PASM Sport Suspension","Bose Surround","14-Way Sport Seats","Night Vision"] },
 ];
 
 // VIN counter for uniqueness
@@ -69,11 +69,11 @@ function makeVin(make: string, model: string): string {
 // ─── Salesperson pool ─────────────────────────────────────────────
 
 const SALESPERSON_POOL = [
-  { email: "alex@smithmotors.com",   name: "Alex Rivera",   password: "sales1234" },
-  { email: "morgan@smithmotors.com", name: "Morgan Chen",   password: "sales1234" },
-  { email: "jordan@smithmotors.com", name: "Jordan Patel",  password: "sales1234" },
-  { email: "casey@smithmotors.com",  name: "Casey Williams",password: "sales1234" },
-  { email: "riley@smithmotors.com",  name: "Riley Thompson",password: "sales1234" },
+  { email: "alex@smithmotors.com",   name: "Alex Rivera",    password: "sales1234" },
+  { email: "morgan@smithmotors.com", name: "Morgan Chen",    password: "sales1234" },
+  { email: "jordan@smithmotors.com", name: "Jordan Patel",   password: "sales1234" },
+  { email: "casey@smithmotors.com",  name: "Casey Williams", password: "sales1234" },
+  { email: "riley@smithmotors.com",  name: "Riley Thompson", password: "sales1234" },
 ];
 
 // ─── Main ─────────────────────────────────────────────────────────
@@ -146,16 +146,16 @@ async function main() {
 
   // Keep the originals from the first seed run using their well-known VINs
   const LEGACY_VEHICLES = [
-    { vin: "1HGCM82633A123456", make: "Honda",      model: "CR-V",    year: 2024, trim: "EX-L AWD",           color: "Lunar Silver",    msrp: 37500, mileage: 5,    daysOnLot: 12, features: ["AWD","Sunroof","Heated Seats","Apple CarPlay","Lane Keeping Assist","Adaptive Cruise"] },
-    { vin: "1HGCM82633A123457", make: "Honda",      model: "CR-V",    year: 2024, trim: "Sport Hybrid",        color: "Sonic Gray Pearl",msrp: 41000, mileage: 3,    daysOnLot: 8,  features: ["Hybrid","AWD","10.2\" Display","Heated Seats","Remote Start","360 Camera"] },
-    { vin: "1FTFW1ET5EKF12345", make: "Ford",       model: "F-150",   year: 2023, trim: "XLT SuperCrew 4x4",  color: "Atlas Blue",      msrp: 48500, mileage: 8200, daysOnLot: 45, features: ["4x4","8-foot Bed","Tow Package","SYNC 4","Pro Power Onboard","Ford Co-Pilot360"] },
-    { vin: "1FTFW1ET5EKF12346", make: "Ford",       model: "Bronco",  year: 2024, trim: "Outer Banks 4-Door", color: "Area 51",         msrp: 52000, mileage: 120,  daysOnLot: 6,  features: ["4x4","Removable Top","Marine-Grade Interior","SYNC 4A","Trail Control","360 Camera"] },
-    { vin: "5YJ3E1EA8LF123456", make: "Tesla",      model: "Model 3", year: 2023, trim: "Long Range AWD",     color: "Midnight Silver", msrp: 45990, mileage: 1200, daysOnLot: 22, features: ["Electric","AWD","358mi Range","Autopilot","15\" Display","Premium Audio","Heated Seats"] },
-    { vin: "1N4BL4EV8LC123456", make: "Nissan",     model: "Altima",  year: 2024, trim: "SV AWD",             color: "Pearl White",     msrp: 29800, mileage: 50,   daysOnLot: 31, features: ["AWD","ProPilot Assist","Apple CarPlay","Heated Seats","Blind Spot Warning","Wireless Charging"] },
-    { vin: "JTEBU5JR8L5123456", make: "Toyota",     model: "4Runner", year: 2023, trim: "TRD Off-Road 4WD",  color: "Midnight Black",  msrp: 42500, mileage: 3400, daysOnLot: 67, features: ["4WD","Multi-Terrain Select","Crawl Control","Running Boards","Roof Rack","8\" Display"] },
-    { vin: "KMHD84LFXMU123456", make: "Hyundai",    model: "Elantra", year: 2024, trim: "SEL",               color: "Cyber Gray",      msrp: 24500, mileage: 20,   daysOnLot: 14, features: ["10.25\" Display","Wireless CarPlay","Lane Following Assist","Smart Cruise Control","Heated Seats"] },
-    { vin: "WBA3A5C50DF123456", make: "BMW",        model: "3 Series",year: 2023, trim: "330i xDrive",       color: "Alpine White",    msrp: 52000, mileage: 5600, daysOnLot: 41, features: ["xDrive AWD","Sport Package","Harman Kardon Audio","Heads-Up Display","Park Assist","Live Cockpit Pro"] },
-    { vin: "2GNAXHEV4L6123456", make: "Chevrolet",  model: "Equinox", year: 2024, trim: "LT AWD",            color: "Red Hot",         msrp: 32000, mileage: 35,   daysOnLot: 19, features: ["AWD","Chevy Safety Assist","MyLink Display","Heated Seats","Remote Start","Wireless Charging"] },
+    { vin: "1HGCM82633A123456", make: "Honda",     model: "CR-V",     year: 2024, trim: "EX-L AWD",           color: "Lunar Silver",    msrp: 37500, mileage: 5,    daysOnLot: 12, features: ["AWD","Sunroof","Heated Seats","Apple CarPlay","Lane Keeping Assist","Adaptive Cruise"] },
+    { vin: "1HGCM82633A123457", make: "Honda",     model: "CR-V",     year: 2024, trim: "Sport Hybrid",        color: "Sonic Gray Pearl",msrp: 41000, mileage: 3,    daysOnLot: 8,  features: ["Hybrid","AWD","10.2\" Display","Heated Seats","Remote Start","360 Camera"] },
+    { vin: "1FTFW1ET5EKF12345", make: "Ford",      model: "F-150",    year: 2023, trim: "XLT SuperCrew 4x4",  color: "Atlas Blue",      msrp: 48500, mileage: 8200, daysOnLot: 45, features: ["4x4","8-foot Bed","Tow Package","SYNC 4","Pro Power Onboard","Ford Co-Pilot360"] },
+    { vin: "1FTFW1ET5EKF12346", make: "Ford",      model: "Bronco",   year: 2024, trim: "Outer Banks 4-Door", color: "Area 51",         msrp: 52000, mileage: 120,  daysOnLot: 6,  features: ["4x4","Removable Top","Marine-Grade Interior","SYNC 4A","Trail Control","360 Camera"] },
+    { vin: "5YJ3E1EA8LF123456", make: "Tesla",     model: "Model 3",  year: 2023, trim: "Long Range AWD",     color: "Midnight Silver", msrp: 45990, mileage: 1200, daysOnLot: 22, features: ["Electric","AWD","358mi Range","Autopilot","15\" Display","Premium Audio","Heated Seats"] },
+    { vin: "1N4BL4EV8LC123456", make: "Nissan",    model: "Altima",   year: 2024, trim: "SV AWD",             color: "Pearl White",     msrp: 29800, mileage: 50,   daysOnLot: 31, features: ["AWD","ProPilot Assist","Apple CarPlay","Heated Seats","Blind Spot Warning","Wireless Charging"] },
+    { vin: "JTEBU5JR8L5123456", make: "Toyota",    model: "4Runner",  year: 2023, trim: "TRD Off-Road 4WD",  color: "Midnight Black",  msrp: 42500, mileage: 3400, daysOnLot: 67, features: ["4WD","Multi-Terrain Select","Crawl Control","Running Boards","Roof Rack","8\" Display"] },
+    { vin: "KMHD84LFXMU123456", make: "Hyundai",   model: "Elantra",  year: 2024, trim: "SEL",               color: "Cyber Gray",      msrp: 24500, mileage: 20,   daysOnLot: 14, features: ["10.25\" Display","Wireless CarPlay","Lane Following Assist","Smart Cruise Control","Heated Seats"] },
+    { vin: "WBA3A5C50DF123456", make: "BMW",       model: "3 Series", year: 2023, trim: "330i xDrive",       color: "Alpine White",    msrp: 52000, mileage: 5600, daysOnLot: 41, features: ["xDrive AWD","Sport Package","Harman Kardon Audio","Heads-Up Display","Park Assist","Live Cockpit Pro"] },
+    { vin: "2GNAXHEV4L6123456", make: "Chevrolet", model: "Equinox",  year: 2024, trim: "LT AWD",            color: "Red Hot",         msrp: 32000, mileage: 35,   daysOnLot: 19, features: ["AWD","Chevy Safety Assist","MyLink Display","Heated Seats","Remote Start","Wireless Charging"] },
   ];
   for (const v of LEGACY_VEHICLES) {
     const created = await prisma.vehicle.upsert({
@@ -212,16 +212,15 @@ async function main() {
 
   type SessionSpec = { status: string; assignmentStatus?: string; intentScore: number };
   const SESSION_SPECS: SessionSpec[] = [
-    ...Array.from({ length: 40 }, ()  => ({ status: "ACTIVE",      intentScore: faker.number.float({ min: 0.05, max: 0.68, fractionDigits: 2 }) })),
-    ...Array.from({ length: 30 }, ()  => ({ status: "HANDED_OFF",  assignmentStatus: "PENDING",      intentScore: faker.number.float({ min: 0.72, max: 0.95, fractionDigits: 2 }) })),
-    ...Array.from({ length: 10 }, ()  => ({ status: "HANDED_OFF",  assignmentStatus: "IN_PROGRESS",  intentScore: faker.number.float({ min: 0.72, max: 0.90, fractionDigits: 2 }) })),
-    ...Array.from({ length: 5  }, ()  => ({ status: "HANDED_OFF",  assignmentStatus: "ACKNOWLEDGED", intentScore: faker.number.float({ min: 0.72, max: 0.88, fractionDigits: 2 }) })),
-    ...Array.from({ length: 15 }, ()  => ({ status: "CLOSED",      assignmentStatus: "CLOSED_WON",   intentScore: faker.number.float({ min: 0.80, max: 1.00, fractionDigits: 2 }) })),
-    ...Array.from({ length: 8  }, ()  => ({ status: "CLOSED",      assignmentStatus: "CLOSED_LOST",  intentScore: faker.number.float({ min: 0.30, max: 0.75, fractionDigits: 2 }) })),
-    ...Array.from({ length: 5  }, ()  => ({ status: "ARCHIVED",    intentScore: faker.number.float({ min: 0.0,  max: 0.40, fractionDigits: 2 }) })),
+    ...Array.from({ length: 40 }, () => ({ status: "ACTIVE",     intentScore: faker.number.float({ min: 0.05, max: 0.68, fractionDigits: 2 }) })),
+    ...Array.from({ length: 30 }, () => ({ status: "HANDED_OFF", assignmentStatus: "PENDING",      intentScore: faker.number.float({ min: 0.72, max: 0.95, fractionDigits: 2 }) })),
+    ...Array.from({ length: 10 }, () => ({ status: "HANDED_OFF", assignmentStatus: "IN_PROGRESS",  intentScore: faker.number.float({ min: 0.72, max: 0.90, fractionDigits: 2 }) })),
+    ...Array.from({ length: 5  }, () => ({ status: "HANDED_OFF", assignmentStatus: "ACKNOWLEDGED", intentScore: faker.number.float({ min: 0.72, max: 0.88, fractionDigits: 2 }) })),
+    ...Array.from({ length: 15 }, () => ({ status: "CLOSED",     assignmentStatus: "CLOSED_WON",   intentScore: faker.number.float({ min: 0.80, max: 1.00, fractionDigits: 2 }) })),
+    ...Array.from({ length: 8  }, () => ({ status: "CLOSED",     assignmentStatus: "CLOSED_LOST",  intentScore: faker.number.float({ min: 0.30, max: 0.75, fractionDigits: 2 }) })),
+    ...Array.from({ length: 5  }, () => ({ status: "ARCHIVED",   intentScore: faker.number.float({ min: 0.0,  max: 0.40, fractionDigits: 2 }) })),
   ];
 
-  // Simple round-robin assignment counter
   let spIndex = 0;
 
   for (const spec of SESSION_SPECS) {
@@ -229,7 +228,6 @@ async function main() {
     const vehicle    = faker.helpers.arrayElement(VEHICLE_CATALOGUE);
     const vehicleRec = await prisma.vehicle.findFirst({ where: { make: vehicle.make, model: vehicle.model, status: "AVAILABLE" } });
 
-    // createdAt spread over last 90 days
     const createdAt = faker.date.recent({ days: 90 });
     const handoffAt = spec.status !== "ACTIVE" && spec.status !== "ARCHIVED"
       ? new Date(createdAt.getTime() + faker.number.int({ min: 5, max: 40 }) * 60000)
@@ -238,19 +236,19 @@ async function main() {
     const session = await prisma.chatSession.create({
       data: {
         customerId,
-        status:          spec.status,
-        intentScore:     spec.intentScore,
+        status:           spec.status,
+        intentScore:      spec.intentScore,
         handoffTriggered: spec.status !== "ACTIVE" && spec.status !== "ARCHIVED",
         handoffAt,
         createdAt,
-        updatedAt:       handoffAt ?? createdAt,
+        updatedAt: handoffAt ?? createdAt,
         summary: spec.assignmentStatus
           ? `Customer is interested in a ${vehicle.year} ${vehicle.make} ${vehicle.model}. They have explored ${faker.helpers.arrayElement(["financing", "trade-in options", "available trims"])} and appear ${spec.intentScore > 0.8 ? "highly motivated to buy" : "seriously considering a purchase"}. Recommended next step: schedule a test drive.`
           : undefined,
       },
     });
 
-    // ── Seed a few messages per session ──────────────────────────
+    // ── Messages ──────────────────────────────────────────────────
     const msgCount = faker.number.int({ min: 4, max: 14 });
     const userLines = [
       `Hi, I'm looking for a ${vehicle.year} ${vehicle.make} ${vehicle.model}.`,
@@ -287,105 +285,79 @@ async function main() {
 
     for (let m = 0; m < msgCount; m++) {
       const msgCreatedAt = new Date(createdAt.getTime() + m * faker.number.int({ min: 30000, max: 180000 }));
-      const userContent  = userLines[m % userLines.length];
-      const intentDelta  = m < 4 ? faker.number.float({ min: 0.01, max: 0.08, fractionDigits: 3 })
-                                 : faker.number.float({ min: 0.05, max: 0.20, fractionDigits: 3 });
+      const intentDelta  = m < 4
+        ? faker.number.float({ min: 0.01, max: 0.08, fractionDigits: 3 })
+        : faker.number.float({ min: 0.05, max: 0.20, fractionDigits: 3 });
 
       await prisma.message.create({
-        data: {
-          sessionId:   session.id,
-          role:        "USER",
-          content:     userContent,
-          intentDelta,
-          createdAt:   msgCreatedAt,
-        },
+        data: { sessionId: session.id, role: "USER",      content: userLines[m % userLines.length],         intentDelta, createdAt: msgCreatedAt },
       });
       await prisma.message.create({
-        data: {
-          sessionId:  session.id,
-          role:       "ASSISTANT",
-          content:    assistantLines[m % assistantLines.length],
-          createdAt:  new Date(msgCreatedAt.getTime() + 3000),
-        },
+        data: { sessionId: session.id, role: "ASSISTANT", content: assistantLines[m % assistantLines.length], createdAt: new Date(msgCreatedAt.getTime() + 3000) },
       });
     }
 
     // ── Vehicle mention ───────────────────────────────────────────
     if (vehicleRec) {
       await prisma.chatVehicleMention.create({
-        data: {
-          sessionId:   session.id,
-          vehicleId:   vehicleRec.id,
-          mentionedAt: createdAt,
-          sentiment:   faker.number.float({ min: 0.4, max: 1.0, fractionDigits: 2 }),
-        },
+        data: { sessionId: session.id, vehicleId: vehicleRec.id, mentionedAt: createdAt, sentiment: faker.number.float({ min: 0.4, max: 1.0, fractionDigits: 2 }) },
       });
     }
 
     // ── ConversionEvent: chat_started ─────────────────────────────
     await prisma.conversionEvent.create({
-      data: {
-        sessionId:  session.id,
-        customerId,
-        eventType:  "chat_started",
-        metadata:   JSON.stringify({ make: vehicle.make, model: vehicle.model }),
-        occurredAt: createdAt,
-      },
+      data: { sessionId: session.id, customerId, eventType: "chat_started", metadata: JSON.stringify({ make: vehicle.make, model: vehicle.model }), occurredAt: createdAt },
     });
 
-    // ── Assignment + follow-on events for handed-off sessions ─────
+    // ── Assignment + follow-on events ─────────────────────────────
     if (spec.assignmentStatus) {
-      const salespersonId = salespersonIds[spIndex % salespersonIds.length];
+      const salespersonId  = salespersonIds[spIndex % salespersonIds.length];
       spIndex++;
 
       const handoffPayload = {
-        sessionId:              session.id,
+        sessionId:     session.id,
         customerId,
-        summary:                session.summary ?? "",
-        intentScore:            spec.intentScore,
-        vehiclesOfInterest:     vehicleRec ? [{ vin: vehicleRec.vin, make: vehicle.make, model: vehicle.model, year: vehicle.year, msrp: vehicle.msrp, sentimentScore: faker.number.float({ min: 0.5, max: 1.0, fractionDigits: 2 }) }] : [],
-        financingMentioned:     faker.datatype.boolean(0.6),
-        tradeInMentioned:       faker.datatype.boolean(0.3),
-        urgencySignals:         faker.helpers.arrayElements(["mentioned this weekend","asked about availability","said needs car before end of month","asked about expedited delivery"], faker.number.int({ min: 0, max: 2 })),
-        recommendedNextStep:    `Schedule a test drive for the ${vehicle.year} ${vehicle.make} ${vehicle.model}`,
-        messageCount:           msgCount * 2,
+        summary:       session.summary ?? "",
+        intentScore:   spec.intentScore,
+        vehiclesOfInterest: vehicleRec
+          ? [{ vin: vehicleRec.vin, make: vehicle.make, model: vehicle.model, year: vehicle.year, msrp: vehicle.msrp, sentimentScore: faker.number.float({ min: 0.5, max: 1.0, fractionDigits: 2 }) }]
+          : [],
+        financingMentioned:  faker.datatype.boolean(0.6),
+        tradeInMentioned:    faker.datatype.boolean(0.3),
+        urgencySignals:      faker.helpers.arrayElements(["mentioned this weekend","asked about availability","said needs car before end of month","asked about expedited delivery"], faker.number.int({ min: 0, max: 2 })),
+        recommendedNextStep: `Schedule a test drive for the ${vehicle.year} ${vehicle.make} ${vehicle.model}`,
+        messageCount:        msgCount * 2,
         sessionDurationMinutes: faker.number.int({ min: 5, max: 45 }),
       };
 
       await prisma.assignment.create({
         data: {
-          sessionId:         session.id,
+          sessionId:      session.id,
           customerId,
           salespersonId,
-          summary:           session.summary ?? "",
-          intentScore:       spec.intentScore,
+          summary:        session.summary ?? "",
+          intentScore:    spec.intentScore,
           recommendedMarkup: spec.intentScore > 0.85
             ? faker.number.float({ min: 4.0, max: 6.0, fractionDigits: 1 })
             : spec.intentScore > 0.72
               ? faker.number.float({ min: 2.0, max: 4.0, fractionDigits: 1 })
               : faker.number.float({ min: 0.0, max: 2.0, fractionDigits: 1 }),
-          status:            spec.assignmentStatus,
-          handoffPayload:    JSON.stringify(handoffPayload),
-          createdAt:         handoffAt ?? createdAt,
-          updatedAt:         handoffAt ?? createdAt,
+          status:         spec.assignmentStatus,
+          handoffPayload: JSON.stringify(handoffPayload),
+          createdAt:      handoffAt ?? createdAt,
+          updatedAt:      handoffAt ?? createdAt,
         },
       });
 
       await prisma.conversionEvent.create({
-        data: {
-          sessionId:  session.id,
-          customerId,
-          eventType:  "handoff",
-          metadata:   JSON.stringify({ salespersonId, intentScore: spec.intentScore }),
-          occurredAt: handoffAt ?? createdAt,
-        },
+        data: { sessionId: session.id, customerId, eventType: "handoff", metadata: JSON.stringify({ salespersonId, intentScore: spec.intentScore }), occurredAt: handoffAt ?? createdAt },
       });
 
-      // Appointment for high-intent or won sessions
+      // Appointment for high-intent / won sessions
       if (["CLOSED_WON","IN_PROGRESS","ACKNOWLEDGED"].includes(spec.assignmentStatus) && vehicleRec) {
         const apptAt = new Date((handoffAt ?? createdAt).getTime() + faker.number.int({ min: 1, max: 5 }) * 86400000);
-        const apptStatus = spec.assignmentStatus === "CLOSED_WON" ? "COMPLETED"
-                         : spec.assignmentStatus === "IN_PROGRESS" ? faker.helpers.arrayElement(["CONFIRMED","SCHEDULED"])
+        const apptStatus = spec.assignmentStatus === "CLOSED_WON"   ? "COMPLETED"
+                         : spec.assignmentStatus === "IN_PROGRESS"  ? faker.helpers.arrayElement(["CONFIRMED","SCHEDULED"])
                          : "SCHEDULED";
 
         await prisma.appointment.create({
@@ -402,25 +374,17 @@ async function main() {
         });
 
         await prisma.conversionEvent.create({
-          data: {
-            sessionId:  session.id,
-            customerId,
-            eventType:  "appointment_booked",
-            metadata:   JSON.stringify({ type: "TEST_DRIVE", vehicleVin: vehicleRec.vin }),
-            occurredAt: apptAt,
-          },
+          data: { sessionId: session.id, customerId, eventType: "appointment_booked", metadata: JSON.stringify({ type: "TEST_DRIVE", vehicleVin: vehicleRec.vin }), occurredAt: apptAt },
         });
       }
 
       // Financing application for won / in-progress sessions
       if (["CLOSED_WON","IN_PROGRESS"].includes(spec.assignmentStatus) && handoffPayload.financingMentioned) {
-        const creditTiers = ["Excellent (750+)","Good (700-749)","Fair (650-699)","Poor (<650)"];
         const annualIncome = faker.number.int({ min: 35000, max: 180000 });
         const downPayment  = faker.number.int({ min: 2000,  max: 15000 });
-        const loanTerms    = [36, 48, 60, 72];
-        const term         = faker.helpers.arrayElement(loanTerms);
+        const term         = faker.helpers.arrayElement([36, 48, 60, 72]);
         const apr          = spec.assignmentStatus === "CLOSED_WON"
-          ? faker.number.float({ min: 2.9, max: 6.9, fractionDigits: 2 })
+          ? faker.number.float({ min: 2.9, max: 6.9,  fractionDigits: 2 })
           : faker.number.float({ min: 4.9, max: 14.9, fractionDigits: 2 });
         const principal    = vehicle.msrp - downPayment;
         const monthlyRate  = apr / 100 / 12;
@@ -430,31 +394,23 @@ async function main() {
         const app = await prisma.financingApplication.create({
           data: {
             customerId,
-            vehicleVin:      vehicleRec?.vin,
+            vehicleVin:       vehicleRec?.vin,
             annualIncome,
-            creditScoreRange: faker.helpers.arrayElement(creditTiers),
+            creditScoreRange: faker.helpers.arrayElement(["Excellent (750+)","Good (700-749)","Fair (650-699)","Poor (<650)"]),
             downPayment,
-            loanTermMonths:  term,
-            monthlyPayment:  Math.round(monthly * 100) / 100,
+            loanTermMonths:   term,
+            monthlyPayment:   Math.round(monthly * 100) / 100,
             apr,
-            lender:          faker.helpers.arrayElement(["Smith Motors Finance","Chase Auto","Capital One Auto","Wells Fargo Dealer"]),
-            status:          finStatus,
+            lender:           faker.helpers.arrayElement(["Smith Motors Finance","Chase Auto","Capital One Auto","Wells Fargo Dealer"]),
+            status:           finStatus,
           },
         });
 
         await prisma.conversionEvent.create({
-          data: {
-            sessionId:  session.id,
-            customerId,
-            eventType:  "financing_submitted",
-            metadata:   JSON.stringify({ applicationId: app.id }),
-            occurredAt: new Date((handoffAt ?? createdAt).getTime() + 2 * 86400000),
-          },
+          data: { sessionId: session.id, customerId, eventType: "financing_submitted", metadata: JSON.stringify({ applicationId: app.id }), occurredAt: new Date((handoffAt ?? createdAt).getTime() + 2 * 86400000) },
         });
 
-        // Add a few documents
-        const docTypes = ["DRIVERS_LICENSE","PROOF_OF_INCOME","PROOF_OF_INSURANCE"];
-        for (const dtype of docTypes) {
+        for (const dtype of ["DRIVERS_LICENSE","PROOF_OF_INCOME","PROOF_OF_INSURANCE"]) {
           await prisma.document.create({
             data: {
               applicationId: app.id,
@@ -471,7 +427,7 @@ async function main() {
 
   console.log(`  ✓ ${SESSION_SPECS.length} chat sessions with messages, mentions, assignments, appointments, and financing records`);
 
-  // ── 6. Summary ────────────────────────────────────────────────
+  // ── 6. Summary ─────────────────────────────────────────────────
 
   console.log("\nSeed complete!");
   console.log("  Demo accounts:");
