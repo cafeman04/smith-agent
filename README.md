@@ -96,4 +96,4 @@ Three system prompts use `cache_control: { type: "ephemeral" }`:
 - Handoff summarization instructions (~800 tokens)
 - Pricing recommendation guidelines (~600 tokens)
 
-Cache hits on every message in an active conversation, reducing latency and cost significantly.
+Cache hits on every message in an active conversation, reducing latency and cost significantly.  
