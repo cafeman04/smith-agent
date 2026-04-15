@@ -48,48 +48,50 @@ export function ChatWindow() {
   const isInputDisabled = isLoading || (isHandedOff && !salespersonJoined);
 
   const inputPlaceholder = isHandedOff && !salespersonJoined
-    ? "Waiting for specialist to join..."
+    ? "Waiting for specialist to join…"
     : isHandedOff
-      ? `Message ${salespersonName ?? "your specialist"}...`
-      : "Ask about our vehicles, financing, or anything else...";
+      ? `Message ${salespersonName ?? "your specialist"}…`
+      : "Ask about our vehicles, financing, or anything else…";
 
   return (
     <div className="flex flex-col h-full bg-white">
       {/* Header */}
-      <div className="border-b px-4 py-3 flex items-center gap-3 bg-white">
-        <div className="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-sm">
+      <div className="border-b border-slate-200 px-4 py-3 flex items-center gap-3 bg-white">
+        <div className="w-8 h-8 bg-slate-900 flex items-center justify-center text-white font-bold text-xs tracking-tight">
           {salespersonJoined && salespersonName ? salespersonName[0].toUpperCase() : "SM"}
         </div>
         <div>
-          <p className="font-semibold text-sm">
+          <p className="font-semibold text-sm text-slate-900 tracking-tight">
             {salespersonJoined && salespersonName ? salespersonName : "Smith Motors Assistant"}
           </p>
-          <p className={cn("text-xs flex items-center gap-1", salespersonJoined ? "text-green-500" : "text-green-500")}>
-            <span className={cn("w-1.5 h-1.5 rounded-full inline-block", salespersonJoined ? "bg-green-500" : "bg-green-500")} />
+          <p className="text-xs flex items-center gap-1 text-emerald-600">
+            <span className="w-1.5 h-1.5 bg-emerald-500 inline-block" />
             {salespersonJoined ? "Live chat" : "Online"}
           </p>
         </div>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-4 py-4">
+      <div className="flex-1 overflow-y-auto px-4 py-4 thin-scroll">
         {allMessages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full gap-4 text-center">
-            <div className="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center">
-              <span className="text-3xl">🚗</span>
+            <div className="w-12 h-12 bg-slate-100 border border-slate-200 flex items-center justify-center">
+              <svg className="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+              </svg>
             </div>
             <div>
-              <h2 className="font-semibold text-gray-900">Welcome to Smith Motors</h2>
-              <p className="text-sm text-gray-700 mt-1">
+              <h2 className="font-semibold text-slate-900 tracking-tight">Welcome to Smith Motors</h2>
+              <p className="text-sm text-slate-500 mt-1">
                 I can help you find your perfect vehicle, explore financing options, and more.
               </p>
             </div>
-            <div className="grid grid-cols-1 gap-2 w-full max-w-sm">
+            <div className="grid grid-cols-1 gap-1.5 w-full max-w-sm">
               {SUGGESTED_QUESTIONS.map((q) => (
                 <button
                   key={q}
                   onClick={() => sendMessage(q)}
-                  className="text-left text-sm bg-gray-50 hover:bg-blue-50 border border-gray-200 hover:border-blue-300 rounded-lg px-3 py-2 text-gray-700 transition-colors"
+                  className="text-left text-sm bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded px-3 py-2 text-slate-600 transition-colors"
                 >
                   {q}
                 </button>
@@ -115,7 +117,7 @@ export function ChatWindow() {
       </div>
 
       {/* Input */}
-      <div className="border-t px-4 py-3 bg-white">
+      <div className="border-t border-slate-200 px-4 py-3 bg-white">
         <div className="flex gap-2 items-end">
           <textarea
             value={input}
@@ -125,10 +127,10 @@ export function ChatWindow() {
             disabled={isInputDisabled}
             rows={1}
             className={cn(
-              "flex-1 resize-none rounded-xl border border-gray-200 px-4 py-2.5 text-sm",
-              "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent",
+              "flex-1 resize-none rounded border border-slate-300 px-4 py-2.5 text-sm",
+              "focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-transparent",
               "max-h-32 overflow-y-auto",
-              isInputDisabled && "bg-gray-50 text-gray-400 cursor-not-allowed"
+              isInputDisabled && "bg-slate-50 text-slate-400 cursor-not-allowed"
             )}
             style={{ minHeight: "42px" }}
           />
@@ -136,8 +138,8 @@ export function ChatWindow() {
             onClick={handleSend}
             disabled={isInputDisabled || !input.trim()}
             className={cn(
-              "flex-shrink-0 w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center",
-              "hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              "flex-shrink-0 w-10 h-10 bg-slate-900 text-white flex items-center justify-center rounded",
+              "hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             )}
           >
             {isLoading ? (
@@ -152,8 +154,8 @@ export function ChatWindow() {
             )}
           </button>
         </div>
-        <p className="text-xs text-gray-600 mt-1.5 text-center">
-          Smith Motors • {isHandedOff ? "Live specialist chat" : "Powered by AI"}
+        <p className="text-[10px] text-slate-400 mt-1.5 text-center uppercase tracking-[0.06em]">
+          Smith Motors · {isHandedOff ? "Live specialist" : "AI assistant"}
         </p>
       </div>
     </div>

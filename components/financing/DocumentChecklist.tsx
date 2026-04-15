@@ -41,34 +41,34 @@ export function DocumentChecklist({ applicationId, uploadedDocuments = [] }: Doc
   };
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-6">
-      <h2 className="font-semibold text-gray-900 mb-1">Required Documents</h2>
-      <p className="text-xs text-gray-700 mb-4">
-        Upload these documents to speed up your financing approval.
-      </p>
+    <div className="bg-white border border-slate-200 rounded-md overflow-hidden">
+      <div className="px-5 py-3 bg-slate-50 border-b border-slate-200">
+        <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-[0.1em]">Required Documents</h2>
+        <p className="text-xs text-slate-400 mt-0.5">Upload to speed up your financing approval</p>
+      </div>
 
-      <div className="space-y-3">
+      <div className="divide-y divide-slate-100">
         {REQUIRED_DOCUMENTS.map((doc) => {
           const uploaded = localDocs.find((d) => d.type === doc.type);
           const isUploading = uploading === doc.type;
 
           return (
-            <div key={doc.type} className="flex items-center justify-between p-3 border border-gray-100 rounded-lg">
+            <div key={doc.type} className="flex items-center justify-between px-5 py-3.5">
               <div className="flex items-center gap-3">
-                <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${
+                <div className={`w-5 h-5 flex items-center justify-center text-[10px] font-bold ${
                   uploaded?.verified
-                    ? "bg-green-100 text-green-600"
+                    ? "bg-emerald-100 text-emerald-700"
                     : uploaded
-                    ? "bg-blue-100 text-blue-600"
-                    : "bg-gray-100 text-gray-600"
+                    ? "bg-blue-100 text-blue-700"
+                    : "bg-slate-100 text-slate-400"
                 }`}>
                   {uploaded?.verified ? "✓" : uploaded ? "↑" : "○"}
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-900">{doc.label}</p>
-                  <p className="text-xs text-gray-600">{doc.description}</p>
+                  <p className="text-sm font-semibold text-slate-900">{doc.label}</p>
+                  <p className="text-xs text-slate-400">{doc.description}</p>
                   {uploaded && !uploaded.verified && (
-                    <p className="text-xs text-blue-500">Uploaded: {uploaded.fileName}</p>
+                    <p className="text-xs text-blue-600 mt-0.5">{uploaded.fileName}</p>
                   )}
                 </div>
               </div>
@@ -84,17 +84,17 @@ export function DocumentChecklist({ applicationId, uploadedDocuments = [] }: Doc
                       if (file) uploadDoc(doc.type, file);
                     }}
                   />
-                  <span className={`text-xs px-3 py-1.5 rounded-lg border font-medium ${
+                  <span className={`text-xs px-3 py-1.5 border font-semibold uppercase tracking-[0.06em] transition-colors ${
                     isUploading
-                      ? "bg-gray-100 text-gray-600 cursor-wait"
-                      : "bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-100"
+                      ? "bg-slate-100 text-slate-500 border-slate-200 cursor-wait"
+                      : "bg-white text-slate-700 border-slate-300 hover:bg-slate-50"
                   }`}>
-                    {isUploading ? "Uploading..." : "Upload"}
+                    {isUploading ? "Uploading…" : "Upload"}
                   </span>
                 </label>
               )}
               {uploaded?.verified && (
-                <span className="text-xs text-green-600 font-medium">Verified</span>
+                <span className="text-[10px] text-emerald-700 font-semibold uppercase tracking-[0.06em]">Verified</span>
               )}
             </div>
           );

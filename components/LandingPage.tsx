@@ -44,24 +44,21 @@ export function LandingPage() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         .lp-root {
           min-height: 100vh;
           display: flex;
           flex-direction: column;
-          font-family: 'Plus Jakarta Sans', sans-serif;
-          background: #EEF1F5;
+          background: #F8FAFC;
         }
 
         /* ── Top nav ── */
         .lp-nav {
           background: #FFFFFF;
-          border-bottom: 1px solid #E2E6EB;
+          border-bottom: 1px solid #E2E8F0;
           padding: 0 32px;
-          height: 60px;
+          height: 56px;
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -75,38 +72,39 @@ export function LandingPage() {
           gap: 10px;
         }
         .lp-nav-badge {
-          width: 34px;
-          height: 34px;
-          background: #1553A2;
-          border-radius: 6px;
+          width: 28px;
+          height: 28px;
+          background: #0F172A;
+          border-radius: 0;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 13px;
+          font-size: 11px;
           font-weight: 800;
           color: #FFFFFF;
-          letter-spacing: -0.5px;
+          letter-spacing: -0.3px;
           flex-shrink: 0;
         }
         .lp-nav-name {
-          font-size: 15px;
+          font-size: 14px;
           font-weight: 700;
-          color: #101828;
+          color: #0F172A;
           letter-spacing: -0.2px;
         }
         .lp-nav-tagline {
-          font-size: 11px;
-          color: #6B7280;
+          font-size: 10px;
+          color: #94A3B8;
           font-weight: 500;
-          letter-spacing: 0.02em;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
         }
         .lp-nav-right {
           font-size: 12px;
-          color: #6B7280;
+          color: #64748B;
           font-weight: 500;
         }
         .lp-nav-right a {
-          color: #1553A2;
+          color: #0F172A;
           font-weight: 600;
           text-decoration: none;
         }
@@ -138,38 +136,38 @@ export function LandingPage() {
         /* ── Customer card ── */
         .lp-card {
           background: #FFFFFF;
-          border: 1px solid #DDE2EA;
-          border-radius: 12px;
+          border: 1px solid #E2E8F0;
+          border-radius: 4px;
           width: 100%;
           max-width: 420px;
           overflow: hidden;
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.09);
+          box-shadow: 0 1px 4px rgba(15,23,42,0.06);
           position: relative;
           z-index: 2;
         }
 
         .lp-card-header {
-          background: #1553A2;
+          background: #0F172A;
           padding: 28px 32px 24px;
         }
         .lp-card-header-label {
-          font-size: 11px;
+          font-size: 10px;
           font-weight: 700;
           letter-spacing: 0.12em;
           text-transform: uppercase;
-          color: rgba(255,255,255,0.6);
+          color: rgba(255,255,255,0.5);
           margin-bottom: 4px;
         }
         .lp-card-header-title {
           font-size: 22px;
-          font-weight: 800;
+          font-weight: 700;
           color: #FFFFFF;
           letter-spacing: -0.3px;
           line-height: 1.15;
         }
         .lp-card-header-sub {
           font-size: 13px;
-          color: rgba(255,255,255,0.7);
+          color: rgba(255,255,255,0.6);
           margin-top: 4px;
           font-weight: 400;
         }
@@ -185,29 +183,29 @@ export function LandingPage() {
           margin-bottom: 16px;
         }
         .lp-label {
-          font-size: 12px;
+          font-size: 11px;
           font-weight: 600;
-          color: #374151;
-          letter-spacing: 0.01em;
+          color: #475569;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
         }
         .lp-input {
-          font-family: 'Plus Jakarta Sans', sans-serif;
           font-size: 14px;
           font-weight: 400;
-          padding: 10px 13px;
-          background: #F9FAFB;
-          border: 1.5px solid #D1D5DB;
-          border-radius: 7px;
-          color: #101828;
+          padding: 9px 12px;
+          background: #F8FAFC;
+          border: 1px solid #CBD5E1;
+          border-radius: 4px;
+          color: #0F172A;
           outline: none;
           transition: border-color 0.18s, background 0.18s, box-shadow 0.18s;
           width: 100%;
         }
-        .lp-input::placeholder { color: #9CA3AF; }
+        .lp-input::placeholder { color: #94A3B8; }
         .lp-input:focus {
-          border-color: #1553A2;
+          border-color: #0F172A;
           background: #FFFFFF;
-          box-shadow: 0 0 0 3px rgba(21, 83, 162, 0.1);
+          box-shadow: 0 0 0 2px rgba(15,23,42,0.1);
         }
 
         .lp-error {
@@ -216,20 +214,19 @@ export function LandingPage() {
           color: #B91C1C;
           background: #FEF2F2;
           border: 1px solid #FECACA;
-          border-radius: 6px;
+          border-radius: 4px;
           padding: 8px 12px;
           margin-bottom: 14px;
         }
 
         .lp-btn {
           width: 100%;
-          background: #1553A2;
+          background: #0F172A;
           color: #FFFFFF;
           border: none;
-          border-radius: 8px;
-          padding: 12px 20px;
-          font-family: 'Plus Jakarta Sans', sans-serif;
-          font-size: 14px;
+          border-radius: 4px;
+          padding: 11px 20px;
+          font-size: 12px;
           font-weight: 700;
           cursor: pointer;
           display: flex;
@@ -237,26 +234,27 @@ export function LandingPage() {
           justify-content: center;
           gap: 7px;
           transition: background 0.18s, transform 0.1s;
-          letter-spacing: 0.01em;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
         }
-        .lp-btn:hover:not(:disabled) { background: #104488; }
+        .lp-btn:hover:not(:disabled) { background: #1E293B; }
         .lp-btn:active:not(:disabled) { transform: scale(0.99); }
         .lp-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
         .lp-card-footer {
           padding: 0 32px 24px;
           text-align: center;
-          border-top: 1px solid #F3F4F6;
+          border-top: 1px solid #F1F5F9;
           margin-top: 4px;
           padding-top: 16px;
         }
         .lp-card-footer p {
           font-size: 12.5px;
-          color: #6B7280;
+          color: #64748B;
           font-weight: 400;
         }
         .lp-card-footer a {
-          color: #1553A2;
+          color: #0F172A;
           font-weight: 600;
           text-decoration: none;
         }
@@ -335,12 +333,11 @@ export function LandingPage() {
           text-transform: uppercase;
         }
         .lp-emp-input {
-          font-family: 'Plus Jakarta Sans', sans-serif;
           font-size: 13px;
           padding: 9px 12px;
           background: rgba(255,255,255,0.06);
-          border: 1.5px solid rgba(255,255,255,0.12);
-          border-radius: 7px;
+          border: 1px solid rgba(255,255,255,0.12);
+          border-radius: 4px;
           color: #FFFFFF;
           outline: none;
           transition: border-color 0.18s, background 0.18s;
@@ -353,12 +350,11 @@ export function LandingPage() {
         }
         .lp-emp-btn {
           background: rgba(255,255,255,0.12);
-          border: 1.5px solid rgba(255,255,255,0.2);
-          border-radius: 7px;
+          border: 1px solid rgba(255,255,255,0.2);
+          border-radius: 4px;
           color: #FFFFFF;
           padding: 9px 20px;
-          font-family: 'Plus Jakarta Sans', sans-serif;
-          font-size: 12px;
+          font-size: 11px;
           font-weight: 700;
           cursor: pointer;
           white-space: nowrap;
@@ -366,8 +362,9 @@ export function LandingPage() {
           align-items: center;
           gap: 6px;
           transition: background 0.18s, border-color 0.18s;
-          height: 40px;
-          letter-spacing: 0.04em;
+          height: 38px;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
           flex-shrink: 0;
         }
         .lp-emp-btn:hover:not(:disabled) {

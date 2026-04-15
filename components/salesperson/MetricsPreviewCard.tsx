@@ -46,11 +46,11 @@ export async function MetricsPreviewCard() {
 
   // Intent distribution (5 buckets, split at 0.72 handoff threshold)
   const buckets = [
-    { color: "bg-gray-300",    min: 0,    max: 0.25, count: 0 },
-    { color: "bg-yellow-400",  min: 0.25, max: 0.50, count: 0 },
-    { color: "bg-orange-400",  min: 0.50, max: 0.72, count: 0 },
-    { color: "bg-green-400",   min: 0.72, max: 0.90, count: 0 },
-    { color: "bg-emerald-600", min: 0.90, max: 1.01, count: 0 },
+    { color: "bg-slate-300",    min: 0,    max: 0.25, count: 0 },
+    { color: "bg-amber-400",    min: 0.25, max: 0.50, count: 0 },
+    { color: "bg-orange-500",   min: 0.50, max: 0.72, count: 0 },
+    { color: "bg-emerald-500",  min: 0.72, max: 0.90, count: 0 },
+    { color: "bg-emerald-700",  min: 0.90, max: 1.01, count: 0 },
   ];
   for (const { intentScore } of sessionRows) {
     for (const b of buckets) {
@@ -64,45 +64,40 @@ export async function MetricsPreviewCard() {
 
   return (
     <Link href="/salesperson/metrics">
-      <div className="bg-white border border-gray-200 rounded-xl p-4 hover:border-blue-300 hover:shadow-sm transition-all cursor-pointer mt-4">
+      <div className="bg-white border border-slate-200 rounded-md p-4 hover:border-slate-400 hover:shadow-sm transition-all cursor-pointer mt-3">
 
         {/* Header */}
         <div className="flex items-center justify-between mb-3">
-          <p className="text-xs font-semibold text-gray-700">Performance</p>
-          <div className="flex items-center gap-1 text-xs text-blue-600 font-medium">
-            <span>View all</span>
-            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </div>
+          <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-[0.1em]">Performance</p>
+          <span className="text-[10px] font-semibold text-blue-700 uppercase tracking-[0.06em]">View all →</span>
         </div>
 
         {/* Win rate + Pipeline */}
         <div className="grid grid-cols-2 gap-3 mb-3">
           <div>
-            <p className={`text-2xl font-bold ${winRate >= 50 ? "text-green-700" : winRate > 0 ? "text-orange-600" : "text-gray-400"}`}>
+            <p className={`text-2xl font-bold tracking-tight ${winRate >= 50 ? "text-emerald-700" : winRate > 0 ? "text-amber-600" : "text-slate-300"}`}>
               {closed > 0 ? `${winRate}%` : "—"}
             </p>
-            <p className="text-[10px] text-gray-500 mb-1">Win rate</p>
-            <div className="h-1 bg-gray-100 rounded-full overflow-hidden">
+            <p className="text-[10px] text-slate-400 uppercase tracking-[0.06em] mb-1">Win rate</p>
+            <div className="h-0.5 bg-slate-100 overflow-hidden">
               <div
-                className={`h-full rounded-full transition-all ${winRate >= 50 ? "bg-green-500" : "bg-orange-400"}`}
+                className={`h-full transition-all ${winRate >= 50 ? "bg-emerald-500" : "bg-amber-400"}`}
                 style={{ width: `${winRate}%` }}
               />
             </div>
-            <p className="text-[10px] text-gray-400 mt-0.5">{won}W · {lost}L</p>
+            <p className="text-[10px] text-slate-400 mt-0.5">{won}W · {lost}L</p>
           </div>
           <div>
-            <p className="text-2xl font-bold text-orange-600">{pipelineLabel}</p>
-            <p className="text-[10px] text-gray-500 mb-1">Pipeline</p>
-            <p className="text-[10px] text-gray-400">{activeCount} active customer{activeCount !== 1 ? "s" : ""}</p>
+            <p className="text-2xl font-bold text-amber-700 tracking-tight font-mono">{pipelineLabel}</p>
+            <p className="text-[10px] text-slate-400 uppercase tracking-[0.06em] mb-1">Pipeline</p>
+            <p className="text-[10px] text-slate-400">{activeCount} active</p>
           </div>
         </div>
 
         {/* Intent distribution mini-bar */}
         <div className="mb-3">
-          <p className="text-[10px] text-gray-500 mb-1.5">Intent distribution</p>
-          <div className="flex h-2.5 rounded-full overflow-hidden gap-px">
+          <p className="text-[10px] text-slate-400 uppercase tracking-[0.06em] mb-1.5">Intent distribution</p>
+          <div className="flex h-2 gap-px">
             {buckets.map((b, i) => (
               <div
                 key={i}
@@ -112,22 +107,22 @@ export async function MetricsPreviewCard() {
             ))}
           </div>
           <div className="flex justify-between mt-1">
-            <span className="text-[10px] text-gray-400">Low intent</span>
-            <span className="text-[10px] text-green-600 font-medium">
+            <span className="text-[10px] text-slate-400">Low</span>
+            <span className="text-[10px] text-emerald-600 font-semibold">
               {aboveThreshold} above 72% ↑
             </span>
           </div>
         </div>
 
         {/* Footer stats */}
-        <div className="flex items-center gap-2 pt-2.5 border-t border-gray-100">
-          <span className="text-[10px] bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded-full">
-            {avgIntent}% avg intent
+        <div className="flex items-center gap-2 pt-2 border-t border-slate-100">
+          <span className="text-[10px] bg-slate-100 text-slate-500 px-1.5 py-0.5 font-semibold uppercase tracking-[0.04em]">
+            {avgIntent}% avg
           </span>
-          <span className="text-[10px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full">
+          <span className="text-[10px] bg-emerald-50 text-emerald-700 px-1.5 py-0.5 font-semibold uppercase tracking-[0.04em]">
             {won} won
           </span>
-          <span className="text-[10px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded-full">
+          <span className="text-[10px] bg-blue-50 text-blue-700 px-1.5 py-0.5 font-semibold uppercase tracking-[0.04em]">
             {activeCount} active
           </span>
         </div>

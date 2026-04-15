@@ -69,21 +69,24 @@ export default async function SalespersonDashboard() {
   }));
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-50">
       {/* Header */}
-      <header className="bg-white border-b px-6 py-4 flex items-center justify-between">
+      <header className="bg-white border-b border-slate-200 px-6 h-14 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-sm">
+          <div className="w-7 h-7 bg-slate-900 flex items-center justify-center text-white font-bold text-xs tracking-tight">
             SM
           </div>
           <div>
-            <p className="font-semibold text-sm text-gray-900">Smith Motors</p>
-            <p className="text-xs text-gray-700">Sales Dashboard</p>
+            <p className="font-semibold text-sm text-slate-900 tracking-tight">Smith Motors</p>
+            <p className="text-[10px] text-slate-400 uppercase tracking-[0.1em]">Sales Portal</p>
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <Link href="/salesperson/appointments" className="text-sm text-blue-600 hover:underline">
+          <Link href="/salesperson/appointments" className="text-xs font-semibold text-slate-500 hover:text-slate-900 uppercase tracking-[0.08em] transition-colors">
             Appointments
+          </Link>
+          <Link href="/salesperson/metrics" className="text-xs font-semibold text-slate-500 hover:text-slate-900 uppercase tracking-[0.08em] transition-colors">
+            Metrics
           </Link>
           {["MANAGER", "ADMIN"].includes(session.user.role) && <DealAlertModal />}
           <SettingsDropdown
@@ -95,40 +98,42 @@ export default async function SalespersonDashboard() {
       </header>
 
       <div className="max-w-5xl mx-auto px-6 py-6">
-        {/* Stats bar */}
-        <div className="grid grid-cols-3 gap-4 mb-6">
-          <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
-            <p className="text-2xl font-bold text-gray-900">{assignments.length}</p>
-            <p className="text-xs text-gray-700 mt-0.5">Active Customers</p>
+        {/* KPI row */}
+        <div className="grid grid-cols-3 gap-3 mb-6">
+          <div className="bg-white border border-slate-200 rounded-md p-4">
+            <p className="text-xs font-semibold text-slate-400 uppercase tracking-[0.1em] mb-2">Active Customers</p>
+            <p className="text-3xl font-bold text-slate-900 tracking-tight">{assignments.length}</p>
           </div>
-          <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
-            <p className="text-2xl font-bold text-gray-900">{weekAppointments.length}</p>
-            <p className="text-xs text-gray-700 mt-0.5">This Week</p>
+          <div className="bg-white border border-slate-200 rounded-md p-4">
+            <p className="text-xs font-semibold text-slate-400 uppercase tracking-[0.1em] mb-2">This Week</p>
+            <p className="text-3xl font-bold text-slate-900 tracking-tight">{weekAppointments.length}</p>
           </div>
-          <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
-            <p className="text-2xl font-bold text-blue-600">
+          <div className="bg-white border border-slate-200 rounded-md p-4">
+            <p className="text-xs font-semibold text-slate-400 uppercase tracking-[0.1em] mb-2">Avg Intent</p>
+            <p className="text-3xl font-bold text-slate-900 tracking-tight">
               {assignments.length > 0
                 ? Math.round(
                     (assignments.reduce((s, a) => s + a.session.intentScore, 0) / assignments.length) * 100
                   )
                 : 0}%
             </p>
-            <p className="text-xs text-gray-700 mt-0.5">Avg Intent Score</p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
           {/* Customer list */}
           <div className="lg:col-span-2">
-            <h2 className="font-semibold text-gray-900 mb-3">Your Customers</h2>
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-xs font-semibold text-slate-400 uppercase tracking-[0.1em]">Your Customers</h2>
+              <span className="text-xs text-slate-400">{assignments.length} active</span>
+            </div>
             {assignments.length === 0 ? (
-              <div className="bg-white rounded-xl border border-gray-200 p-8 text-center text-gray-700">
-                <p className="text-3xl mb-2">📭</p>
-                <p className="text-sm">No active customers yet.</p>
-                <p className="text-xs text-gray-600 mt-1">New customers will appear here after handoff.</p>
+              <div className="bg-white border border-slate-200 rounded-md p-10 text-center">
+                <p className="text-sm text-slate-500">No active customers yet.</p>
+                <p className="text-xs text-slate-400 mt-1">New customers will appear here after handoff.</p>
               </div>
             ) : (
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {assignments.map((a) => (
                   <CustomerCard
                     key={a.id}
@@ -151,9 +156,9 @@ export default async function SalespersonDashboard() {
           {/* This week strip */}
           <div>
             <div className="flex items-center justify-between mb-3">
-              <h2 className="font-semibold text-gray-900">This Week</h2>
-              <Link href="/salesperson/appointments" className="text-xs text-blue-600 hover:underline">
-                All appointments →
+              <h2 className="text-xs font-semibold text-slate-400 uppercase tracking-[0.1em]">This Week</h2>
+              <Link href="/salesperson/appointments" className="text-xs font-semibold text-blue-700 hover:underline">
+                All →
               </Link>
             </div>
             <WeekStrip appointments={serializedAppointments} />

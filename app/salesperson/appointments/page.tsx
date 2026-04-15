@@ -44,14 +44,15 @@ export default async function AppointmentsPage() {
   }));
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b px-6 py-4">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
+    <div className="min-h-screen bg-slate-50">
+      <header className="bg-white border-b border-slate-200 px-6 h-14 flex items-center">
+        <div className="max-w-4xl mx-auto w-full flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Link href="/salesperson/dashboard" className="text-sm text-blue-600 hover:underline">
+            <Link href="/salesperson/dashboard" className="text-xs font-semibold text-slate-500 hover:text-slate-900 uppercase tracking-[0.08em] transition-colors">
               ← Dashboard
             </Link>
-            <h1 className="font-bold text-lg text-gray-900">Appointments</h1>
+            <div className="w-px h-4 bg-slate-200" />
+            <h1 className="font-semibold text-slate-900 tracking-tight">Appointments</h1>
           </div>
           <AppointmentCalendar appointments={calendarAppointments} />
         </div>
@@ -59,25 +60,27 @@ export default async function AppointmentsPage() {
 
       <div className="max-w-4xl mx-auto px-6 py-6 space-y-6">
         <div>
-          <h2 className="font-semibold text-gray-900 mb-3">Upcoming ({upcoming.length})</h2>
+          <p className="text-xs font-semibold text-slate-400 uppercase tracking-[0.1em] mb-3">
+            Upcoming — {upcoming.length}
+          </p>
           {upcoming.length === 0 ? (
-            <div className="bg-white border border-gray-200 rounded-xl p-8 text-center text-gray-700 text-sm">
+            <div className="bg-white border border-slate-200 rounded-md p-8 text-center text-slate-400 text-sm">
               No upcoming appointments
             </div>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-2">
               {upcoming.map((appt) => (
-                <div key={appt.id} className="bg-white border border-gray-200 rounded-xl p-4 flex items-center justify-between">
+                <div key={appt.id} className="bg-white border border-slate-200 rounded-md p-4 flex items-center justify-between hover:border-slate-300 transition-colors">
                   <div>
-                    <p className="font-medium text-sm text-gray-900">
+                    <p className="font-semibold text-sm text-slate-900">
                       {appt.customer.name || appt.customer.email}
                     </p>
                     {appt.vehicle && (
-                      <p className="text-xs text-gray-700">
+                      <p className="text-xs text-slate-500">
                         {appt.vehicle.year} {appt.vehicle.make} {appt.vehicle.model}
                       </p>
                     )}
-                    <p className="text-xs text-gray-600 mt-1">
+                    <p className="text-xs text-slate-400 mt-1">
                       {new Date(appt.scheduledAt).toLocaleDateString("en-US", {
                         weekday: "long",
                         month: "long",
@@ -86,16 +89,16 @@ export default async function AppointmentsPage() {
                         minute: "2-digit",
                       })}
                     </p>
-                    {appt.notes && <p className="text-xs text-gray-700 mt-1 italic">{appt.notes}</p>}
+                    {appt.notes && <p className="text-xs text-slate-500 mt-1 italic">{appt.notes}</p>}
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">
+                    <span className="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 font-semibold uppercase tracking-[0.06em]">
                       {appt.type.replace(/_/g, " ")}
                     </span>
-                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                    <span className={`text-[10px] px-2 py-0.5 font-semibold uppercase tracking-[0.06em] ${
                       appt.status === "CONFIRMED"
-                        ? "bg-green-100 text-green-700"
-                        : "bg-yellow-100 text-yellow-700"
+                        ? "bg-emerald-50 text-emerald-700"
+                        : "bg-amber-50 text-amber-700"
                     }`}>
                       {appt.status}
                     </span>
@@ -108,17 +111,19 @@ export default async function AppointmentsPage() {
 
         {past.length > 0 && (
           <div>
-            <h2 className="font-semibold text-gray-700 mb-3 text-sm">Past ({past.length})</h2>
-            <div className="space-y-2">
+            <p className="text-xs font-semibold text-slate-400 uppercase tracking-[0.1em] mb-3">
+              Past — {past.length}
+            </p>
+            <div className="space-y-1.5">
               {past.slice(0, 10).map((appt) => (
-                <div key={appt.id} className="bg-white border border-gray-100 rounded-xl p-3 flex items-center justify-between opacity-70">
+                <div key={appt.id} className="bg-white border border-slate-200 rounded-md p-3 flex items-center justify-between opacity-60">
                   <div>
-                    <p className="text-sm text-gray-700">{appt.customer.name || appt.customer.email}</p>
-                    <p className="text-xs text-gray-600">
+                    <p className="text-sm text-slate-700">{appt.customer.name || appt.customer.email}</p>
+                    <p className="text-xs text-slate-400">
                       {new Date(appt.scheduledAt).toLocaleDateString()}
                     </p>
                   </div>
-                  <span className="text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full">
+                  <span className="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 font-semibold uppercase tracking-[0.06em]">
                     {appt.status}
                   </span>
                 </div>

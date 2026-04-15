@@ -1,8 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #F8FAFC;
+  --foreground: #0F172A;
+  --surface: #FFFFFF;
+  --border: #E2E8F0;
+  --border-strong: #CBD5E1;
+  --text-muted: #475569;
+  --text-subtle: #94A3B8;
+  --navy: #0F172A;
+  --navy-hover: #1E293B;
+  --accent: #1D4ED8;
 }
 
 @theme inline {
@@ -12,17 +20,35 @@
   --font-mono: var(--font-geist-mono);
 }
 
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Force dark text in all form fields regardless of OS color scheme */
 input,
 textarea,
 select {
-  color: #111827;
-  background-color: #ffffff;
+  color: #0F172A;
+  background-color: #FFFFFF;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #94A3B8;
+}
+
+/* Thin scrollbar for chat panels */
+.thin-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.thin-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.thin-scroll::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 2px;
 }

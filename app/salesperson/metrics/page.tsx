@@ -7,10 +7,10 @@ import Link from "next/link";
 // ─── Inline chart primitives ──────────────────────────────────────
 
 const KPI_COLORS = {
-  green:  { num: "text-green-700",  bg: "bg-green-50",  border: "border-green-100" },
-  blue:   { num: "text-blue-700",   bg: "bg-blue-50",   border: "border-blue-100"  },
-  purple: { num: "text-purple-700", bg: "bg-purple-50", border: "border-purple-100" },
-  orange: { num: "text-orange-600", bg: "bg-orange-50", border: "border-orange-100" },
+  green:  { num: "text-emerald-700",  bg: "bg-emerald-50",  border: "border-emerald-100" },
+  blue:   { num: "text-blue-700",     bg: "bg-blue-50",     border: "border-blue-100"    },
+  purple: { num: "text-violet-700",   bg: "bg-violet-50",   border: "border-violet-100"  },
+  orange: { num: "text-amber-700",    bg: "bg-amber-50",    border: "border-amber-100"   },
 } as const;
 
 function KpiCard({ label, value, sub, color }: {
@@ -21,10 +21,10 @@ function KpiCard({ label, value, sub, color }: {
 }) {
   const c = KPI_COLORS[color];
   return (
-    <div className={`rounded-xl border p-5 ${c.bg} ${c.border}`}>
-      <p className="text-xs font-medium text-gray-500 mb-2">{label}</p>
-      <p className={`text-3xl font-bold ${c.num}`}>{value}</p>
-      <p className="text-xs text-gray-400 mt-1.5">{sub}</p>
+    <div className={`rounded-md border p-5 ${c.bg} ${c.border}`}>
+      <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-[0.1em] mb-2">{label}</p>
+      <p className={`text-3xl font-bold tracking-tight ${c.num}`}>{value}</p>
+      <p className="text-xs text-slate-400 mt-1.5">{sub}</p>
     </div>
   );
 }
@@ -35,10 +35,10 @@ function FunnelBar({ label, value, max, color, pct }: {
   const width = max > 0 ? Math.max((value / max) * 100, value > 0 ? 3 : 0) : 0;
   return (
     <div className="flex items-center gap-3">
-      <span className="text-xs text-gray-500 w-28 text-right shrink-0">{label}</span>
-      <div className="flex-1 bg-gray-100 rounded-lg h-8 overflow-hidden">
+      <span className="text-xs text-slate-400 w-28 text-right shrink-0">{label}</span>
+      <div className="flex-1 bg-slate-100 rounded h-7 overflow-hidden">
         <div
-          className={`h-full ${color} rounded-lg flex items-center px-3 transition-all duration-500`}
+          className={`h-full ${color} rounded flex items-center px-3 transition-all duration-500`}
           style={{ width: `${width}%` }}
         >
           {width > 8 && (
@@ -46,8 +46,8 @@ function FunnelBar({ label, value, max, color, pct }: {
           )}
         </div>
       </div>
-      {width <= 8 && value > 0 && <span className="text-xs text-gray-600 w-6">{value}</span>}
-      {pct && <span className="text-xs text-gray-400 w-10 shrink-0 text-right">{pct}</span>}
+      {width <= 8 && value > 0 && <span className="text-xs text-slate-500 w-6">{value}</span>}
+      {pct && <span className="text-xs text-slate-400 w-10 shrink-0 text-right">{pct}</span>}
     </div>
   );
 }
@@ -59,11 +59,11 @@ function IntentBar({ label, count, max, color }: {
   return (
     <div className="space-y-1">
       <div className="flex justify-between items-baseline">
-        <span className="text-xs text-gray-500">{label}</span>
-        <span className="text-xs font-semibold text-gray-700">{count}</span>
+        <span className="text-xs text-slate-500">{label}</span>
+        <span className="text-xs font-semibold text-slate-700">{count}</span>
       </div>
-      <div className="h-4 bg-gray-100 rounded-full overflow-hidden">
-        <div className={`h-full ${color} rounded-full transition-all duration-500`} style={{ width: `${pct}%` }} />
+      <div className="h-3 bg-slate-100 rounded overflow-hidden">
+        <div className={`h-full ${color} rounded transition-all duration-500`} style={{ width: `${pct}%` }} />
       </div>
     </div>
   );
@@ -166,11 +166,11 @@ export default async function MetricsPage() {
   // ── Intent distribution (split at the 0.72 handoff threshold) ────
 
   const intentBuckets = [
-    { label: "0–25%  browsing",    min: 0,    max: 0.25, color: "bg-gray-300",    count: 0 },
-    { label: "25–50%  interested", min: 0.25, max: 0.50, color: "bg-yellow-400",  count: 0 },
-    { label: "50–72%  engaged",    min: 0.50, max: 0.72, color: "bg-orange-400",  count: 0 },
-    { label: "72–90%  hot",        min: 0.72, max: 0.90, color: "bg-green-500",   count: 0 },
-    { label: "90–100%  closing",   min: 0.90, max: 1.01, color: "bg-emerald-600", count: 0 },
+    { label: "0–25%  browsing",    min: 0,    max: 0.25, color: "bg-slate-300",    count: 0 },
+    { label: "25–50%  interested", min: 0.25, max: 0.50, color: "bg-amber-400",    count: 0 },
+    { label: "50–72%  engaged",    min: 0.50, max: 0.72, color: "bg-orange-500",   count: 0 },
+    { label: "72–90%  hot",        min: 0.72, max: 0.90, color: "bg-emerald-500",  count: 0 },
+    { label: "90–100%  closing",   min: 0.90, max: 1.01, color: "bg-emerald-700",  count: 0 },
   ];
   for (const { intentScore } of allIntentScores) {
     for (const b of intentBuckets) {
@@ -184,12 +184,12 @@ export default async function MetricsPage() {
   const totalAssignments = allAssignmentStatuses.length;
   const funnelMax = totalSessions;
   const funnelStages = [
-    { label: "Chats started",  value: totalSessions,     color: "bg-blue-300",   pct: undefined },
+    { label: "Chats started",  value: totalSessions,     color: "bg-blue-300",     pct: undefined },
     { label: "Handed off",     value: handoffSessions,   color: "bg-blue-500",
       pct: totalSessions > 0 ? `${Math.round(handoffSessions / totalSessions * 100)}%` : undefined },
-    { label: "Assigned to rep",value: totalAssignments,  color: "bg-indigo-500",
+    { label: "Assigned to rep",value: totalAssignments,  color: "bg-blue-700",
       pct: handoffSessions > 0 ? `${Math.round(totalAssignments / handoffSessions * 100)}%` : undefined },
-    { label: "Closed won",     value: wonCount,          color: "bg-green-500",
+    { label: "Closed won",     value: wonCount,          color: "bg-emerald-600",
       pct: totalAssignments > 0 ? `${Math.round(wonCount / totalAssignments * 100)}%` : undefined },
   ];
 
@@ -198,9 +198,9 @@ export default async function MetricsPage() {
   const statusMap: Record<string, number> = {};
   for (const row of statusCounts) statusMap[row.status] = row._count.id;
   const pipelineStages = [
-    { label: "Pending",     key: "PENDING",      color: "bg-yellow-400" },
-    { label: "Acknowledged",key: "ACKNOWLEDGED", color: "bg-blue-400"   },
-    { label: "In Progress", key: "IN_PROGRESS",  color: "bg-green-400"  },
+    { label: "Pending",     key: "PENDING",      color: "bg-amber-400" },
+    { label: "Acknowledged",key: "ACKNOWLEDGED", color: "bg-blue-500"  },
+    { label: "In Progress", key: "IN_PROGRESS",  color: "bg-emerald-500" },
   ];
   const pipelineMax = Math.max(...pipelineStages.map(s => statusMap[s.key] ?? 0), 1);
 
@@ -223,16 +223,17 @@ export default async function MetricsPage() {
   // ─────────────────────────────────────────────────────────────────
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b px-6 py-4">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
+    <div className="min-h-screen bg-slate-50">
+      <header className="bg-white border-b border-slate-200 px-6 h-14 flex items-center">
+        <div className="max-w-6xl mx-auto w-full flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Link href="/salesperson/dashboard" className="text-sm text-blue-600 hover:underline">
+            <Link href="/salesperson/dashboard" className="text-xs font-semibold text-slate-500 hover:text-slate-900 uppercase tracking-[0.08em] transition-colors">
               ← Dashboard
             </Link>
-            <h1 className="font-bold text-lg text-gray-900">Metrics</h1>
+            <div className="w-px h-4 bg-slate-200" />
+            <h1 className="font-semibold text-slate-900 tracking-tight">Metrics</h1>
           </div>
-          <span className="text-xs text-gray-400">
+          <span className="text-xs text-slate-400">
             All-time &nbsp;·&nbsp; {totalSessions.toLocaleString()} sessions
           </span>
         </div>
@@ -241,7 +242,7 @@ export default async function MetricsPage() {
       <div className="max-w-6xl mx-auto px-6 py-6 space-y-6">
 
         {/* ── KPI cards ── */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           <KpiCard
             label="Win Rate"
             value={`${Math.round(winRate * 100)}%`}
@@ -271,11 +272,11 @@ export default async function MetricsPage() {
         </div>
 
         {/* ── Funnel + Intent distribution ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
 
           {/* Conversion funnel */}
-          <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 p-5">
-            <h2 className="font-semibold text-sm text-gray-900 mb-4">Conversion Funnel</h2>
+          <div className="lg:col-span-2 bg-white rounded-md border border-slate-200 p-5">
+            <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-[0.1em] mb-4">Conversion Funnel</p>
             <div className="space-y-3">
               {funnelStages.map((s) => (
                 <FunnelBar
@@ -288,31 +289,31 @@ export default async function MetricsPage() {
                 />
               ))}
             </div>
-            <div className="mt-5 pt-4 border-t border-gray-100 grid grid-cols-3 gap-3 text-center">
+            <div className="mt-5 pt-4 border-t border-slate-100 grid grid-cols-3 gap-3 text-center">
               <div>
-                <p className="text-xl font-bold text-blue-700">
+                <p className="text-xl font-bold text-blue-700 tracking-tight">
                   {totalSessions > 0 ? `${Math.round(handoffSessions / totalSessions * 100)}%` : "—"}
                 </p>
-                <p className="text-xs text-gray-500 mt-0.5">Handoff rate</p>
+                <p className="text-[10px] text-slate-400 mt-0.5 uppercase tracking-[0.06em]">Handoff rate</p>
               </div>
               <div>
-                <p className="text-xl font-bold text-indigo-700">
+                <p className="text-xl font-bold text-blue-700 tracking-tight">
                   {handoffSessions > 0 ? `${Math.round(totalAssignments / handoffSessions * 100)}%` : "—"}
                 </p>
-                <p className="text-xs text-gray-500 mt-0.5">Assignment rate</p>
+                <p className="text-[10px] text-slate-400 mt-0.5 uppercase tracking-[0.06em]">Assignment rate</p>
               </div>
               <div>
-                <p className="text-xl font-bold text-green-700">
+                <p className="text-xl font-bold text-emerald-700 tracking-tight">
                   {`${Math.round(winRate * 100)}%`}
                 </p>
-                <p className="text-xs text-gray-500 mt-0.5">Close rate</p>
+                <p className="text-[10px] text-slate-400 mt-0.5 uppercase tracking-[0.06em]">Close rate</p>
               </div>
             </div>
           </div>
 
           {/* Intent distribution */}
-          <div className="bg-white rounded-xl border border-gray-200 p-5">
-            <h2 className="font-semibold text-sm text-gray-900 mb-4">Intent Distribution</h2>
+          <div className="bg-white rounded-md border border-slate-200 p-5">
+            <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-[0.1em] mb-4">Intent Distribution</p>
             <div className="space-y-3">
               {intentBuckets.map((b) => (
                 <IntentBar
@@ -324,17 +325,17 @@ export default async function MetricsPage() {
                 />
               ))}
             </div>
-            <div className="mt-4 pt-3 border-t border-gray-100 space-y-1.5">
+            <div className="mt-4 pt-3 border-t border-slate-100 space-y-1.5">
               <div className="flex items-center gap-2">
-                <div className="h-1.5 flex-1 rounded-full bg-gradient-to-r from-gray-300 via-yellow-400 via-orange-400 to-green-500" />
+                <div className="h-1 flex-1 rounded-full bg-gradient-to-r from-slate-300 via-amber-400 via-orange-500 to-emerald-600" />
               </div>
-              <div className="flex justify-between text-[10px] text-gray-400">
+              <div className="flex justify-between text-[10px] text-slate-400">
                 <span>0%</span>
-                <span className="text-orange-500 font-medium">72% threshold</span>
+                <span className="text-orange-600 font-semibold">72% threshold</span>
                 <span>100%</span>
               </div>
-              <p className="text-xs text-gray-500 pt-1">
-                <span className="font-semibold text-green-700">
+              <p className="text-xs text-slate-500 pt-1">
+                <span className="font-semibold text-emerald-700">
                   {intentBuckets[3].count + intentBuckets[4].count}
                 </span> sessions above handoff threshold
               </p>
@@ -343,20 +344,20 @@ export default async function MetricsPage() {
         </div>
 
         {/* ── Pipeline breakdown + mini stats ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
 
           {/* Pipeline by stage */}
-          <div className="bg-white rounded-xl border border-gray-200 p-5">
-            <h2 className="font-semibold text-sm text-gray-900 mb-4">Active Pipeline</h2>
+          <div className="bg-white rounded-md border border-slate-200 p-5">
+            <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-[0.1em] mb-4">Active Pipeline</p>
             <div className="space-y-3">
               {pipelineStages.map((s) => {
                 const count = statusMap[s.key] ?? 0;
                 return (
                   <div key={s.key} className="flex items-center gap-3">
-                    <span className="text-xs text-gray-500 w-24 shrink-0">{s.label}</span>
-                    <div className="flex-1 bg-gray-100 rounded-full h-5 overflow-hidden">
+                    <span className="text-xs text-slate-500 w-24 shrink-0">{s.label}</span>
+                    <div className="flex-1 bg-slate-100 rounded h-5 overflow-hidden">
                       <div
-                        className={`h-full ${s.color} rounded-full flex items-center justify-end pr-2 transition-all duration-500`}
+                        className={`h-full ${s.color} rounded flex items-center justify-end pr-2 transition-all duration-500`}
                         style={{ width: `${Math.max((count / pipelineMax) * 100, count > 0 ? 8 : 0)}%` }}
                       >
                         {count > 0 && (
@@ -368,14 +369,14 @@ export default async function MetricsPage() {
                 );
               })}
             </div>
-            <div className="mt-4 pt-3 border-t border-gray-100 space-y-1 text-xs text-gray-500">
+            <div className="mt-4 pt-3 border-t border-slate-100 space-y-1 text-xs text-slate-500">
               <div className="flex justify-between">
                 <span>Total active</span>
-                <span className="font-semibold text-gray-900">{activeWithVehicles.length}</span>
+                <span className="font-semibold text-slate-900">{activeWithVehicles.length}</span>
               </div>
               <div className="flex justify-between">
                 <span>Avg intent (active)</span>
-                <span className="font-semibold text-gray-900">
+                <span className="font-semibold text-slate-900">
                   {activeWithVehicles.length > 0
                     ? `${Math.round(allAssignmentStatuses.filter(a => ["PENDING","ACKNOWLEDGED","IN_PROGRESS"].includes(a.status)).reduce((s, a) => s + a.intentScore, 0) / activeWithVehicles.length * 100)}%`
                     : "—"}
@@ -383,69 +384,69 @@ export default async function MetricsPage() {
               </div>
               <div className="flex justify-between">
                 <span>Avg markup rec.</span>
-                <span className="font-semibold text-gray-900">—</span>
+                <span className="font-semibold text-slate-900">—</span>
               </div>
             </div>
           </div>
 
           {/* Leaderboard */}
-          <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 overflow-hidden">
-            <div className="px-5 py-4 border-b border-gray-100">
-              <h2 className="font-semibold text-sm text-gray-900">Salesperson Leaderboard</h2>
+          <div className="lg:col-span-2 bg-white rounded-md border border-slate-200 overflow-hidden">
+            <div className="px-5 py-3 border-b border-slate-200 bg-slate-50">
+              <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-[0.1em]">Salesperson Leaderboard</p>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-gray-100 bg-gray-50">
+                  <tr className="border-b border-slate-200 bg-slate-50">
                     {["Rep","Active","Won","Lost","Win Rate","Avg Intent","Specializations"].map(h => (
-                      <th key={h} className="text-left text-xs font-medium text-gray-500 px-4 py-2.5 first:pl-5">
+                      <th key={h} className="text-left text-[10px] font-semibold text-slate-400 uppercase tracking-[0.08em] px-4 py-2.5 first:pl-5">
                         {h}
                       </th>
                     ))}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-50">
+                <tbody className="divide-y divide-slate-100">
                   {leaderboard.map((rep, i) => (
-                    <tr key={rep.name} className="hover:bg-gray-50 transition-colors">
+                    <tr key={rep.name} className="hover:bg-slate-50 transition-colors">
                       <td className="px-5 py-3">
-                        <div className="flex items-center gap-1.5">
-                          {i === 0 && <span>🥇</span>}
-                          {i === 1 && <span>🥈</span>}
-                          {i === 2 && <span>🥉</span>}
-                          {i >= 3 && <span className="text-xs text-gray-400 w-4">{i + 1}</span>}
-                          <span className="font-medium text-gray-900 text-sm">{rep.name}</span>
+                        <div className="flex items-center gap-2">
+                          {i === 0 && <span className="text-xs text-amber-500 font-bold">01</span>}
+                          {i === 1 && <span className="text-xs text-slate-400 font-bold">02</span>}
+                          {i === 2 && <span className="text-xs text-slate-400 font-bold">03</span>}
+                          {i >= 3 && <span className="text-xs text-slate-300 font-bold w-5">{String(i + 1).padStart(2, "0")}</span>}
+                          <span className="font-semibold text-slate-900 text-sm">{rep.name}</span>
                         </div>
                       </td>
                       <td className="px-4 py-3">
-                        <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">
+                        <span className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 font-semibold">
                           {rep.active}
                         </span>
                       </td>
-                      <td className="px-4 py-3 font-semibold text-green-700">{rep.won}</td>
-                      <td className="px-4 py-3 text-gray-400">{rep.lost}</td>
+                      <td className="px-4 py-3 font-semibold text-emerald-700">{rep.won}</td>
+                      <td className="px-4 py-3 text-slate-400">{rep.lost}</td>
                       <td className="px-4 py-3">
                         {rep.rate !== null
-                          ? <span className={`font-semibold ${rep.rate >= 50 ? "text-green-700" : "text-orange-600"}`}>
+                          ? <span className={`font-semibold ${rep.rate >= 50 ? "text-emerald-700" : "text-amber-600"}`}>
                               {rep.rate}%
                             </span>
-                          : <span className="text-gray-300 text-xs">—</span>}
+                          : <span className="text-slate-300 text-xs">—</span>}
                       </td>
-                      <td className="px-4 py-3 text-xs text-gray-600">{rep.avgIntent}%</td>
+                      <td className="px-4 py-3 text-xs text-slate-500 font-mono">{rep.avgIntent}%</td>
                       <td className="px-4 py-3">
                         <div className="flex gap-1 flex-wrap">
                           {rep.specs.map(s => (
-                            <span key={s} className="text-[10px] bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded font-medium">
+                            <span key={s} className="text-[10px] bg-slate-100 text-slate-500 px-1.5 py-0.5 font-semibold uppercase tracking-[0.04em]">
                               {s}
                             </span>
                           ))}
-                          {rep.specs.length === 0 && <span className="text-xs text-gray-300">—</span>}
+                          {rep.specs.length === 0 && <span className="text-xs text-slate-300">—</span>}
                         </div>
                       </td>
                     </tr>
                   ))}
                   {leaderboard.length === 0 && (
                     <tr>
-                      <td colSpan={7} className="px-5 py-10 text-center text-sm text-gray-400">
+                      <td colSpan={7} className="px-5 py-10 text-center text-sm text-slate-400">
                         No salesperson data yet — run the seed to populate.
                       </td>
                     </tr>

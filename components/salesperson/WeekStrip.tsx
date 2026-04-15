@@ -19,9 +19,9 @@ interface WeekStripProps {
 
 const TYPE_COLORS: Record<string, string> = {
   TEST_DRIVE:       "bg-blue-100 text-blue-700",
-  FINANCING_REVIEW: "bg-purple-100 text-purple-700",
-  DELIVERY:         "bg-green-100 text-green-700",
-  SERVICE:          "bg-orange-100 text-orange-700",
+  FINANCING_REVIEW: "bg-violet-100 text-violet-700",
+  DELIVERY:         "bg-emerald-100 text-emerald-700",
+  SERVICE:          "bg-amber-100 text-amber-700",
 };
 
 function formatType(t: string) {
@@ -53,25 +53,25 @@ export function WeekStrip({ appointments }: WeekStripProps) {
 
   return (
     <>
-      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-        <div className="px-3 py-2 border-b border-gray-100 flex items-center justify-between">
-          <p className="text-xs font-semibold text-gray-700">This Week</p>
-          <p className="text-xs text-gray-400">
-            {today.toLocaleDateString("en-US", { month: "short", day: "numeric" })} – {" "}
+      <div className="bg-white border border-slate-200 rounded-md overflow-hidden">
+        <div className="px-3 py-2 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
+          <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-[0.1em]">This Week</p>
+          <p className="text-[10px] text-slate-400">
+            {today.toLocaleDateString("en-US", { month: "short", day: "numeric" })} –{" "}
             {days[6].toLocaleDateString("en-US", { month: "short", day: "numeric" })}
           </p>
         </div>
-        <div className="grid grid-cols-7 divide-x divide-gray-100">
+        <div className="grid grid-cols-7 divide-x divide-slate-100">
           {days.map((day, i) => {
             const isToday = sameDay(day, today);
             const dayAppts = apptsByDay[i];
             return (
               <div key={i} className="flex flex-col items-center py-2 px-0.5 min-h-[64px]">
-                <p className={`text-[10px] font-medium mb-0.5 ${isToday ? "text-blue-600" : "text-gray-400"}`}>
+                <p className={`text-[9px] font-semibold mb-0.5 uppercase tracking-[0.06em] ${isToday ? "text-blue-700" : "text-slate-400"}`}>
                   {DAY_NAMES[day.getDay()]}
                 </p>
-                <p className={`text-sm font-bold mb-1 w-6 h-6 flex items-center justify-center rounded-full ${
-                  isToday ? "bg-blue-600 text-white" : "text-gray-700"
+                <p className={`text-sm font-bold mb-1 w-6 h-6 flex items-center justify-center ${
+                  isToday ? "bg-slate-900 text-white" : "text-slate-700"
                 }`}>
                   {day.getDate()}
                 </p>
@@ -80,15 +80,15 @@ export function WeekStrip({ appointments }: WeekStripProps) {
                     <button
                       key={a.id}
                       onClick={() => setSelected(a)}
-                      className={`w-full text-[9px] truncate rounded px-1 py-0.5 text-left ${
-                        TYPE_COLORS[a.type] ?? "bg-gray-100 text-gray-600"
+                      className={`w-full text-[9px] truncate px-1 py-0.5 text-left font-semibold ${
+                        TYPE_COLORS[a.type] ?? "bg-slate-100 text-slate-500"
                       }`}
                     >
                       {a.customerName?.split(" ")[0] ?? "Guest"}
                     </button>
                   ))}
                   {dayAppts.length > 2 && (
-                    <p className="text-[9px] text-gray-400 text-center">+{dayAppts.length - 2}</p>
+                    <p className="text-[9px] text-slate-400 text-center">+{dayAppts.length - 2}</p>
                   )}
                 </div>
               </div>
@@ -99,32 +99,32 @@ export function WeekStrip({ appointments }: WeekStripProps) {
 
       {/* Detail popup */}
       {selected && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40" onClick={() => setSelected(null)}>
-          <div className="bg-white rounded-2xl shadow-xl p-5 max-w-sm w-full" onClick={(e) => e.stopPropagation()}>
-            <div className="flex items-start justify-between mb-3">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50" onClick={() => setSelected(null)}>
+          <div className="bg-white border border-slate-200 rounded-md shadow-2xl p-5 max-w-sm w-full" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-start justify-between mb-4">
               <div>
-                <p className="font-semibold text-gray-900">{selected.customerName || selected.customerEmail}</p>
-                <p className="text-xs text-gray-500">{selected.customerEmail}</p>
+                <p className="font-semibold text-slate-900 tracking-tight">{selected.customerName || selected.customerEmail}</p>
+                <p className="text-xs text-slate-400">{selected.customerEmail}</p>
               </div>
-              <button onClick={() => setSelected(null)} className="text-gray-400 hover:text-gray-600">✕</button>
+              <button onClick={() => setSelected(null)} className="text-slate-400 hover:text-slate-700 text-lg leading-none">×</button>
             </div>
-            <div className="space-y-1.5 text-sm">
-              <div className="flex gap-2">
-                <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${TYPE_COLORS[selected.type] ?? "bg-gray-100 text-gray-600"}`}>
+            <div className="space-y-2 text-sm">
+              <div className="flex gap-2 flex-wrap">
+                <span className={`text-[10px] px-2 py-0.5 font-semibold uppercase tracking-[0.06em] ${TYPE_COLORS[selected.type] ?? "bg-slate-100 text-slate-500"}`}>
                   {formatType(selected.type)}
                 </span>
-                <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">{selected.status}</span>
+                <span className="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 font-semibold uppercase tracking-[0.06em]">{selected.status}</span>
               </div>
               {selected.vehicleLabel && (
-                <p className="text-gray-700 text-xs">{selected.vehicleLabel}</p>
+                <p className="text-slate-600 text-xs">{selected.vehicleLabel}</p>
               )}
-              <p className="text-gray-900 font-medium">
+              <p className="text-slate-900 font-semibold text-sm">
                 {new Date(selected.scheduledAt).toLocaleDateString("en-US", {
                   weekday: "long", month: "long", day: "numeric",
                   hour: "numeric", minute: "2-digit",
                 })}
               </p>
-              {selected.notes && <p className="text-gray-600 text-xs italic">{selected.notes}</p>}
+              {selected.notes && <p className="text-slate-500 text-xs italic">{selected.notes}</p>}
             </div>
           </div>
         </div>
