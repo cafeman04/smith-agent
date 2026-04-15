@@ -1,31 +1,46 @@
 @import "tailwindcss";
 
 :root {
-  --background: #F8FAFC;
+  --background: #F0F4FB;
   --foreground: #0F172A;
   --surface: #FFFFFF;
-  --border: #E2E8F0;
-  --border-strong: #CBD5E1;
-  --text-muted: #475569;
-  --text-subtle: #94A3B8;
-  --navy: #0F172A;
-  --navy-hover: #1E293B;
+  --border: #D8E0EE;
+  --border-strong: #B5C3D9;
+  --text-muted: #4A5568;
+  --text-subtle: #8895A7;
+  --navy: #1E3D72;
+  --navy-hover: #163060;
+  --navy-dark: #0F1E3A;
   --accent: #1D4ED8;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --color-navy: var(--navy);
+  --color-navy-hover: var(--navy-hover);
+  --color-navy-dark: var(--navy-dark);
+  --font-sans: var(--font-barlow);
+  --font-display: var(--font-barlow-condensed);
   --font-mono: var(--font-geist-mono);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-family: var(--font-barlow), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Headings use condensed display font */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-barlow-condensed), system-ui, sans-serif;
+}
+
+/* Top navy accent on all main page headers */
+header {
+  border-top: 3px solid var(--navy);
 }
 
 /* Force dark text in all form fields regardless of OS color scheme */

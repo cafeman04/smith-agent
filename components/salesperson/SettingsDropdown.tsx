@@ -40,7 +40,7 @@ export function SettingsDropdown({ name, email, role }: SettingsDropdownProps) {
         className="flex items-center gap-2 hover:bg-slate-100 px-2 py-1 rounded transition-colors"
         aria-label="Settings"
       >
-        <div className="w-7 h-7 bg-slate-900 flex items-center justify-center text-white text-[10px] font-bold">
+        <div className="w-7 h-7 bg-navy flex items-center justify-center text-white text-[10px] font-bold">
           {initials}
         </div>
         <svg className="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -75,7 +75,7 @@ export function SettingsDropdown({ name, email, role }: SettingsDropdownProps) {
           {tab === "profile" && (
             <div className="p-4 space-y-3">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-slate-900 flex items-center justify-center text-white font-bold text-sm">
+                <div className="w-10 h-10 bg-navy flex items-center justify-center text-white font-bold text-sm">
                   {initials}
                 </div>
                 <div>
@@ -109,7 +109,7 @@ export function SettingsDropdown({ name, email, role }: SettingsDropdownProps) {
                   <span className="text-sm text-slate-700">{item.label}</span>
                   <button
                     className={`w-8 h-4 rounded-full transition-colors relative flex-shrink-0 ${
-                      item.defaultOn ? "bg-slate-900" : "bg-slate-200"
+                      item.defaultOn ? "bg-navy" : "bg-slate-200"
                     }`}
                   >
                     <span

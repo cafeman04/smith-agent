@@ -52,11 +52,11 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4 py-10">
+    <div className="min-h-screen bg-[#F0F4FB] flex items-center justify-center px-4 py-10">
       <div className="w-full max-w-sm">
         {/* Logo mark */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-10 h-10 bg-slate-900 text-white font-bold text-sm tracking-tight mb-4">
+          <div className="inline-flex items-center justify-center w-10 h-10 bg-navy text-white font-bold text-sm tracking-tight mb-4">
             SM
           </div>
           <h1 className="text-xl font-semibold text-slate-900 tracking-tight">Create account</h1>
@@ -159,7 +159,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-slate-900 text-white rounded-md py-2.5 text-sm font-semibold hover:bg-slate-800 disabled:opacity-50 transition-colors tracking-wide"
+              className="w-full bg-navy text-white rounded-md py-2.5 text-sm font-semibold hover:bg-navy-hover disabled:opacity-50 transition-colors tracking-wide"
             >
               {loading ? "Creating account…" : "Create Account"}
             </button>

@@ -54,7 +54,7 @@ export function PriceRecommendationWidget({ sessionId }: PriceRecommendationWidg
       </div>
 
       <div className="p-4">
-        <div className="bg-slate-900 text-white px-4 py-3 text-center mb-3">
+        <div className="bg-navy text-white px-4 py-3 text-center mb-3">
           <p className="text-2xl font-bold tracking-tight">+{rec.openingMarkupPercent}%</p>
           <p className="text-[10px] text-slate-400 uppercase tracking-[0.06em] mt-0.5">Opening markup over MSRP</p>
         </div>

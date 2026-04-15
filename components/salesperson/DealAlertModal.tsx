@@ -103,7 +103,7 @@ export function DealAlertModal() {
                 </p>
                 <button
                   onClick={handleClose}
-                  className="mt-6 bg-slate-900 text-white px-5 py-2 rounded-md text-sm font-semibold hover:bg-slate-800 transition-colors"
+                  className="mt-6 bg-navy text-white px-5 py-2 rounded-md text-sm font-semibold hover:bg-navy-hover transition-colors"
                 >
                   Done
                 </button>
@@ -167,7 +167,7 @@ export function DealAlertModal() {
                   <button
                     onClick={handleSend}
                     disabled={status === "loading" || !subject.trim() || !message.trim() || subscriberCount === 0}
-                    className="bg-slate-900 text-white px-5 py-2.5 rounded-md text-sm font-semibold hover:bg-slate-800 disabled:opacity-50 transition-colors tracking-wide"
+                    className="bg-navy text-white px-5 py-2.5 rounded-md text-sm font-semibold hover:bg-navy-hover disabled:opacity-50 transition-colors tracking-wide"
                   >
                     {status === "loading" ? "Sending…" : `Send to ${subscriberCount} subscriber${subscriberCount !== 1 ? "s" : ""}`}
                   </button>

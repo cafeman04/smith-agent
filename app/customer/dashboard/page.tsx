@@ -18,12 +18,12 @@ export default async function CustomerDashboardPage() {
   const showOptInBanner = !dbUser?.marketingOptIn;
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-[#F0F4FB]">
       {/* Header */}
       <header className="bg-white border-b border-slate-200 px-6 py-0 h-14 flex items-center">
         <div className="max-w-4xl mx-auto w-full flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-7 h-7 bg-slate-900 flex items-center justify-center text-white font-bold text-xs tracking-tight">
+            <div className="w-7 h-7 bg-navy flex items-center justify-center text-white font-bold text-xs tracking-tight">
               SM
             </div>
             <span className="font-semibold text-slate-900 text-sm tracking-tight">Smith Motors</span>
@@ -56,9 +56,9 @@ export default async function CustomerDashboardPage() {
 
           {/* Chat with AI */}
           <Link href="/customer/chat">
-            <div className="bg-white border border-slate-200 rounded-md p-5 hover:border-slate-400 hover:shadow-sm transition-all cursor-pointer group">
+            <div className="bg-white border border-slate-200 border-l-4 border-l-navy p-5 hover:border-slate-400 hover:shadow-sm transition-all cursor-pointer group">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-8 h-8 bg-slate-900 flex items-center justify-center group-hover:bg-slate-800 transition-colors">
+                <div className="w-8 h-8 bg-navy flex items-center justify-center group-hover:bg-navy-hover transition-colors">
                   <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                   </svg>
@@ -72,9 +72,9 @@ export default async function CustomerDashboardPage() {
 
           {/* Browse Inventory */}
           <Link href="/customer/inventory">
-            <div className="bg-white border border-slate-200 rounded-md p-5 hover:border-slate-400 hover:shadow-sm transition-all cursor-pointer group">
+            <div className="bg-white border border-slate-200 border-l-4 border-l-navy p-5 hover:border-slate-400 hover:shadow-sm transition-all cursor-pointer group">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-8 h-8 bg-slate-900 flex items-center justify-center group-hover:bg-slate-800 transition-colors">
+                <div className="w-8 h-8 bg-navy flex items-center justify-center group-hover:bg-navy-hover transition-colors">
                   <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                   </svg>
@@ -88,9 +88,9 @@ export default async function CustomerDashboardPage() {
 
           {/* Financing */}
           <Link href="/customer/financing">
-            <div className="bg-white border border-slate-200 rounded-md p-5 hover:border-slate-400 hover:shadow-sm transition-all cursor-pointer group">
+            <div className="bg-white border border-slate-200 border-l-4 border-l-navy p-5 hover:border-slate-400 hover:shadow-sm transition-all cursor-pointer group">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-8 h-8 bg-slate-900 flex items-center justify-center group-hover:bg-slate-800 transition-colors">
+                <div className="w-8 h-8 bg-navy flex items-center justify-center group-hover:bg-navy-hover transition-colors">
                   <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
@@ -104,12 +104,12 @@ export default async function CustomerDashboardPage() {
 
           {/* Car Match Quiz */}
           <Link href="/customer/quiz">
-            <div className="bg-white border border-slate-200 rounded-md p-5 hover:border-slate-400 hover:shadow-sm transition-all cursor-pointer group relative overflow-hidden">
+            <div className="bg-white border border-slate-200 border-l-4 border-l-navy p-5 hover:border-slate-400 hover:shadow-sm transition-all cursor-pointer group relative overflow-hidden">
               <div className="absolute top-3 right-3">
                 <span className="text-[10px] font-bold bg-amber-100 text-amber-700 px-2 py-0.5 uppercase tracking-[0.08em]">2 min</span>
               </div>
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-8 h-8 bg-slate-900 flex items-center justify-center group-hover:bg-slate-800 transition-colors">
+                <div className="w-8 h-8 bg-navy flex items-center justify-center group-hover:bg-navy-hover transition-colors">
                   <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                   </svg>

@@ -71,19 +71,19 @@ export default function CustomerSettingsPage() {
 
   if (status === "loading") {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="w-6 h-6 border-2 border-slate-900 border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen bg-[#F0F4FB] flex items-center justify-center">
+        <div className="w-6 h-6 border-2 border-navy border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-[#F0F4FB]">
       {/* Header */}
       <header className="bg-white border-b border-slate-200 px-6 h-14 flex items-center">
         <div className="max-w-2xl mx-auto w-full flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-7 h-7 bg-slate-900 flex items-center justify-center text-white font-bold text-xs tracking-tight">
+            <div className="w-7 h-7 bg-navy flex items-center justify-center text-white font-bold text-xs tracking-tight">
               SM
             </div>
             <span className="font-semibold text-slate-900 text-sm tracking-tight">Smith Motors</span>
@@ -109,7 +109,7 @@ export default function CustomerSettingsPage() {
           <form onSubmit={handleSave} className="px-6 py-5 space-y-4">
             {/* Avatar */}
             <div className="flex items-center gap-4 pb-4 border-b border-slate-100">
-              <div className="w-12 h-12 bg-slate-900 flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
+              <div className="w-12 h-12 bg-navy flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
                 {name ? name[0].toUpperCase() : session?.user?.email?.[0].toUpperCase() ?? "?"}
               </div>
               <div>
@@ -162,7 +162,7 @@ export default function CustomerSettingsPage() {
               <button
                 type="submit"
                 disabled={saving}
-                className="bg-slate-900 text-white px-5 py-2.5 rounded-md text-sm font-semibold hover:bg-slate-800 disabled:opacity-50 transition-colors tracking-wide"
+                className="bg-navy text-white px-5 py-2.5 rounded-md text-sm font-semibold hover:bg-navy-hover disabled:opacity-50 transition-colors tracking-wide"
               >
                 {saving ? "Saving…" : "Save Changes"}
               </button>
@@ -197,7 +197,7 @@ export default function CustomerSettingsPage() {
                 disabled={marketingLoading}
                 onClick={() => handleMarketingToggle(!marketingOptIn)}
                 className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors focus:outline-none focus:ring-2 focus:ring-blue-700 focus:ring-offset-2 disabled:opacity-50 ${
-                  marketingOptIn ? "bg-slate-900" : "bg-slate-200"
+                  marketingOptIn ? "bg-navy" : "bg-slate-200"
                 }`}
               >
                 <span

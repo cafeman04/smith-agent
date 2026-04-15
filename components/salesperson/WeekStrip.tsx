@@ -71,7 +71,7 @@ export function WeekStrip({ appointments }: WeekStripProps) {
                   {DAY_NAMES[day.getDay()]}
                 </p>
                 <p className={`text-sm font-bold mb-1 w-6 h-6 flex items-center justify-center ${
-                  isToday ? "bg-slate-900 text-white" : "text-slate-700"
+                  isToday ? "bg-navy text-white" : "text-slate-700"
                 }`}>
                   {day.getDate()}
                 </p>

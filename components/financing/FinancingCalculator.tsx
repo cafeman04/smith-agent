@@ -56,7 +56,7 @@ function fmt(n: number) {
 // ─── Shared styles ─────────────────────────────────────────────────────────────
 
 const SHARED_STYLES = `
-  .fc-root { font-family: var(--font-geist-sans), system-ui, sans-serif; }
+  .fc-root { font-family: var(--font-barlow), system-ui, sans-serif; }
 
   /* Tabs */
   .fc-tabs {
@@ -85,7 +85,7 @@ const SHARED_STYLES = `
     gap: 7px;
   }
   .fc-tab:hover { color: #475569; }
-  .fc-tab.active { color: #0F172A; border-bottom-color: #0F172A; }
+  .fc-tab.active { color: #1E3D72; border-bottom-color: #1E3D72; }
 
   /* Section labels */
   .fc-section-title {
@@ -134,7 +134,7 @@ const SHARED_STYLES = `
     transition: border-color 0.15s, background 0.15s; font-family: inherit;
   }
   .fc-tier-btn:hover { background: #F1F5F9; }
-  .fc-tier-btn.active { background: #F8FAFC; border-color: #0F172A; border-width: 2px; }
+  .fc-tier-btn.active { background: #F0F4FB; border-color: #1E3D72; border-width: 2px; }
   .fc-tier-label { font-size: 11px; font-weight: 700; color: #0F172A; display: block; }
   .fc-tier-sub { font-size: 10px; color: #94A3B8; display: block; margin-top: 1px; }
 
@@ -146,7 +146,7 @@ const SHARED_STYLES = `
     transition: border-color 0.15s, background 0.15s; font-family: inherit;
   }
   .fc-term-btn:hover { background: #F1F5F9; }
-  .fc-term-btn.active { background: #0F172A; border-color: #0F172A; }
+  .fc-term-btn.active { background: #1E3D72; border-color: #1E3D72; }
   .fc-term-mo { font-size: 15px; font-weight: 800; color: #0F172A; display: block; letter-spacing: -0.3px; }
   .fc-term-btn.active .fc-term-mo { color: #fff; }
   .fc-term-label { font-size: 10px; color: #94A3B8; display: block; margin-top: 1px; }
@@ -155,8 +155,8 @@ const SHARED_STYLES = `
   /* Results */
   .fc-results { border-top: 1px solid #E2E8F0; padding-top: 22px; margin-top: 4px; }
   .fc-result-hero {
-    background: #0F172A;
-    border-radius: 4px; padding: 20px 24px;
+    background: #1E3D72;
+    border-radius: 0; padding: 20px 24px;
     display: flex; align-items: center; justify-content: space-between;
     margin-bottom: 16px; flex-wrap: wrap; gap: 12px;
   }
@@ -173,7 +173,7 @@ const SHARED_STYLES = `
   .fc-bar-label { font-size: 11px; font-weight: 600; color: #475569; display: flex; align-items: center; gap: 5px; }
   .fc-bar-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
   .fc-bar { height: 8px; background: #E2E8F0; overflow: hidden; display: flex; }
-  .fc-bar-principal { background: #0F172A; transition: width 0.4s ease; }
+  .fc-bar-principal { background: #1E3D72; transition: width 0.4s ease; }
   .fc-bar-interest { background: #FDA4AF; flex: 1; }
 
   /* Term comparison */
@@ -193,12 +193,12 @@ const SHARED_STYLES = `
   /* CTA */
   .fc-cta {
     display: flex; align-items: center; justify-content: center; gap: 8px;
-    width: 100%; background: #0F172A; color: #fff; border: none;
-    border-radius: 4px; padding: 12px 20px; font-family: inherit;
+    width: 100%; background: #1E3D72; color: #fff; border: none;
+    border-radius: 0; padding: 12px 20px; font-family: var(--font-barlow-condensed), system-ui, sans-serif;
     font-size: 13px; font-weight: 700; cursor: pointer; text-decoration: none;
-    transition: background 0.15s; letter-spacing: 0.04em;
+    transition: background 0.15s; letter-spacing: 0.1em; text-transform: uppercase;
   }
-  .fc-cta:hover { background: #1E293B; }
+  .fc-cta:hover { background: #163060; }
   .fc-disclaimer { font-size: 11px; color: #94A3B8; text-align: center; margin-top: 12px; line-height: 1.5; }
 
   /* ── Pre-approval specific ── */
@@ -230,14 +230,14 @@ const SHARED_STYLES = `
   .pa-stat-value { font-size: 14px; font-weight: 700; color: #0F172A; }
 
   .pa-submit {
-    width: 100%; background: #0F172A; color: #fff; border: none;
-    border-radius: 4px; padding: 12px 20px; font-family: inherit;
+    width: 100%; background: #1E3D72; color: #fff; border: none;
+    border-radius: 0; padding: 12px 20px; font-family: var(--font-barlow-condensed), system-ui, sans-serif;
     font-size: 13px; font-weight: 700; cursor: pointer;
     transition: background 0.15s; margin-bottom: 10px;
     display: flex; align-items: center; justify-content: center; gap: 8px;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.1em; text-transform: uppercase;
   }
-  .pa-submit:hover:not(:disabled) { background: #1E293B; }
+  .pa-submit:hover:not(:disabled) { background: #163060; }
   .pa-submit:disabled { opacity: 0.5; cursor: not-allowed; }
 
   .pa-success {

@@ -144,7 +144,7 @@ export function LiveChatPanel({
           <button
             onClick={handleJoin}
             disabled={joining}
-            className="bg-slate-900 text-white text-sm font-semibold px-5 py-2.5 rounded-md hover:bg-slate-800 disabled:opacity-50 transition-colors tracking-wide"
+            className="bg-navy text-white text-sm font-semibold px-5 py-2.5 rounded-md hover:bg-navy-hover disabled:opacity-50 transition-colors tracking-wide"
           >
             {joining ? "Joining…" : "Join Conversation"}
           </button>
@@ -167,7 +167,7 @@ export function LiveChatPanel({
                 <div key={m.id} className={`flex ${isSP ? "justify-end" : "justify-start"}`}>
                   <div className={`max-w-[80%] rounded px-3 py-2 text-xs ${
                     isSP
-                      ? "bg-slate-900 text-white"
+                      ? "bg-navy text-white"
                       : isUser
                         ? "bg-slate-100 text-slate-800"
                         : "bg-blue-50 text-blue-800 italic"
@@ -200,7 +200,7 @@ export function LiveChatPanel({
             <button
               onClick={handleSend}
               disabled={!input.trim() || sending}
-              className="bg-slate-900 text-white px-3 py-1.5 rounded text-sm font-semibold hover:bg-slate-800 disabled:opacity-40 transition-colors"
+              className="bg-navy text-white px-3 py-1.5 rounded text-sm font-semibold hover:bg-navy-hover disabled:opacity-40 transition-colors"
             >
               Send
             </button>

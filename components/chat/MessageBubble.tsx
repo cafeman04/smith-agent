@@ -16,7 +16,7 @@ export function MessageBubble({ message }: MessageBubbleProps) {
     return (
       <div className="flex w-full mb-4 justify-end">
         <div className="max-w-[75%] flex flex-col items-end">
-          <div className="rounded rounded-br-none px-4 py-2.5 text-sm leading-relaxed whitespace-pre-wrap bg-slate-900 text-white">
+          <div className="rounded rounded-br-none px-4 py-2.5 text-sm leading-relaxed whitespace-pre-wrap bg-navy text-white">
             {message.content}
           </div>
           <span className="text-[10px] text-slate-400 mt-1">
@@ -55,7 +55,7 @@ export function MessageBubble({ message }: MessageBubbleProps) {
   // AI assistant
   return (
     <div className="flex w-full mb-4 justify-start">
-      <div className="flex-shrink-0 w-7 h-7 bg-slate-900 flex items-center justify-center text-white text-[10px] font-bold mr-2">
+      <div className="flex-shrink-0 w-7 h-7 bg-navy flex items-center justify-center text-white text-[10px] font-bold mr-2">
         A
       </div>
       <div className="max-w-[75%] flex flex-col items-start">

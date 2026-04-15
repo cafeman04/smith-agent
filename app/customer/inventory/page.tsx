@@ -50,7 +50,7 @@ export default function CustomerInventoryPage() {
   });
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-[#F0F4FB]">
       {/* Header */}
       <header className="bg-white border-b border-slate-200 px-6 h-14 flex items-center">
         <div className="max-w-5xl mx-auto w-full flex items-center gap-4">
@@ -82,7 +82,7 @@ export default function CustomerInventoryPage() {
             />
             <button
               onClick={fetchVehicles}
-              className="bg-slate-900 text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-slate-800 transition-colors tracking-wide"
+              className="bg-navy text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-navy-hover transition-colors tracking-wide"
             >
               Filter
             </button>
@@ -131,7 +131,7 @@ export default function CustomerInventoryPage() {
                     </div>
                   )}
                   <Link href="/customer/chat">
-                    <button className="w-full bg-slate-900 text-white rounded-md py-2 text-sm font-semibold hover:bg-slate-800 transition-colors mt-1">
+                    <button className="w-full bg-navy text-white rounded-md py-2 text-sm font-semibold hover:bg-navy-hover transition-colors mt-1">
                       Ask About This Car
                     </button>
                   </Link>

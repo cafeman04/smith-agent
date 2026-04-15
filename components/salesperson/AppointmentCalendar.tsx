@@ -125,7 +125,7 @@ export function AppointmentCalendar({ appointments }: AppointmentCalendarProps) 
                     } ${isSelected ? "bg-slate-100" : ""}`}
                   >
                     <p className={`w-5 h-5 flex items-center justify-center mb-0.5 font-semibold text-[11px] ${
-                      isToday ? "bg-slate-900 text-white" : "text-slate-600"
+                      isToday ? "bg-navy text-white" : "text-slate-600"
                     }`}>
                       {d}
                     </p>

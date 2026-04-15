@@ -69,11 +69,11 @@ export default async function SalespersonDashboard() {
   }));
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-[#F0F4FB]">
       {/* Header */}
       <header className="bg-white border-b border-slate-200 px-6 h-14 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-7 h-7 bg-slate-900 flex items-center justify-center text-white font-bold text-xs tracking-tight">
+          <div className="w-7 h-7 bg-navy flex items-center justify-center text-white font-bold text-xs tracking-tight">
             SM
           </div>
           <div>
@@ -100,15 +100,15 @@ export default async function SalespersonDashboard() {
       <div className="max-w-5xl mx-auto px-6 py-6">
         {/* KPI row */}
         <div className="grid grid-cols-3 gap-3 mb-6">
-          <div className="bg-white border border-slate-200 rounded-md p-4">
+          <div className="bg-white border border-slate-200 border-l-4 border-l-navy p-4">
             <p className="text-xs font-semibold text-slate-400 uppercase tracking-[0.1em] mb-2">Active Customers</p>
             <p className="text-3xl font-bold text-slate-900 tracking-tight">{assignments.length}</p>
           </div>
-          <div className="bg-white border border-slate-200 rounded-md p-4">
+          <div className="bg-white border border-slate-200 border-l-4 border-l-navy p-4">
             <p className="text-xs font-semibold text-slate-400 uppercase tracking-[0.1em] mb-2">This Week</p>
             <p className="text-3xl font-bold text-slate-900 tracking-tight">{weekAppointments.length}</p>
           </div>
-          <div className="bg-white border border-slate-200 rounded-md p-4">
+          <div className="bg-white border border-slate-200 border-l-4 border-l-navy p-4">
             <p className="text-xs font-semibold text-slate-400 uppercase tracking-[0.1em] mb-2">Avg Intent</p>
             <p className="text-3xl font-bold text-slate-900 tracking-tight">
               {assignments.length > 0

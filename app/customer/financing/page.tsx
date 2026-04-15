@@ -20,12 +20,12 @@ export default async function FinancingPage() {
   const latestApp = applications[0];
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-[#F0F4FB]">
       {/* Header */}
       <header className="bg-white border-b border-slate-200 px-6 h-14 flex items-center">
         <div className="max-w-3xl mx-auto w-full flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-7 h-7 bg-slate-900 flex items-center justify-center text-white font-bold text-xs tracking-tight">
+            <div className="w-7 h-7 bg-navy flex items-center justify-center text-white font-bold text-xs tracking-tight">
               SM
             </div>
             <span className="font-semibold text-slate-900 text-sm tracking-tight">Smith Motors</span>
@@ -68,7 +68,7 @@ export default async function FinancingPage() {
                 <form action="/api/financing/applications" method="POST">
                   <button
                     type="submit"
-                    className="bg-slate-900 text-white px-5 py-2.5 rounded-md text-sm font-semibold hover:bg-slate-800 transition-colors tracking-wide"
+                    className="bg-navy text-white px-5 py-2.5 rounded-md text-sm font-semibold hover:bg-navy-hover transition-colors tracking-wide"
                   >
                     Start Application
                   </button>

@@ -109,7 +109,7 @@ export function CustomerCard({
             <button
               onClick={handleJoin}
               disabled={joining}
-              className="text-[10px] bg-slate-900 text-white px-3 py-1 rounded hover:bg-slate-800 disabled:opacity-50 transition-colors font-semibold uppercase tracking-[0.06em]"
+              className="text-[10px] bg-navy text-white px-3 py-1 rounded hover:bg-navy-hover disabled:opacity-50 transition-colors font-semibold uppercase tracking-[0.06em]"
             >
               {joining ? "Joining…" : "Join Chat"}
             </button>

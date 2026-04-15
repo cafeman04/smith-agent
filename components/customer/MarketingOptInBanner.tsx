@@ -44,7 +44,7 @@ export function MarketingOptInBanner() {
         <button
           onClick={handleOptIn}
           disabled={status === "loading"}
-          className="bg-slate-900 text-white text-xs font-semibold px-3 py-1.5 rounded hover:bg-slate-800 disabled:opacity-50 transition-colors tracking-wide"
+          className="bg-navy text-white text-xs font-semibold px-3 py-1.5 rounded hover:bg-navy-hover disabled:opacity-50 transition-colors tracking-wide"
         >
           {status === "loading" ? "Signing up…" : "Sign me up"}
         </button>

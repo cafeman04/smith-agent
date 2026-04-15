@@ -244,15 +244,16 @@ export default function CarQuizPage() {
       <style>{`
         .quiz-root {
           min-height: 100vh;
-          background: #F8FAFC;
+          background: #F0F4FB;
           display: flex;
           flex-direction: column;
         }
         .quiz-nav {
           background: #fff;
-          border-bottom: 1px solid #E2E8F0;
+          border-top: 3px solid #1E3D72;
+          border-bottom: 1px solid #D8E0EE;
           padding: 0 24px;
-          height: 56px;
+          height: 59px;
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -260,35 +261,39 @@ export default function CarQuizPage() {
         }
         .quiz-nav-back {
           font-size: 11px;
-          color: #475569;
-          font-weight: 600;
+          color: #4A5568;
+          font-weight: 700;
           text-decoration: none;
-          letter-spacing: 0.08em;
+          letter-spacing: 0.1em;
           text-transform: uppercase;
+          font-family: var(--font-barlow-condensed), system-ui, sans-serif;
         }
-        .quiz-nav-back:hover { color: #0F172A; }
+        .quiz-nav-back:hover { color: #1E3D72; }
         .quiz-nav-title {
           font-size: 13px;
-          font-weight: 600;
+          font-weight: 700;
           color: #0F172A;
-          letter-spacing: 0.01em;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
+          font-family: var(--font-barlow-condensed), system-ui, sans-serif;
         }
         .quiz-nav-counter {
           font-size: 11px;
-          color: #94A3B8;
-          font-weight: 600;
-          letter-spacing: 0.04em;
+          color: #8895A7;
+          font-weight: 700;
+          letter-spacing: 0.06em;
+          font-family: var(--font-barlow-condensed), system-ui, sans-serif;
         }
 
         /* Progress bar */
         .quiz-progress-track {
-          height: 2px;
-          background: #E2E8F0;
+          height: 3px;
+          background: #D8E0EE;
           width: 100%;
         }
         .quiz-progress-fill {
           height: 100%;
-          background: #0F172A;
+          background: #1E3D72;
           transition: width 0.4s ease;
         }
 
@@ -302,11 +307,11 @@ export default function CarQuizPage() {
         }
         .quiz-card {
           background: #fff;
-          border: 1px solid #E2E8F0;
-          border-radius: 4px;
+          border: 1px solid #D8E0EE;
+          border-radius: 0;
           width: 100%;
           max-width: 560px;
-          box-shadow: 0 1px 4px rgba(15,23,42,0.06);
+          box-shadow: 0 4px 24px rgba(30,61,114,0.10);
           overflow: hidden;
         }
 
@@ -361,9 +366,9 @@ export default function CarQuizPage() {
           gap: 10px;
         }
         .quiz-option {
-          background: #F8FAFC;
-          border: 1px solid #E2E8F0;
-          border-radius: 4px;
+          background: #F0F4FB;
+          border: 1px solid #D8E0EE;
+          border-radius: 2px;
           padding: 16px 14px;
           cursor: pointer;
           text-align: left;
@@ -373,8 +378,8 @@ export default function CarQuizPage() {
           gap: 6px;
         }
         .quiz-option:hover {
-          border-color: #0F172A;
-          background: #F1F5F9;
+          border-color: #1E3D72;
+          background: #F0F4FB;
           transform: translateY(-1px);
         }
         .quiz-option:active { transform: scale(0.98); }
@@ -403,8 +408,8 @@ export default function CarQuizPage() {
         .quiz-loading-spinner {
           width: 48px;
           height: 48px;
-          border: 3px solid #E2E8F0;
-          border-top-color: #0F172A;
+          border: 3px solid #D8E0EE;
+          border-top-color: #1E3D72;
           border-radius: 50%;
           animation: spin 0.75s linear infinite;
           margin: 0 auto 20px;
@@ -426,8 +431,8 @@ export default function CarQuizPage() {
           padding: 32px 36px 36px;
         }
         .quiz-results-personality {
-          background: #0F172A;
-          border-radius: 4px;
+          background: #1E3D72;
+          border-radius: 0;
           padding: 20px 24px;
           margin-bottom: 24px;
           display: flex;
@@ -480,7 +485,7 @@ export default function CarQuizPage() {
           transition: border-color 0.15s;
         }
         .quiz-vehicle-card:hover {
-          border-color: #0F172A;
+          border-color: #1E3D72;
         }
         .quiz-vehicle-img {
           height: 80px;
@@ -516,9 +521,9 @@ export default function CarQuizPage() {
           padding: 24px;
           color: #64748B;
           font-size: 14px;
-          background: #F8FAFC;
-          border: 1px solid #E2E8F0;
-          border-radius: 4px;
+          background: #F0F4FB;
+          border: 1px solid #D8E0EE;
+          border-radius: 2px;
           margin-bottom: 20px;
         }
         .quiz-cta-row {
@@ -528,10 +533,10 @@ export default function CarQuizPage() {
         }
         .quiz-cta-primary {
           flex: 1;
-          background: #0F172A;
+          background: #1E3D72;
           color: #fff;
           border: none;
-          border-radius: 4px;
+          border-radius: 0;
           padding: 12px 16px;
           font-size: 11px;
           font-weight: 700;
@@ -541,11 +546,12 @@ export default function CarQuizPage() {
           display: flex;
           align-items: center;
           justify-content: center;
-          letter-spacing: 0.08em;
+          letter-spacing: 0.12em;
           text-transform: uppercase;
           transition: background 0.15s;
+          font-family: var(--font-barlow-condensed), system-ui, sans-serif;
         }
-        .quiz-cta-primary:hover { background: #1E293B; }
+        .quiz-cta-primary:hover { background: #163060; }
         .quiz-cta-secondary {
           background: #F1F5F9;
           color: #475569;

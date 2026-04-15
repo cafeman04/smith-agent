@@ -57,7 +57,7 @@ export function ChatWindow() {
     <div className="flex flex-col h-full bg-white">
       {/* Header */}
       <div className="border-b border-slate-200 px-4 py-3 flex items-center gap-3 bg-white">
-        <div className="w-8 h-8 bg-slate-900 flex items-center justify-center text-white font-bold text-xs tracking-tight">
+        <div className="w-8 h-8 bg-navy flex items-center justify-center text-white font-bold text-xs tracking-tight">
           {salespersonJoined && salespersonName ? salespersonName[0].toUpperCase() : "SM"}
         </div>
         <div>
@@ -138,8 +138,8 @@ export function ChatWindow() {
             onClick={handleSend}
             disabled={isInputDisabled || !input.trim()}
             className={cn(
-              "flex-shrink-0 w-10 h-10 bg-slate-900 text-white flex items-center justify-center rounded",
-              "hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              "flex-shrink-0 w-10 h-10 bg-navy text-white flex items-center justify-center rounded",
+              "hover:bg-navy-hover disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             )}
           >
             {isLoading ? (

@@ -50,15 +50,16 @@ export function LandingPage() {
           min-height: 100vh;
           display: flex;
           flex-direction: column;
-          background: #F8FAFC;
+          background: #F0F4FB;
         }
 
         /* ── Top nav ── */
         .lp-nav {
           background: #FFFFFF;
-          border-bottom: 1px solid #E2E8F0;
+          border-top: 3px solid #1E3D72;
+          border-bottom: 1px solid #D8E0EE;
           padding: 0 32px;
-          height: 56px;
+          height: 59px;
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -72,9 +73,9 @@ export function LandingPage() {
           gap: 10px;
         }
         .lp-nav-badge {
-          width: 28px;
-          height: 28px;
-          background: #0F172A;
+          width: 30px;
+          height: 30px;
+          background: #1E3D72;
           border-radius: 0;
           display: flex;
           align-items: center;
@@ -82,20 +83,23 @@ export function LandingPage() {
           font-size: 11px;
           font-weight: 800;
           color: #FFFFFF;
-          letter-spacing: -0.3px;
+          letter-spacing: 0.02em;
           flex-shrink: 0;
+          font-family: var(--font-barlow-condensed), system-ui, sans-serif;
         }
         .lp-nav-name {
           font-size: 14px;
           font-weight: 700;
           color: #0F172A;
-          letter-spacing: -0.2px;
+          letter-spacing: 0.02em;
+          font-family: var(--font-barlow-condensed), system-ui, sans-serif;
+          text-transform: uppercase;
         }
         .lp-nav-tagline {
           font-size: 10px;
-          color: #94A3B8;
-          font-weight: 500;
-          letter-spacing: 0.08em;
+          color: #8895A7;
+          font-weight: 600;
+          letter-spacing: 0.1em;
           text-transform: uppercase;
         }
         .lp-nav-right {
@@ -104,8 +108,8 @@ export function LandingPage() {
           font-weight: 500;
         }
         .lp-nav-right a {
-          color: #0F172A;
-          font-weight: 600;
+          color: #1E3D72;
+          font-weight: 700;
           text-decoration: none;
         }
         .lp-nav-right a:hover { text-decoration: underline; }
@@ -119,6 +123,7 @@ export function LandingPage() {
           padding: 40px 16px;
           position: relative;
           overflow: hidden;
+          background: #F0F4FB;
         }
 
         /* ── Car silhouette ── */
@@ -136,34 +141,36 @@ export function LandingPage() {
         /* ── Customer card ── */
         .lp-card {
           background: #FFFFFF;
-          border: 1px solid #E2E8F0;
-          border-radius: 4px;
+          border: 1px solid #D8E0EE;
+          border-radius: 0;
           width: 100%;
           max-width: 420px;
           overflow: hidden;
-          box-shadow: 0 1px 4px rgba(15,23,42,0.06);
+          box-shadow: 0 4px 24px rgba(30,61,114,0.10);
           position: relative;
           z-index: 2;
         }
 
         .lp-card-header {
-          background: #0F172A;
+          background: #1E3D72;
           padding: 28px 32px 24px;
         }
         .lp-card-header-label {
           font-size: 10px;
           font-weight: 700;
-          letter-spacing: 0.12em;
+          letter-spacing: 0.14em;
           text-transform: uppercase;
-          color: rgba(255,255,255,0.5);
+          color: rgba(255,255,255,0.55);
           margin-bottom: 4px;
+          font-family: var(--font-barlow-condensed), system-ui, sans-serif;
         }
         .lp-card-header-title {
-          font-size: 22px;
+          font-size: 24px;
           font-weight: 700;
           color: #FFFFFF;
-          letter-spacing: -0.3px;
-          line-height: 1.15;
+          letter-spacing: 0.01em;
+          line-height: 1.1;
+          font-family: var(--font-barlow-condensed), system-ui, sans-serif;
         }
         .lp-card-header-sub {
           font-size: 13px;
@@ -203,9 +210,9 @@ export function LandingPage() {
         }
         .lp-input::placeholder { color: #94A3B8; }
         .lp-input:focus {
-          border-color: #0F172A;
+          border-color: #1E3D72;
           background: #FFFFFF;
-          box-shadow: 0 0 0 2px rgba(15,23,42,0.1);
+          box-shadow: 0 0 0 2px rgba(30,61,114,0.12);
         }
 
         .lp-error {
@@ -221,11 +228,11 @@ export function LandingPage() {
 
         .lp-btn {
           width: 100%;
-          background: #0F172A;
+          background: #1E3D72;
           color: #FFFFFF;
           border: none;
-          border-radius: 4px;
-          padding: 11px 20px;
+          border-radius: 0;
+          padding: 12px 20px;
           font-size: 12px;
           font-weight: 700;
           cursor: pointer;
@@ -234,10 +241,11 @@ export function LandingPage() {
           justify-content: center;
           gap: 7px;
           transition: background 0.18s, transform 0.1s;
-          letter-spacing: 0.08em;
+          letter-spacing: 0.12em;
           text-transform: uppercase;
+          font-family: var(--font-barlow-condensed), system-ui, sans-serif;
         }
-        .lp-btn:hover:not(:disabled) { background: #1E293B; }
+        .lp-btn:hover:not(:disabled) { background: #163060; }
         .lp-btn:active:not(:disabled) { transform: scale(0.99); }
         .lp-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
@@ -254,8 +262,8 @@ export function LandingPage() {
           font-weight: 400;
         }
         .lp-card-footer a {
-          color: #0F172A;
-          font-weight: 600;
+          color: #1E3D72;
+          font-weight: 700;
           text-decoration: none;
         }
         .lp-card-footer a:hover { text-decoration: underline; }
@@ -263,7 +271,7 @@ export function LandingPage() {
         /* ── Employee footer — hover-reveal ── */
         .lp-emp {
           flex-shrink: 0;
-          background: #1E2733;
+          background: #0F1E3A;
           position: relative;
           z-index: 10;
         }
@@ -351,7 +359,7 @@ export function LandingPage() {
         .lp-emp-btn {
           background: rgba(255,255,255,0.12);
           border: 1px solid rgba(255,255,255,0.2);
-          border-radius: 4px;
+          border-radius: 0;
           color: #FFFFFF;
           padding: 9px 20px;
           font-size: 11px;
@@ -363,9 +371,10 @@ export function LandingPage() {
           gap: 6px;
           transition: background 0.18s, border-color 0.18s;
           height: 38px;
-          letter-spacing: 0.08em;
+          letter-spacing: 0.12em;
           text-transform: uppercase;
           flex-shrink: 0;
+          font-family: var(--font-barlow-condensed), system-ui, sans-serif;
         }
         .lp-emp-btn:hover:not(:disabled) {
           background: rgba(255,255,255,0.2);
