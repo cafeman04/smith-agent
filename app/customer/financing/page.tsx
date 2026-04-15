@@ -23,8 +23,8 @@ export default async function FinancingPage() {
     <div className="min-h-screen bg-gray-50 py-8 px-4">
       <div className="max-w-2xl mx-auto space-y-6">
         <div className="flex items-center gap-4">
-          <Link href="/customer/chat" className="text-sm text-blue-600 hover:underline">
-            ← Back to Chat
+          <Link href="/customer/dashboard" className="text-sm text-blue-600 hover:underline">
+            ← Dashboard
           </Link>
           <h1 className="font-bold text-xl text-gray-900">Financing</h1>
         </div>

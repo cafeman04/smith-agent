@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { ChatWindow } from "@/components/chat/ChatWindow";
+import Link from "next/link";
 
 export default async function CustomerChatPage() {
   const session = await getServerSession(authOptions);
@@ -10,6 +11,11 @@ export default async function CustomerChatPage() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <div className="flex-1 max-w-2xl mx-auto w-full flex flex-col" style={{ height: "100dvh" }}>
+        <div className="px-4 py-3 border-b border-gray-100 bg-white">
+          <Link href="/customer/dashboard" className="text-sm text-blue-600 hover:underline">
+            ← Dashboard
+          </Link>
+        </div>
         <ChatWindow />
       </div>
     </div>

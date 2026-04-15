@@ -34,7 +34,7 @@ export default function LoginPage() {
       if (["SALESPERSON", "MANAGER"].includes(session?.user?.role)) {
         router.push("/salesperson/dashboard");
       } else {
-        router.push("/customer/chat");
+        router.push("/customer/dashboard");
       }
     }
   };
