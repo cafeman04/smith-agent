@@ -43,7 +43,7 @@ export default async function SalespersonDashboard() {
     },
     include: {
       customer: { select: { name: true, email: true } },
-      vehicle: { select: { make: true, model: true, year: true } },
+      vehicle: { select: { make: true, model: true, year: true, daysOnLot: true } },
     },
     orderBy: { scheduledAt: "asc" },
     take: 5,
@@ -143,9 +143,21 @@ export default async function SalespersonDashboard() {
                       </span>
                     </div>
                     {appt.vehicle && (
-                      <p className="text-xs text-gray-700 mb-1">
-                        {appt.vehicle.year} {appt.vehicle.make} {appt.vehicle.model}
-                      </p>
+                      <div className="mb-1">
+                        <p className="text-xs text-gray-700">
+                          {appt.vehicle.year} {appt.vehicle.make} {appt.vehicle.model}
+                        </p>
+                        {appt.vehicle.daysOnLot >= 60 && (
+                          <span className="inline-flex items-center gap-1 mt-0.5 text-[10px] bg-red-100 text-red-700 px-1.5 py-0.5 rounded-full font-medium">
+                            🔴 {appt.vehicle.daysOnLot}d on lot
+                          </span>
+                        )}
+                        {appt.vehicle.daysOnLot >= 30 && appt.vehicle.daysOnLot < 60 && (
+                          <span className="inline-flex items-center gap-1 mt-0.5 text-[10px] bg-orange-100 text-orange-700 px-1.5 py-0.5 rounded-full font-medium">
+                            🟠 {appt.vehicle.daysOnLot}d on lot
+                          </span>
+                        )}
+                      </div>
                     )}
                     <p className="text-xs text-gray-600">
                       {new Date(appt.scheduledAt).toLocaleDateString("en-US", {

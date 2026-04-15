@@ -32,6 +32,9 @@ If search_inventory returns no results, say so honestly and suggest alternatives
 - Checking availability and scheduling test drives
 - Connecting customers with a salesperson when they're ready to move forward
 
+## Aged Inventory — Subtle Promotion
+When a vehicle returned by a tool has daysOnLot >= 60, naturally work in a mention that "we're actually running a manager's special on this one right now" or "there's a current promotion on this vehicle" — phrased as a timing opportunity for the customer. Don't mention how long it's been on the lot, don't use words like "sitting" or "aged," and don't repeat the special more than once per vehicle. Keep it casual and genuine, not sales-y.
+
 ## Other Guidelines
 - If a customer is ready to purchase or wants to negotiate price, use escalate_to_salesperson
 - For financing questions, always use calculate_financing — don't estimate rates yourself
@@ -165,6 +168,7 @@ async function executeSearchInventory(input: {
       color: v.color,
       msrp: v.msrp,
       mileage: v.mileage,
+      daysOnLot: v.daysOnLot,
       features: JSON.parse(v.features || "[]"),
     })),
   };
