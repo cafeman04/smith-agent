@@ -32,6 +32,7 @@ export default async function CustomerDashboardPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
           {/* Chat with AI */}
           <Link href="/customer/chat">
             <div className="bg-white border border-gray-200 rounded-2xl p-6 hover:border-blue-400 hover:shadow-md transition-all cursor-pointer group">
@@ -68,6 +69,18 @@ export default async function CustomerDashboardPage() {
               </div>
               <h2 className="font-semibold text-gray-900 text-lg mb-1">Financing</h2>
               <p className="text-gray-700 text-sm">Calculate payments and manage your financing application and documents.</p>
+            </div>
+          </Link>
+
+          {/* Car Match Quiz */}
+          <Link href="/customer/quiz">
+            <div className="bg-white border border-gray-200 rounded-2xl p-6 hover:border-yellow-400 hover:shadow-md transition-all cursor-pointer group relative overflow-hidden">
+              <div className="absolute top-3 right-3 text-xs font-bold bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full">2 min</div>
+              <div className="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-yellow-200 transition-colors text-2xl">
+                🎯
+              </div>
+              <h2 className="font-semibold text-gray-900 text-lg mb-1">Find My Perfect Car</h2>
+              <p className="text-gray-700 text-sm">Answer 8 quick questions and we&apos;ll match you with cars from our real inventory.</p>
             </div>
           </Link>
         </div>
