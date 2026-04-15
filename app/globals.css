@@ -18,3 +18,11 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Force dark text in all form fields regardless of OS color scheme */
+input,
+textarea,
+select {
+  color: #111827;
+  background-color: #ffffff;
+}
