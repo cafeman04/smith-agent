@@ -13,7 +13,6 @@ export function LandingPage() {
   const [custError, setCustError] = useState("");
   const [empError, setEmpError] = useState("");
   const [loading, setLoading] = useState<"customer" | "employee" | null>(null);
-  const [empOpen, setEmpOpen] = useState(false);
   const router = useRouter();
 
   const handleCustomerSignIn = async (e: React.FormEvent) => {
@@ -23,7 +22,7 @@ export function LandingPage() {
     const result = await signIn("credentials", { email: custEmail, password: custPassword, redirect: false });
     setLoading(null);
     if (result?.error) { setCustError("Invalid email or password"); return; }
-    router.push("/customer/chat");
+    router.push("/customer/dashboard");
   };
 
   const handleEmployeeSignIn = async (e: React.FormEvent) => {
@@ -45,462 +44,580 @@ export function LandingPage() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        .sm-root {
+        .lp-root {
+          min-height: 100vh;
           display: flex;
           flex-direction: column;
-          height: 100vh;
-          font-family: 'Barlow', sans-serif;
-          background: #0B1F36;
-          overflow: hidden;
+          font-family: 'Plus Jakarta Sans', sans-serif;
+          background: #EEF1F5;
         }
 
-        /* ── Main area ── */
-        .sm-main {
-          flex: 1;
-          position: relative;
+        /* ── Top nav ── */
+        .lp-nav {
+          background: #FFFFFF;
+          border-bottom: 1px solid #E2E6EB;
+          padding: 0 32px;
+          height: 60px;
           display: flex;
-          flex-direction: column;
           align-items: center;
+          justify-content: space-between;
+          flex-shrink: 0;
+          position: relative;
+          z-index: 10;
+        }
+        .lp-nav-logo {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+        .lp-nav-badge {
+          width: 34px;
+          height: 34px;
+          background: #1553A2;
+          border-radius: 6px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 13px;
+          font-weight: 800;
+          color: #FFFFFF;
+          letter-spacing: -0.5px;
+          flex-shrink: 0;
+        }
+        .lp-nav-name {
+          font-size: 15px;
+          font-weight: 700;
+          color: #101828;
+          letter-spacing: -0.2px;
+        }
+        .lp-nav-tagline {
+          font-size: 11px;
+          color: #6B7280;
+          font-weight: 500;
+          letter-spacing: 0.02em;
+        }
+        .lp-nav-right {
+          font-size: 12px;
+          color: #6B7280;
+          font-weight: 500;
+        }
+        .lp-nav-right a {
+          color: #1553A2;
+          font-weight: 600;
+          text-decoration: none;
+        }
+        .lp-nav-right a:hover { text-decoration: underline; }
+
+        /* ── Main body ── */
+        .lp-body {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 40px 16px;
+          position: relative;
           overflow: hidden;
-          min-height: 0;
         }
 
         /* ── Car silhouette ── */
-        .sm-car-bg {
+        .lp-car-bg {
           position: absolute;
+          bottom: -10px;
           left: 50%;
-          top: 50%;
-          transform: translate(-50%, -54%);
-          width: min(860px, 92vw);
+          transform: translateX(-50%);
+          width: min(860px, 110vw);
           pointer-events: none;
           user-select: none;
           opacity: 1;
         }
 
-        /* ── Brand ── */
-        .sm-brand {
+        /* ── Customer card ── */
+        .lp-card {
+          background: #FFFFFF;
+          border: 1px solid #DDE2EA;
+          border-radius: 12px;
+          width: 100%;
+          max-width: 420px;
+          overflow: hidden;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.09);
           position: relative;
           z-index: 2;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          padding-top: 40px;
-          padding-bottom: 28px;
-          gap: 10px;
-        }
-        .sm-brand-mark {
-          width: 36px;
-          height: 36px;
-          position: relative;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-        .sm-brand-mark-outer {
-          width: 36px;
-          height: 36px;
-          border: 1.5px solid rgba(255,255,255,0.3);
-          transform: rotate(45deg);
-          position: absolute;
-        }
-        .sm-brand-mark-inner {
-          width: 14px;
-          height: 14px;
-          background: #1B6BCC;
-          transform: rotate(45deg);
-        }
-        .sm-brand-name {
-          font-family: 'Barlow Condensed', sans-serif;
-          font-weight: 700;
-          font-size: 22px;
-          letter-spacing: 0.28em;
-          text-transform: uppercase;
-          color: #FFFFFF;
-        }
-        .sm-brand-sub {
-          font-size: 11px;
-          font-weight: 400;
-          letter-spacing: 0.2em;
-          text-transform: uppercase;
-          color: rgba(255,255,255,0.35);
-          margin-top: -4px;
         }
 
-        /* ── Customer card ── */
-        .sm-card-wrap {
-          position: relative;
-          z-index: 2;
-          width: 100%;
-          display: flex;
-          justify-content: center;
-          padding: 0 16px;
-          flex: 1;
-          align-items: flex-start;
+        .lp-card-header {
+          background: #1553A2;
+          padding: 28px 32px 24px;
         }
-        .sm-card {
-          background: #FFFFFF;
-          width: 100%;
-          max-width: 400px;
-          padding: 36px 40px 32px;
-          box-shadow: 0 24px 60px rgba(0,0,0,0.45), 0 4px 16px rgba(0,0,0,0.2);
-        }
-        .sm-card-eyebrow {
-          font-size: 10px;
+        .lp-card-header-label {
+          font-size: 11px;
           font-weight: 700;
-          letter-spacing: 0.22em;
+          letter-spacing: 0.12em;
           text-transform: uppercase;
-          color: #1B6BCC;
-          margin-bottom: 6px;
-          display: flex;
-          align-items: center;
-          gap: 7px;
+          color: rgba(255,255,255,0.6);
+          margin-bottom: 4px;
         }
-        .sm-card-eyebrow::before {
-          content: '';
-          display: block;
-          width: 16px;
-          height: 2px;
-          background: #1B6BCC;
-          flex-shrink: 0;
+        .lp-card-header-title {
+          font-size: 22px;
+          font-weight: 800;
+          color: #FFFFFF;
+          letter-spacing: -0.3px;
+          line-height: 1.15;
         }
-        .sm-card-title {
-          font-family: 'Barlow Condensed', sans-serif;
-          font-weight: 700;
-          font-size: 28px;
-          text-transform: uppercase;
-          letter-spacing: 0.04em;
-          color: #0B1F36;
-          margin-bottom: 24px;
-          line-height: 1;
+        .lp-card-header-sub {
+          font-size: 13px;
+          color: rgba(255,255,255,0.7);
+          margin-top: 4px;
+          font-weight: 400;
         }
-        .sm-field {
+
+        .lp-card-body {
+          padding: 28px 32px 24px;
+        }
+
+        .lp-field {
           display: flex;
           flex-direction: column;
-          gap: 6px;
-          margin-bottom: 14px;
+          gap: 5px;
+          margin-bottom: 16px;
         }
-        .sm-label {
-          font-size: 11px;
+        .lp-label {
+          font-size: 12px;
           font-weight: 600;
-          letter-spacing: 0.14em;
-          text-transform: uppercase;
-          color: #5B738A;
+          color: #374151;
+          letter-spacing: 0.01em;
         }
-        .sm-input {
-          font-family: 'Barlow', sans-serif;
+        .lp-input {
+          font-family: 'Plus Jakarta Sans', sans-serif;
           font-size: 14px;
           font-weight: 400;
           padding: 10px 13px;
-          background: #F4F7FA;
-          border: 1.5px solid #D0D9E3;
-          color: #0B1F36;
+          background: #F9FAFB;
+          border: 1.5px solid #D1D5DB;
+          border-radius: 7px;
+          color: #101828;
           outline: none;
-          transition: border-color 0.2s, background 0.2s;
+          transition: border-color 0.18s, background 0.18s, box-shadow 0.18s;
           width: 100%;
         }
-        .sm-input::placeholder { color: #9EB3C5; }
-        .sm-input:focus {
-          border-color: #1B6BCC;
+        .lp-input::placeholder { color: #9CA3AF; }
+        .lp-input:focus {
+          border-color: #1553A2;
           background: #FFFFFF;
+          box-shadow: 0 0 0 3px rgba(21, 83, 162, 0.1);
         }
-        .sm-error-box {
+
+        .lp-error {
           font-size: 12px;
           font-weight: 500;
           color: #B91C1C;
           background: #FEF2F2;
-          border-left: 2px solid #B91C1C;
+          border: 1px solid #FECACA;
+          border-radius: 6px;
           padding: 8px 12px;
-          margin-bottom: 10px;
-          letter-spacing: 0.03em;
+          margin-bottom: 14px;
         }
-        .sm-submit {
+
+        .lp-btn {
           width: 100%;
-          background: #1B6BCC;
+          background: #1553A2;
           color: #FFFFFF;
           border: none;
-          padding: 13px 20px;
-          font-family: 'Barlow', sans-serif;
-          font-size: 13px;
+          border-radius: 8px;
+          padding: 12px 20px;
+          font-family: 'Plus Jakarta Sans', sans-serif;
+          font-size: 14px;
           font-weight: 700;
-          letter-spacing: 0.16em;
-          text-transform: uppercase;
           cursor: pointer;
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 8px;
-          margin-top: 6px;
-          transition: background 0.2s;
+          gap: 7px;
+          transition: background 0.18s, transform 0.1s;
+          letter-spacing: 0.01em;
         }
-        .sm-submit:hover:not(:disabled) { background: #155BA8; }
-        .sm-submit:disabled { opacity: 0.45; cursor: not-allowed; }
-        .sm-register {
-          font-size: 12px;
-          color: #7B9AB2;
-          margin-top: 16px;
+        .lp-btn:hover:not(:disabled) { background: #104488; }
+        .lp-btn:active:not(:disabled) { transform: scale(0.99); }
+        .lp-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .lp-card-footer {
+          padding: 0 32px 24px;
           text-align: center;
+          border-top: 1px solid #F3F4F6;
+          margin-top: 4px;
+          padding-top: 16px;
+        }
+        .lp-card-footer p {
+          font-size: 12.5px;
+          color: #6B7280;
           font-weight: 400;
         }
-        .sm-register a {
-          color: #1B6BCC;
+        .lp-card-footer a {
+          color: #1553A2;
           font-weight: 600;
           text-decoration: none;
         }
-        .sm-register a:hover { text-decoration: underline; }
+        .lp-card-footer a:hover { text-decoration: underline; }
 
-        /* ── Employee dock ── */
-        .sm-dock {
+        /* ── Employee footer — hover-reveal ── */
+        .lp-emp {
           flex-shrink: 0;
-          background: #060F1C;
-          border-top: 1px solid rgba(255,255,255,0.07);
+          background: #1E2733;
+          position: relative;
           z-index: 10;
-          overflow: hidden;
-          transition: max-height 0.4s cubic-bezier(0.77, 0, 0.175, 1);
-          max-height: 58px;
         }
-        .sm-dock.open { max-height: 320px; }
 
-        .sm-dock-bar {
+        /* The always-visible strip */
+        .lp-emp-strip {
+          height: 42px;
           display: flex;
           align-items: center;
-          justify-content: space-between;
-          padding: 0 40px;
-          height: 58px;
-          cursor: pointer;
-          user-select: none;
-          transition: background 0.15s;
+          justify-content: center;
+          gap: 8px;
+          cursor: default;
+          transition: background 0.2s;
         }
-        .sm-dock-bar:hover { background: rgba(255,255,255,0.03); }
-
-        .sm-dock-bar-left {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-        }
-        .sm-dock-pip {
-          width: 6px;
-          height: 6px;
+        .lp-emp-strip-dot {
+          width: 5px;
+          height: 5px;
           border-radius: 50%;
-          background: #4A7FB5;
+          background: rgba(255,255,255,0.25);
           flex-shrink: 0;
         }
-        .sm-dock-label {
+        .lp-emp-strip-text {
           font-size: 11px;
-          font-weight: 700;
-          letter-spacing: 0.2em;
-          text-transform: uppercase;
-          color: rgba(255,255,255,0.45);
-        }
-        .sm-dock-bar-right {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          font-size: 11px;
-          font-weight: 500;
+          font-weight: 600;
           letter-spacing: 0.12em;
           text-transform: uppercase;
           color: rgba(255,255,255,0.3);
+          transition: color 0.2s;
         }
-        .sm-dock-chevron {
-          transition: transform 0.35s ease;
-          color: rgba(255,255,255,0.3);
+        .lp-emp-strip-chevron {
+          transition: transform 0.35s ease, opacity 0.2s;
+          opacity: 0.25;
+          color: rgba(255,255,255,0.4);
         }
-        .sm-dock.open .sm-dock-chevron { transform: rotate(180deg); }
 
-        .sm-dock-form {
-          padding: 0 40px 28px;
+        /* The expandable panel */
+        .lp-emp-panel {
+          max-height: 0;
+          overflow: hidden;
+          transition: max-height 0.38s cubic-bezier(0.4, 0, 0.2, 1),
+                      opacity 0.28s ease;
+          opacity: 0;
         }
-        .sm-dock-form-inner {
+        .lp-emp-panel-inner {
+          padding: 0 32px 24px;
+          max-width: 900px;
+          margin: 0 auto;
+        }
+        .lp-emp-form-row {
           display: flex;
-          gap: 12px;
+          gap: 10px;
           align-items: flex-end;
           flex-wrap: wrap;
         }
-        .sm-dock-field {
+        .lp-emp-field {
           display: flex;
           flex-direction: column;
-          gap: 5px;
+          gap: 4px;
           flex: 1;
-          min-width: 140px;
+          min-width: 160px;
         }
-        .sm-dock-label-field {
-          font-size: 10px;
-          font-weight: 700;
-          letter-spacing: 0.18em;
+        .lp-emp-field-label {
+          font-size: 11px;
+          font-weight: 600;
+          color: rgba(255,255,255,0.4);
+          letter-spacing: 0.05em;
           text-transform: uppercase;
-          color: rgba(255,255,255,0.3);
         }
-        .sm-dock-input {
-          font-family: 'Barlow', sans-serif;
+        .lp-emp-input {
+          font-family: 'Plus Jakarta Sans', sans-serif;
           font-size: 13px;
-          font-weight: 400;
           padding: 9px 12px;
-          background: rgba(255,255,255,0.05);
-          border: 1.5px solid rgba(255,255,255,0.1);
+          background: rgba(255,255,255,0.06);
+          border: 1.5px solid rgba(255,255,255,0.12);
+          border-radius: 7px;
           color: #FFFFFF;
           outline: none;
-          transition: border-color 0.2s;
+          transition: border-color 0.18s, background 0.18s;
           width: 100%;
         }
-        .sm-dock-input::placeholder { color: rgba(255,255,255,0.2); }
-        .sm-dock-input:focus { border-color: rgba(255,255,255,0.35); }
-        .sm-dock-submit {
-          background: rgba(255,255,255,0.1);
+        .lp-emp-input::placeholder { color: rgba(255,255,255,0.22); }
+        .lp-emp-input:focus {
+          border-color: rgba(255,255,255,0.35);
+          background: rgba(255,255,255,0.09);
+        }
+        .lp-emp-btn {
+          background: rgba(255,255,255,0.12);
           border: 1.5px solid rgba(255,255,255,0.2);
+          border-radius: 7px;
           color: #FFFFFF;
-          padding: 9px 22px;
-          font-family: 'Barlow', sans-serif;
+          padding: 9px 20px;
+          font-family: 'Plus Jakarta Sans', sans-serif;
           font-size: 12px;
           font-weight: 700;
-          letter-spacing: 0.16em;
-          text-transform: uppercase;
           cursor: pointer;
-          transition: background 0.2s, border-color 0.2s;
           white-space: nowrap;
-          height: 40px;
           display: flex;
           align-items: center;
-          gap: 7px;
-        }
-        .sm-dock-submit:hover:not(:disabled) {
-          background: rgba(255,255,255,0.16);
-          border-color: rgba(255,255,255,0.4);
-        }
-        .sm-dock-submit:disabled { opacity: 0.4; cursor: not-allowed; }
-        .sm-dock-error {
-          width: 100%;
-          font-size: 11px;
-          color: #FCA5A5;
-          letter-spacing: 0.05em;
-          margin-top: 6px;
-          font-weight: 500;
-        }
-        .sm-dock-register {
-          width: 100%;
-          font-size: 11px;
-          color: rgba(255,255,255,0.25);
-          margin-top: 8px;
+          gap: 6px;
+          transition: background 0.18s, border-color 0.18s;
+          height: 40px;
           letter-spacing: 0.04em;
+          flex-shrink: 0;
         }
-        .sm-dock-register a {
-          color: rgba(255,255,255,0.45);
+        .lp-emp-btn:hover:not(:disabled) {
+          background: rgba(255,255,255,0.2);
+          border-color: rgba(255,255,255,0.35);
+        }
+        .lp-emp-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .lp-emp-error {
+          width: 100%;
+          font-size: 11.5px;
+          font-weight: 500;
+          color: #FCA5A5;
+          margin-top: 6px;
+        }
+        .lp-emp-sub {
+          width: 100%;
+          font-size: 11px;
+          color: rgba(255,255,255,0.22);
+          margin-top: 6px;
+        }
+        .lp-emp-sub a {
+          color: rgba(255,255,255,0.4);
           font-weight: 600;
           text-decoration: none;
         }
-        .sm-dock-register a:hover { color: rgba(255,255,255,0.7); }
+        .lp-emp-sub a:hover { color: rgba(255,255,255,0.65); }
+
+        /* Expand on hover OR when an input inside is focused */
+        .lp-emp:hover .lp-emp-panel,
+        .lp-emp:focus-within .lp-emp-panel {
+          max-height: 180px;
+          opacity: 1;
+        }
+        .lp-emp:hover .lp-emp-strip {
+          background: rgba(255,255,255,0.03);
+        }
+        .lp-emp:hover .lp-emp-strip-text,
+        .lp-emp:focus-within .lp-emp-strip-text {
+          color: rgba(255,255,255,0.55);
+        }
+        .lp-emp:hover .lp-emp-strip-chevron,
+        .lp-emp:focus-within .lp-emp-strip-chevron {
+          transform: rotate(180deg);
+          opacity: 0.5;
+        }
 
         /* ── Mobile ── */
-        @media (max-width: 540px) {
-          .sm-brand { padding-top: 28px; padding-bottom: 18px; }
-          .sm-card { padding: 28px 24px 24px; }
-          .sm-dock-bar { padding: 0 20px; }
-          .sm-dock-form { padding: 0 20px 24px; }
-          .sm-dock-form-inner { flex-direction: column; }
-          .sm-dock-submit { width: 100%; justify-content: center; }
+        @media (max-width: 600px) {
+          .lp-nav { padding: 0 20px; }
+          .lp-card-header { padding: 22px 22px 18px; }
+          .lp-card-body { padding: 22px 22px 20px; }
+          .lp-card-footer { padding: 16px 22px 20px; }
+          .lp-emp-panel-inner { padding: 0 20px 20px; }
+          .lp-emp-form-row { flex-direction: column; }
+          .lp-emp-btn { width: 100%; justify-content: center; }
+          .lp-nav-tagline { display: none; }
+          .lp-nav-right { display: none; }
+          .lp-emp:hover .lp-emp-panel,
+          .lp-emp:focus-within .lp-emp-panel {
+            max-height: 320px;
+          }
         }
       `}</style>
 
-      <div className="sm-root">
+      <div className="lp-root">
 
-        {/* ── Main customer area ── */}
-        <div className="sm-main">
+        {/* ── Top nav ── */}
+        <nav className="lp-nav">
+          <div className="lp-nav-logo">
+            <div className="lp-nav-badge">SM</div>
+            <div>
+              <div className="lp-nav-name">Smith Motors</div>
+              <div className="lp-nav-tagline">Your Trusted Local Dealer</div>
+            </div>
+          </div>
+          <div className="lp-nav-right">
+            New customer?{" "}
+            <Link href="/register">Create an account</Link>
+          </div>
+        </nav>
+
+        {/* ── Customer sign-in (centered, car silhouette behind) ── */}
+        <main className="lp-body">
 
           {/* Car silhouette SVG */}
           <svg
-            className="sm-car-bg"
-            viewBox="0 0 900 260"
+            className="lp-car-bg"
+            viewBox="0 0 860 220"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             aria-hidden="true"
           >
-            {/* Body */}
+            {/* Ground shadow */}
+            <ellipse cx="430" cy="212" rx="370" ry="7" fill="rgba(0,0,0,0.06)" />
+
+            {/* Main body lower sill */}
             <path
-              d="M 75 215
-                 Q 72 202 80 194
-                 L 95 185
-                 L 155 174
-                 L 175 172
-                 L 245 172
-                 L 278 68
-                 Q 300 58 328 56
-                 L 572 56
-                 Q 600 58 622 68
-                 L 655 172
-                 L 725 172
-                 L 745 174
-                 L 805 185
-                 L 820 194
-                 Q 828 202 825 215
-                 Z"
-              fill="rgba(255,255,255,0.03)"
-              stroke="rgba(255,255,255,0.13)"
+              d="M 108 168 L 752 168 Q 770 168 778 158 L 788 142 Q 792 134 784 130
+                 L 738 122 L 718 122 L 690 66 Q 682 52 668 48 L 560 42 L 480 40 L 380 40
+                 L 272 42 L 192 48 Q 178 52 170 66 L 142 122 L 122 122 L 76 130
+                 Q 68 134 72 142 L 82 158 Q 90 168 108 168 Z"
+              fill="rgba(180,190,205,0.22)"
+              stroke="rgba(120,140,165,0.28)"
               strokeWidth="1.5"
               strokeLinejoin="round"
             />
-            {/* Roof highlight */}
+
+            {/* Cabin / greenhouse */}
             <path
-              d="M 290 58 Q 450 52 610 58"
+              d="M 272 42 L 292 14 Q 298 6 308 4 L 552 4 Q 562 6 568 14 L 588 42 Z"
+              fill="rgba(160,175,195,0.18)"
+              stroke="rgba(120,140,165,0.25)"
+              strokeWidth="1.2"
+              strokeLinejoin="round"
+            />
+
+            {/* Windshield glare */}
+            <path
+              d="M 310 8 L 296 40 L 380 40 L 372 8 Z"
+              fill="rgba(255,255,255,0.07)"
+            />
+            <path
+              d="M 488 8 L 568 40 L 564 40 L 488 10 Z"
+              fill="rgba(255,255,255,0.04)"
+            />
+
+            {/* Body highlight line */}
+            <path
+              d="M 110 150 Q 280 140 430 138 Q 580 136 750 150"
               fill="none"
-              stroke="rgba(255,255,255,0.07)"
+              stroke="rgba(255,255,255,0.18)"
               strokeWidth="1"
             />
+
+            {/* Front bumper detail */}
+            <path
+              d="M 76 130 Q 60 132 56 140 L 54 148 Q 53 158 62 162 L 108 168"
+              fill="rgba(160,175,195,0.15)"
+              stroke="rgba(120,140,165,0.2)"
+              strokeWidth="1"
+            />
+            {/* Rear bumper detail */}
+            <path
+              d="M 784 130 Q 800 132 804 140 L 806 148 Q 807 158 798 162 L 752 168"
+              fill="rgba(160,175,195,0.15)"
+              stroke="rgba(120,140,165,0.2)"
+              strokeWidth="1"
+            />
+
+            {/* Front headlight */}
+            <path
+              d="M 60 138 L 74 130 L 74 136 L 62 144 Z"
+              fill="rgba(200,215,230,0.3)"
+              stroke="rgba(150,170,195,0.3)"
+              strokeWidth="0.8"
+            />
+            {/* Rear taillight */}
+            <path
+              d="M 800 138 L 786 130 L 786 136 L 798 144 Z"
+              fill="rgba(200,140,140,0.2)"
+              stroke="rgba(180,120,120,0.25)"
+              strokeWidth="0.8"
+            />
+
+            {/* Front wheel well */}
+            <path
+              d="M 142 122 Q 132 140 128 155 Q 126 165 135 168 L 200 168 Q 210 165 212 155 Q 212 140 202 122 Z"
+              fill="rgba(150,165,185,0.12)"
+            />
+            {/* Rear wheel well */}
+            <path
+              d="M 658 122 Q 648 140 644 155 Q 642 165 651 168 L 716 168 Q 726 165 728 155 Q 728 140 718 122 Z"
+              fill="rgba(150,165,185,0.12)"
+            />
+
             {/* Front wheel */}
-            <circle cx="205" cy="220" r="46"
-              fill="rgba(255,255,255,0.025)"
-              stroke="rgba(255,255,255,0.11)"
+            <circle cx="172" cy="182" r="30"
+              fill="rgba(140,155,175,0.15)"
+              stroke="rgba(110,130,155,0.28)"
               strokeWidth="1.5"
             />
-            <circle cx="205" cy="220" r="18"
-              fill="none"
-              stroke="rgba(255,255,255,0.07)"
+            <circle cx="172" cy="182" r="18"
+              fill="rgba(130,145,165,0.1)"
+              stroke="rgba(110,130,155,0.18)"
               strokeWidth="1"
             />
+            <circle cx="172" cy="182" r="6"
+              fill="rgba(140,155,175,0.2)"
+              stroke="rgba(110,130,155,0.2)"
+              strokeWidth="1"
+            />
+            {/* Front wheel spokes */}
+            {[0,60,120,180,240,300].map((deg, i) => {
+              const r = Math.PI * deg / 180;
+              return (
+                <line key={i}
+                  x1={172 + 7 * Math.cos(r)} y1={182 + 7 * Math.sin(r)}
+                  x2={172 + 17 * Math.cos(r)} y2={182 + 17 * Math.sin(r)}
+                  stroke="rgba(110,130,155,0.18)" strokeWidth="1.2"
+                />
+              );
+            })}
+
             {/* Rear wheel */}
-            <circle cx="695" cy="220" r="46"
-              fill="rgba(255,255,255,0.025)"
-              stroke="rgba(255,255,255,0.11)"
+            <circle cx="688" cy="182" r="30"
+              fill="rgba(140,155,175,0.15)"
+              stroke="rgba(110,130,155,0.28)"
               strokeWidth="1.5"
             />
-            <circle cx="695" cy="220" r="18"
-              fill="none"
-              stroke="rgba(255,255,255,0.07)"
+            <circle cx="688" cy="182" r="18"
+              fill="rgba(130,145,165,0.1)"
+              stroke="rgba(110,130,155,0.18)"
               strokeWidth="1"
             />
-            {/* Ground shadow */}
-            <ellipse cx="450" cy="258" rx="390" ry="8"
-              fill="rgba(0,0,0,0.25)"
-            />
-            <line x1="60" y1="253" x2="840" y2="253"
-              stroke="rgba(255,255,255,0.05)"
+            <circle cx="688" cy="182" r="6"
+              fill="rgba(140,155,175,0.2)"
+              stroke="rgba(110,130,155,0.2)"
               strokeWidth="1"
             />
+            {/* Rear wheel spokes */}
+            {[0,60,120,180,240,300].map((deg, i) => {
+              const r = Math.PI * deg / 180;
+              return (
+                <line key={i}
+                  x1={688 + 7 * Math.cos(r)} y1={182 + 7 * Math.sin(r)}
+                  x2={688 + 17 * Math.cos(r)} y2={182 + 17 * Math.sin(r)}
+                  stroke="rgba(110,130,155,0.18)" strokeWidth="1.2"
+                />
+              );
+            })}
+
+            {/* Ground line */}
+            <line x1="40" y1="212" x2="820" y2="212" stroke="rgba(0,0,0,0.07)" strokeWidth="1" />
           </svg>
 
-          {/* Brand */}
-          <div className="sm-brand">
-            <div className="sm-brand-mark">
-              <div className="sm-brand-mark-outer" />
-              <div className="sm-brand-mark-inner" />
+          {/* Customer sign-in card */}
+          <div className="lp-card">
+
+            <div className="lp-card-header">
+              <div className="lp-card-header-label">Customer Portal</div>
+              <div className="lp-card-header-title">Welcome back</div>
+              <div className="lp-card-header-sub">Sign in to manage your vehicles &amp; inquiries</div>
             </div>
-            <div className="sm-brand-name">Smith Motors</div>
-            <div className="sm-brand-sub">Authorized Dealer</div>
-          </div>
 
-          {/* Customer login card */}
-          <div className="sm-card-wrap">
-            <div className="sm-card">
-              <div className="sm-card-eyebrow">Customer Portal</div>
-              <h2 className="sm-card-title">Sign In</h2>
-
+            <div className="lp-card-body">
               <form onSubmit={handleCustomerSignIn}>
-                <div className="sm-field">
-                  <label className="sm-label">Email Address</label>
+                <div className="lp-field">
+                  <label className="lp-label">Email Address</label>
                   <input
-                    className="sm-input"
+                    className="lp-input"
                     type="email"
                     value={custEmail}
                     onChange={(e) => setCustEmail(e.target.value)}
@@ -509,10 +626,10 @@ export function LandingPage() {
                     placeholder="you@example.com"
                   />
                 </div>
-                <div className="sm-field">
-                  <label className="sm-label">Password</label>
+                <div className="lp-field">
+                  <label className="lp-label">Password</label>
                   <input
-                    className="sm-input"
+                    className="lp-input"
                     type="password"
                     value={custPassword}
                     onChange={(e) => setCustPassword(e.target.value)}
@@ -521,93 +638,88 @@ export function LandingPage() {
                   />
                 </div>
 
-                {custError && <div className="sm-error-box">{custError}</div>}
+                {custError && <div className="lp-error">{custError}</div>}
 
-                <button type="submit" disabled={loading === "customer"} className="sm-submit">
-                  {loading === "customer" ? "Signing In..." : "Sign In"}
+                <button type="submit" disabled={loading === "customer"} className="lp-btn">
+                  {loading === "customer" ? "Signing in…" : "Sign In"}
                   {loading !== "customer" && (
                     <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
                     </svg>
                   )}
                 </button>
               </form>
-
-              <p className="sm-register">
-                New customer?{" "}
-                <Link href="/register">Create an account</Link>
-              </p>
             </div>
+
+            <div className="lp-card-footer">
+              <p>Don&apos;t have an account? <Link href="/register">Create one — it&apos;s free</Link></p>
+            </div>
+
+          </div>
+        </main>
+
+        {/* ── Employee sign-in — hover to reveal ── */}
+        <footer className="lp-emp">
+
+          {/* Always-visible strip */}
+          <div className="lp-emp-strip">
+            <div className="lp-emp-strip-dot" />
+            <span className="lp-emp-strip-text">Employee Access</span>
+            <svg
+              className="lp-emp-strip-chevron"
+              width="12" height="12"
+              fill="none" stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 15l7-7 7 7" />
+            </svg>
           </div>
 
-        </div>
-
-        {/* ── Employee dock ── */}
-        <div className={`sm-dock${empOpen ? " open" : ""}`}>
-
-          {/* Bar — always visible */}
-          <div className="sm-dock-bar" onClick={() => setEmpOpen((v) => !v)}>
-            <div className="sm-dock-bar-left">
-              <div className="sm-dock-pip" />
-              <span className="sm-dock-label">Employee Portal</span>
-            </div>
-            <div className="sm-dock-bar-right">
-              <span>{empOpen ? "Close" : "Staff Sign In"}</span>
-              <svg
-                className="sm-dock-chevron"
-                width="14" height="14"
-                fill="none" stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-              </svg>
-            </div>
-          </div>
-
-          {/* Expanded form */}
-          <div className="sm-dock-form">
-            <form onSubmit={handleEmployeeSignIn}>
-              <div className="sm-dock-form-inner">
-                <div className="sm-dock-field">
-                  <label className="sm-dock-label-field">Email</label>
-                  <input
-                    className="sm-dock-input"
-                    type="email"
-                    value={empEmail}
-                    onChange={(e) => setEmpEmail(e.target.value)}
-                    required
-                    placeholder="you@smithmotors.com"
-                  />
+          {/* Expandable form */}
+          <div className="lp-emp-panel">
+            <div className="lp-emp-panel-inner">
+              <form onSubmit={handleEmployeeSignIn}>
+                <div className="lp-emp-form-row">
+                  <div className="lp-emp-field">
+                    <label className="lp-emp-field-label">Work Email</label>
+                    <input
+                      className="lp-emp-input"
+                      type="email"
+                      value={empEmail}
+                      onChange={(e) => setEmpEmail(e.target.value)}
+                      required
+                      placeholder="you@smithmotors.com"
+                    />
+                  </div>
+                  <div className="lp-emp-field">
+                    <label className="lp-emp-field-label">Password</label>
+                    <input
+                      className="lp-emp-input"
+                      type="password"
+                      value={empPassword}
+                      onChange={(e) => setEmpPassword(e.target.value)}
+                      required
+                      placeholder="••••••••"
+                    />
+                  </div>
+                  <button type="submit" disabled={loading === "employee"} className="lp-emp-btn">
+                    {loading === "employee" ? "…" : "Sign In"}
+                    {loading !== "employee" && (
+                      <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                      </svg>
+                    )}
+                  </button>
+                  {empError && <p className="lp-emp-error">{empError}</p>}
+                  <p className="lp-emp-sub">
+                    New team member? <Link href="/register">Request access</Link>
+                  </p>
                 </div>
-                <div className="sm-dock-field">
-                  <label className="sm-dock-label-field">Password</label>
-                  <input
-                    className="sm-dock-input"
-                    type="password"
-                    value={empPassword}
-                    onChange={(e) => setEmpPassword(e.target.value)}
-                    required
-                    placeholder="••••••••"
-                  />
-                </div>
-                <button type="submit" disabled={loading === "employee"} className="sm-dock-submit">
-                  {loading === "employee" ? "..." : "Sign In"}
-                  {loading !== "employee" && (
-                    <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  )}
-                </button>
-                {empError && <p className="sm-dock-error">{empError}</p>}
-                <p className="sm-dock-register">
-                  New team member?{" "}
-                  <Link href="/register">Create an account</Link>
-                </p>
-              </div>
-            </form>
+              </form>
+            </div>
           </div>
 
-        </div>
+        </footer>
 
       </div>
     </>
