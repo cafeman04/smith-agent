@@ -104,12 +104,16 @@ export async function* runConciergeAgent(
         case "check_availability":
           return executeCheckAvailability(input as { vin: string });
 
-        case "book_appointment":
-          return executeBookAppointment(
+        case "book_appointment": {
+          const apptResult = await executeBookAppointment(
             input as Parameters<typeof executeBookAppointment>[0],
             cid,
             sid
           );
+          // Booking an appointment means a salesperson needs to follow up —
+          // trigger handoff so the appointment appears on their dashboard.
+          return { ...apptResult, __escalate: true, reason: "Appointment booked — salesperson follow-up required" };
+        }
 
         case "escalate_to_salesperson":
           return { __escalate: true, reason: (input as { reason: string }).reason };

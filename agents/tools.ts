@@ -205,15 +205,30 @@ export async function executeBookAppointment(
     ? (await prisma.vehicle.findUnique({ where: { vin: input.vehicle_vin }, select: { id: true } }))?.id
     : undefined;
 
-  const appointment = await prisma.appointment.create({
-    data: {
-      customerId,
-      vehicleId,
-      type:        input.appointment_type,
-      scheduledAt: new Date(input.preferred_datetime),
-      notes:       input.notes,
-    },
-  });
+  // Check if this session already has an appointment; if so update it rather than create a duplicate
+  const existing = await prisma.appointment.findUnique({ where: { sessionId } });
+
+  const appointment = existing
+    ? await prisma.appointment.update({
+        where: { sessionId },
+        data: {
+          vehicleId,
+          type:        input.appointment_type,
+          scheduledAt: new Date(input.preferred_datetime),
+          notes:       input.notes,
+          status:      "SCHEDULED",
+        },
+      })
+    : await prisma.appointment.create({
+        data: {
+          sessionId,
+          customerId,
+          vehicleId,
+          type:        input.appointment_type,
+          scheduledAt: new Date(input.preferred_datetime),
+          notes:       input.notes,
+        },
+      });
 
   await prisma.conversionEvent.create({
     data: {

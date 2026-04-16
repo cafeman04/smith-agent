@@ -99,7 +99,9 @@ export async function* runAgentLoop(config: AgentRunConfig): AsyncGenerator<Agen
       if (result && typeof result === "object" && "__escalate" in result) {
         handoffTriggered = true;
         handoffReason    = ((result as unknown) as { reason: string }).reason;
-        result           = { acknowledged: true };
+        // Strip the sentinel fields but preserve any real tool output (e.g. appointment details)
+        const { __escalate: _esc, reason: _reason, ...rest } = result as Record<string, unknown>;
+        result = Object.keys(rest).length > 0 ? rest : { acknowledged: true };
       }
 
       toolResultContents.push({
