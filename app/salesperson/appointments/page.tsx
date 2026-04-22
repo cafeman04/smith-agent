@@ -20,29 +20,23 @@ export default async function AppointmentsPage() {
   const appointments = await prisma.appointment.findMany({
     where: { customerId: { in: customerIds } },
     include: {
-      customer: { select: { name: true, email: true } },
+      customer: { select: { id: true, name: true, email: true } },
       vehicle: { select: { make: true, model: true, year: true, vin: true } },
     },
-    orderBy: { scheduledAt: "asc" },
+    orderBy: { createdAt: "desc" },
   });
 
-  const HARDCODED_DEMO_APPT = {
-    id: "hardcoded-demo-appt",
-    customer: { name: "Demo Customer", email: "demo@customer.com" },
-    vehicle: { make: "Nissan", model: "Rogue", year: 2026, vin: "" },
-    type: "TEST_DRIVE",
-    scheduledAt: new Date(2026, 3, 16, 10, 0, 0),
-    status: "CONFIRMED",
-    notes: "Test drive for 2026 Nissan Rogue. Customer has explored financing options.",
-  };
-
-  const allAppointments = [HARDCODED_DEMO_APPT, ...appointments];
-  // Only the hardcoded demo appointment is shown as upcoming; all DB appointments go to past
-  const upcoming = allAppointments.filter((a) => a.id === "hardcoded-demo-appt");
-  const past = allAppointments.filter((a) => a.id !== "hardcoded-demo-appt");
+  const now = new Date();
+  const TERMINAL = new Set(["CANCELLED", "COMPLETED", "NO_SHOW"]);
+  const upcoming = appointments.filter(
+    (a) => new Date(a.scheduledAt) >= now && !TERMINAL.has(a.status)
+  );
+  const past = appointments.filter(
+    (a) => new Date(a.scheduledAt) < now || TERMINAL.has(a.status)
+  );
 
   // Serialize for client calendar component
-  const calendarAppointments = allAppointments.map((a) => ({
+  const calendarAppointments = appointments.map((a) => ({
     id: a.id,
     customerName: a.customer.name,
     customerEmail: a.customer.email,
@@ -114,6 +108,12 @@ export default async function AppointmentsPage() {
                     }`}>
                       {appt.status}
                     </span>
+                    <Link
+                      href={`/salesperson/customers/${appt.customer.id}`}
+                      className="text-[10px] bg-navy text-white px-3 py-1 font-semibold uppercase tracking-[0.06em] hover:bg-navy-hover transition-colors"
+                    >
+                      Join Chat
+                    </Link>
                   </div>
                 </div>
               ))}

@@ -56,3 +56,17 @@ export function computeSessionIntent(scores: number[]): number {
 }
 
 export const HANDOFF_THRESHOLD = 0.72;
+
+export const URGENCY_THRESHOLDS = { WARM: 0.45, HOT: 0.72 } as const;
+export type UrgencyTier = "COLD" | "WARM" | "HOT";
+
+const HOT_BUMP_SIGNALS = new Set(["urgency", "appointment_interest", "purchase_intent"]);
+
+export function classifyUrgency(intentScore: number, signals: string[]): UrgencyTier {
+  if (intentScore >= URGENCY_THRESHOLDS.HOT) return "HOT";
+  if (intentScore >= URGENCY_THRESHOLDS.WARM) {
+    if (signals.some((s) => HOT_BUMP_SIGNALS.has(s))) return "HOT";
+    return "WARM";
+  }
+  return "COLD";
+}

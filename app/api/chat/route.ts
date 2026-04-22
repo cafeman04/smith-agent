@@ -52,26 +52,15 @@ export async function POST(req: NextRequest) {
 
   const safeMessage = redactPII(message);
 
-  // If session is handed off to a salesperson, save the message but don't call AI
+  // If the prior session was handed off to a salesperson, start a fresh one
+  // so the customer can continue to interact with the AI (e.g. book another appointment).
   if (chatSession.status === "HANDED_OFF") {
-    await prisma.message.create({
-      data: { sessionId: chatSession.id, role: "USER", content: safeMessage },
+    chatSession = await prisma.chatSession.create({
+      data:    { customerId },
+      include: { messages: true },
     });
-    const enc = new TextEncoder();
-    const handedOffStream = new ReadableStream({
-      start(controller) {
-        controller.enqueue(
-          enc.encode(JSON.stringify({ type: "message_received", content: safeMessage }) + "\n")
-        );
-        controller.close();
-      },
-    });
-    return new Response(handedOffStream, {
-      headers: {
-        "Content-Type": "application/x-ndjson",
-        "X-Session-Id": chatSession.id,
-        "Cache-Control": "no-cache",
-      },
+    await prisma.conversionEvent.create({
+      data: { sessionId: chatSession.id, customerId, eventType: "chat_started" },
     });
   }
 
@@ -89,6 +78,7 @@ export async function POST(req: NextRequest) {
     async start(controller) {
       try {
         let handoffSessionId: string | null = null;
+        let handoffUrgency: "COLD" | "WARM" | "HOT" = "WARM";
 
         for await (const event of runOrchestrator(
           chatSession!.id,
@@ -100,6 +90,7 @@ export async function POST(req: NextRequest) {
 
           if (event.type === "handoff_triggered") {
             handoffSessionId = chatSession!.id;
+            if (event.urgency) handoffUrgency = event.urgency;
           }
         }
 
@@ -108,14 +99,15 @@ export async function POST(req: NextRequest) {
           try {
             const payload       = await generateHandoffSummary(handoffSessionId);
             const salespersonId = await assignSalesperson(payload);
-            await createAssignment(payload, salespersonId);
+            await createAssignment(payload, salespersonId, handoffUrgency);
 
             controller.enqueue(
               encoder.encode(
                 JSON.stringify({
-                  type:    "handoff_complete",
-                  content: "You're being connected with a sales specialist who will be in touch shortly.",
+                  type:      "handoff_complete",
+                  content:   "You're being connected with a sales specialist who will be in touch shortly.",
                   sessionId: handoffSessionId,
+                  urgency:   handoffUrgency,
                 }) + "\n"
               )
             );

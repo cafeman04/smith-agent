@@ -13,6 +13,7 @@
 import { anthropic, MODELS, buildCachedSystemBlock } from "@/lib/anthropic";
 import prisma from "@/lib/prisma";
 import type { HandoffPayload, PricingRecommendation } from "@/types/agent";
+import type { UrgencyTier } from "@/lib/intent-detector";
 
 // ─── Handoff Summary ──────────────────────────────────────────────
 
@@ -182,7 +183,8 @@ export async function assignSalesperson(payload: HandoffPayload): Promise<string
 
 export async function createAssignment(
   payload: HandoffPayload,
-  salespersonId: string
+  salespersonId: string,
+  urgency: UrgencyTier = "WARM"
 ): Promise<string> {
   const assignment = await prisma.assignment.create({
     data: {
@@ -193,6 +195,7 @@ export async function createAssignment(
       intentScore:    payload.intentScore,
       handoffPayload: JSON.stringify(payload),
       status:         "PENDING",
+      urgency,
     },
   });
 
@@ -201,7 +204,7 @@ export async function createAssignment(
       sessionId:  payload.sessionId,
       customerId: payload.customerId,
       eventType:  "handoff",
-      metadata:   JSON.stringify({ salespersonId, intentScore: payload.intentScore }),
+      metadata:   JSON.stringify({ salespersonId, intentScore: payload.intentScore, urgency }),
     },
   });
 

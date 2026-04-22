@@ -17,6 +17,7 @@ interface CustomerCardProps {
   lastActivity: string;
   summary: string;
   recommendedMarkup?: number;
+  urgency?: "COLD" | "WARM" | "HOT";
 }
 
 const STATUS_COLORS: Record<string, string> = {
@@ -50,7 +51,9 @@ export function CustomerCard({
   lastActivity,
   summary,
   recommendedMarkup,
+  urgency,
 }: CustomerCardProps) {
+  const isHot = urgency === "HOT";
   const router = useRouter();
   const [joining, setJoining] = useState(false);
 
@@ -72,7 +75,20 @@ export function CustomerCard({
 
   return (
     <Link href={`/salesperson/customers/${customerId}`}>
-      <div className="bg-white border border-slate-200 rounded-md p-4 hover:border-slate-400 hover:shadow-sm transition-all cursor-pointer">
+      <div
+        className={cn(
+          "bg-white border rounded-md p-4 hover:shadow-sm transition-all cursor-pointer",
+          isHot
+            ? "border-2 border-red-500 shadow-[0_0_0_3px_rgba(239,68,68,0.15)] animate-pulse-slow"
+            : "border-slate-200 hover:border-slate-400"
+        )}
+      >
+        {isHot && (
+          <div className="-mx-4 -mt-4 mb-3 px-4 py-1.5 bg-red-600 text-white text-[10px] font-bold uppercase tracking-[0.12em] rounded-t flex items-center gap-2">
+            <span className="inline-block w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
+            Hot Lead — Join Now
+          </div>
+        )}
         <div className="flex items-start justify-between mb-3">
           <div>
             <p className="font-semibold text-sm text-slate-900 tracking-tight">

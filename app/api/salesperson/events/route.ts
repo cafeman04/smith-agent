@@ -45,6 +45,7 @@ export async function GET() {
                   customerName: assignment.customer.name,
                   customerEmail: assignment.customer.email,
                   intentScore: assignment.intentScore,
+                  urgency: assignment.urgency,
                   createdAt: assignment.createdAt,
                 },
               });

@@ -78,7 +78,7 @@ model ChatSession {
   messages         Message[]
   vehicleMentions  ChatVehicleMention[]
   assignment       Assignment?
-  appointment      Appointment?
+  appointments     Appointment[]
   conversionEvents ConversionEvent[]
 }
 
@@ -123,6 +123,7 @@ model Assignment {
   intentScore       Float
   recommendedMarkup Float?
   status            String   @default("PENDING")
+  urgency           String   @default("WARM") // COLD | WARM | HOT
   handoffPayload    String   // JSON
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
@@ -134,7 +135,7 @@ model Assignment {
 
 model Appointment {
   id           String   @id @default(cuid())
-  sessionId    String?  @unique
+  sessionId    String?
   session      ChatSession? @relation(fields: [sessionId], references: [id])
   customerId   String
   customer     User     @relation(fields: [customerId], references: [id])

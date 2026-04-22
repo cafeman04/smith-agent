@@ -7,6 +7,7 @@ import { WeekStrip } from "@/components/salesperson/WeekStrip";
 import { SettingsDropdown } from "@/components/salesperson/SettingsDropdown";
 import { MetricsPreviewCard } from "@/components/salesperson/MetricsPreviewCard";
 import { DealAlertModal } from "@/components/salesperson/DealAlertModal";
+import { HotLeadAlerts } from "@/components/salesperson/HotLeadAlerts";
 import Link from "next/link";
 
 export default async function SalespersonDashboard() {
@@ -15,7 +16,7 @@ export default async function SalespersonDashboard() {
     redirect("/login");
   }
 
-  const assignments = await prisma.assignment.findMany({
+  const rawAssignments = await prisma.assignment.findMany({
     where: {
       salespersonId: session.user.id,
       status: { notIn: ["CLOSED_WON", "CLOSED_LOST"] },
@@ -37,6 +38,15 @@ export default async function SalespersonDashboard() {
       },
     },
     orderBy: { intentScore: "desc" },
+  });
+
+  // HOT leads always float to the top regardless of raw intent score
+  const URGENCY_RANK: Record<string, number> = { HOT: 0, WARM: 1, COLD: 2 };
+  const assignments = [...rawAssignments].sort((a, b) => {
+    const ra = URGENCY_RANK[a.urgency] ?? 1;
+    const rb = URGENCY_RANK[b.urgency] ?? 1;
+    if (ra !== rb) return ra - rb;
+    return b.intentScore - a.intentScore;
   });
 
   const weekEnd = new Date();
@@ -83,6 +93,7 @@ export default async function SalespersonDashboard() {
 
   return (
     <div className="min-h-screen bg-[#F0F4FB]">
+      <HotLeadAlerts />
       {/* Header */}
       <header className="bg-white border-b border-slate-200 px-6 h-14 flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -168,6 +179,7 @@ export default async function SalespersonDashboard() {
                   lastActivity={(a.session.messages[0]?.createdAt ?? a.session.createdAt).toISOString()}
                   summary={a.summary}
                   recommendedMarkup={a.recommendedMarkup ?? undefined}
+                  urgency={(a.urgency as "COLD" | "WARM" | "HOT" | undefined) ?? "WARM"}
                 />
               ))}
             </div>

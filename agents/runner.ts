@@ -7,7 +7,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { anthropic, MODELS, buildCachedSystemBlock } from "@/lib/anthropic";
 import prisma from "@/lib/prisma";
-import { scoreMessage, HANDOFF_THRESHOLD } from "@/lib/intent-detector";
+import { scoreMessage, detectUrgencySignals, classifyUrgency, URGENCY_THRESHOLDS, type UrgencyTier } from "@/lib/intent-detector";
 import type { AgentStreamEvent, ToolDefinition } from "@/types/agent";
 
 export interface AgentRunConfig {
@@ -42,9 +42,11 @@ export async function* runAgentLoop(config: AgentRunConfig): AsyncGenerator<Agen
   } = config;
 
   const intentDelta = scoreMessage(message);
+  const messageSignals = detectUrgencySignals(message);
   let fullAssistantText = "";
   let handoffTriggered  = false;
   let handoffReason     = "";
+  let handoffUrgency: UrgencyTier = "WARM";
 
   // Build the working message list; grows as tool results are added
   let workingMessages: Anthropic.MessageParam[] = [
@@ -59,10 +61,15 @@ export async function* runAgentLoop(config: AgentRunConfig): AsyncGenerator<Agen
   let maxIterations = 6; // guard against runaway loops
 
   while (maxIterations-- > 0) {
+    const today = new Date().toLocaleDateString("en-US", {
+      weekday: "long", year: "numeric", month: "long", day: "numeric",
+    });
+    const systemWithDate = `Today's date: ${today}\n\n${systemPrompt}`;
+
     const response = await anthropic.messages.create({
       model:      MODELS.SMART,
       max_tokens: 1024,
-      system:     [buildCachedSystemBlock(systemPrompt)],
+      system:     [buildCachedSystemBlock(systemWithDate)],
       tools:      tools as Anthropic.Tool[],
       messages:   workingMessages,
     });
@@ -147,6 +154,8 @@ export async function* runAgentLoop(config: AgentRunConfig): AsyncGenerator<Agen
       1.0
     );
 
+    const urgency = classifyUrgency(newScore, messageSignals);
+
     await prisma.chatSession.update({
       where: { id: sessionId },
       data: {
@@ -159,19 +168,26 @@ export async function* runAgentLoop(config: AgentRunConfig): AsyncGenerator<Agen
       },
     });
 
-    // Auto-handoff on intent threshold
-    if (!handoffTriggered && newScore >= HANDOFF_THRESHOLD && !session.handoffTriggered) {
+    if (handoffTriggered) {
+      handoffUrgency = urgency === "COLD" ? "WARM" : urgency;
+    }
+
+    // Auto-handoff once the customer is at least WARM (silent — bot keeps chatting)
+    if (!handoffTriggered && newScore >= URGENCY_THRESHOLDS.WARM && !session.handoffTriggered) {
+      handoffUrgency = urgency === "COLD" ? "WARM" : urgency;
       await prisma.chatSession.update({
         where: { id: sessionId },
         data:  { handoffTriggered: true, handoffAt: new Date(), status: "HANDED_OFF" },
       });
       handoffTriggered = true;
-      handoffReason    = "High buying intent detected";
+      handoffReason    = handoffUrgency === "HOT"
+        ? "Hot lead — high buying intent with urgency signals"
+        : "Warm lead — buying intent detected";
     }
   }
 
   if (handoffTriggered) {
-    yield { type: "handoff_triggered", content: handoffReason };
+    yield { type: "handoff_triggered", content: handoffReason, urgency: handoffUrgency };
   }
 
   yield { type: "done", intentScore: intentDelta };

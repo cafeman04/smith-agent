@@ -8,6 +8,7 @@ export interface AgentStreamEvent {
   intentScore?: number;
   fromAgent?: AgentType;
   toAgent?: AgentType;
+  urgency?: "COLD" | "WARM" | "HOT";
 }
 
 export interface HandoffPayload {
