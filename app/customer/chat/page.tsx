@@ -4,9 +4,18 @@ import { redirect } from "next/navigation";
 import { ChatWindow } from "@/components/chat/ChatWindow";
 import Link from "next/link";
 
-export default async function CustomerChatPage() {
+export default async function CustomerChatPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ prefill?: string }>;
+}) {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/login");
+
+  const params = await searchParams;
+  const initialMessage = params.prefill
+    ? decodeURIComponent(params.prefill)
+    : undefined;
 
   return (
     <div className="min-h-screen bg-[#F0F4FB] flex flex-col">
@@ -16,7 +25,7 @@ export default async function CustomerChatPage() {
             ← Dashboard
           </Link>
         </div>
-        <ChatWindow />
+        <ChatWindow initialMessage={initialMessage} />
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useSession, signOut, signIn } from "next-auth/react";
 import { useChat } from "@/hooks/useChat";
 import { useHandoff } from "@/hooks/useHandoff";
 import { MessageBubble } from "./MessageBubble";
@@ -14,11 +15,28 @@ const SUGGESTED_QUESTIONS = [
   "Can I schedule a test drive?",
 ];
 
-export function ChatWindow() {
+export function ChatWindow({ initialMessage }: { initialMessage?: string }) {
+  const { data: session } = useSession();
   const { messages, sessionId, isLoading, isHandedOff, handoffMessage, sendMessage } = useChat();
   const { salespersonName, salespersonJoined, salespersonMessages } = useHandoff(sessionId);
   const [input, setInput] = useState("");
   const bottomRef = useRef<HTMLDivElement>(null);
+  const hasSentInitial = useRef(false);
+
+  // Guest upgrade modal state
+  const [showGuestModal, setShowGuestModal] = useState(false);
+  const [guestEmail, setGuestEmail] = useState("");
+  const [guestName, setGuestName] = useState("");
+  const [guestPassword, setGuestPassword] = useState("");
+  const [guestError, setGuestError] = useState("");
+  const [guestLoading, setGuestLoading] = useState(false);
+
+  useEffect(() => {
+    if (initialMessage && !hasSentInitial.current) {
+      hasSentInitial.current = true;
+      sendMessage(initialMessage);
+    }
+  }, [initialMessage, sendMessage]);
 
   // Merge AI/user messages with salesperson messages, sorted by time
   const allMessages = useMemo(() => {
@@ -26,6 +44,14 @@ export function ChatWindow() {
       (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
     );
   }, [messages, salespersonMessages]);
+
+  const userMessageCount = messages.filter((m) => m.role === "user").length;
+
+  useEffect(() => {
+    if (userMessageCount >= 3 && session?.user?.role === "GUEST" && !showGuestModal) {
+      setShowGuestModal(true);
+    }
+  }, [userMessageCount, session?.user?.role, showGuestModal]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -44,17 +70,123 @@ export function ChatWindow() {
     }
   };
 
-  // Disable input while waiting for salesperson to join (handed off but not yet connected)
-  const isInputDisabled = isLoading || (isHandedOff && !salespersonJoined);
+  const handleGuestUpgrade = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setGuestError("");
+    setGuestLoading(true);
+    try {
+      const res = await fetch("/api/auth/convert-guest", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: guestEmail, name: guestName || undefined, password: guestPassword }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setGuestError(data.error === "Email already registered" ? "That email is already in use." : "Something went wrong. Please try again.");
+        setGuestLoading(false);
+        return;
+      }
+      await signOut({ redirect: false });
+      await signIn("credentials", { email: guestEmail, password: guestPassword, redirect: false });
+      setShowGuestModal(false);
+    } catch {
+      setGuestError("Something went wrong. Please try again.");
+      setGuestLoading(false);
+    }
+  };
 
-  const inputPlaceholder = isHandedOff && !salespersonJoined
-    ? "Waiting for specialist to join…"
-    : isHandedOff
-      ? `Message ${salespersonName ?? "your specialist"}…`
-      : "Ask about our vehicles, financing, or anything else…";
+  // Disable input while waiting for salesperson or when guest modal is open
+  const isInputDisabled = isLoading || (isHandedOff && !salespersonJoined) || showGuestModal;
+
+  const inputPlaceholder = showGuestModal
+    ? "Create an account to continue…"
+    : isHandedOff && !salespersonJoined
+      ? "Waiting for specialist to join…"
+      : isHandedOff
+        ? `Message ${salespersonName ?? "your specialist"}…`
+        : "Ask about our vehicles, financing, or anything else…";
 
   return (
-    <div className="flex flex-col h-full bg-white">
+    <div className="flex flex-col h-full bg-white relative">
+      {/* Guest upgrade modal overlay */}
+      {showGuestModal && (
+        <div className="absolute inset-0 z-20 flex items-end sm:items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-xl shadow-2xl w-full max-w-sm p-6">
+            <div className="text-center mb-5">
+              <div className="text-2xl mb-2">🔓</div>
+              <h3 className="font-semibold text-slate-900 tracking-tight">Keep the conversation going</h3>
+              <p className="text-xs text-slate-500 mt-1">
+                Create a free account to continue chatting and save your preferences.
+              </p>
+            </div>
+            <form onSubmit={handleGuestUpgrade} className="space-y-3">
+              <div>
+                <label className="block text-[11px] font-semibold text-slate-600 uppercase tracking-[0.08em] mb-1">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  required
+                  value={guestEmail}
+                  onChange={(e) => setGuestEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label className="block text-[11px] font-semibold text-slate-600 uppercase tracking-[0.08em] mb-1">
+                  Name <span className="font-normal text-slate-400">(optional)</span>
+                </label>
+                <input
+                  type="text"
+                  value={guestName}
+                  onChange={(e) => setGuestName(e.target.value)}
+                  placeholder="Your name"
+                  className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label className="block text-[11px] font-semibold text-slate-600 uppercase tracking-[0.08em] mb-1">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  required
+                  minLength={8}
+                  value={guestPassword}
+                  onChange={(e) => setGuestPassword(e.target.value)}
+                  placeholder="Min. 8 characters"
+                  className="w-full border border-slate-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-transparent"
+                />
+              </div>
+              {guestError && (
+                <p className="text-xs text-red-600 bg-red-50 border border-red-200 rounded px-3 py-2">
+                  {guestError}
+                </p>
+              )}
+              <button
+                type="submit"
+                disabled={guestLoading}
+                className="w-full bg-navy text-white rounded-md py-2.5 text-sm font-semibold hover:bg-navy-hover disabled:opacity-50 transition-colors"
+              >
+                {guestLoading ? "Creating account…" : "Create Account"}
+              </button>
+            </form>
+            <div className="flex items-center gap-3 my-3">
+              <div className="flex-1 h-px bg-slate-200" />
+              <span className="text-[11px] text-slate-400 uppercase tracking-[0.06em]">or</span>
+              <div className="flex-1 h-px bg-slate-200" />
+            </div>
+            <a
+              href="/login"
+              className="block text-center text-sm text-blue-700 font-semibold hover:underline"
+            >
+              Sign in to existing account
+            </a>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div className="border-b border-slate-200 px-4 py-3 flex items-center gap-3 bg-white">
         <div className="w-8 h-8 bg-navy flex items-center justify-center text-white font-bold text-xs tracking-tight">

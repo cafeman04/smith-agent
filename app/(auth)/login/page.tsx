@@ -4,12 +4,14 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { cn } from "@/components/ui/cn";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [guestLoading, setGuestLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -36,6 +38,22 @@ export default function LoginPage() {
       } else {
         router.push("/customer/dashboard");
       }
+    }
+  };
+
+  const handleGuest = async () => {
+    setGuestLoading(true);
+    setError("");
+    try {
+      const res = await fetch("/api/auth/guest", { method: "POST" });
+      if (!res.ok) throw new Error("Failed to create guest session");
+      const { email: gEmail, password: gPassword } = await res.json();
+      const result = await signIn("credentials", { email: gEmail, password: gPassword, redirect: false });
+      if (result?.error) throw new Error("Sign-in failed");
+      router.push("/customer/quiz");
+    } catch {
+      setError("Could not start guest session. Please try again.");
+      setGuestLoading(false);
     }
   };
 
@@ -96,6 +114,23 @@ export default function LoginPage() {
             </button>
           </form>
         </div>
+
+        <div className="mt-4 flex items-center gap-3">
+          <div className="flex-1 h-px bg-slate-200" />
+          <span className="text-xs text-slate-400 uppercase tracking-[0.08em]">or</span>
+          <div className="flex-1 h-px bg-slate-200" />
+        </div>
+
+        <button
+          onClick={handleGuest}
+          disabled={guestLoading || loading}
+          className={cn(
+            "mt-4 w-full border border-slate-300 rounded-md py-2.5 text-sm font-semibold text-slate-700",
+            "hover:bg-slate-50 disabled:opacity-50 transition-colors tracking-wide"
+          )}
+        >
+          {guestLoading ? "Starting…" : "Continue as Guest"}
+        </button>
 
         <p className="text-xs text-center text-slate-500 mt-4">
           Don&apos;t have an account?{" "}

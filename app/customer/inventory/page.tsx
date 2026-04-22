@@ -130,7 +130,7 @@ export default function CustomerInventoryPage() {
                       )}
                     </div>
                   )}
-                  <Link href="/customer/chat">
+                  <Link href={`/customer/chat?prefill=${encodeURIComponent(`I'm interested in the ${vehicle.year} ${vehicle.make} ${vehicle.model}${vehicle.trim ? ` ${vehicle.trim}` : ''} — priced at $${vehicle.msrp.toLocaleString()}${vehicle.color ? `, ${vehicle.color}` : ''}. Can you tell me more about it and check availability?`)}`}>
                     <button className="w-full bg-navy text-white rounded-md py-2 text-sm font-semibold hover:bg-navy-hover transition-colors mt-1">
                       Ask About This Car
                     </button>

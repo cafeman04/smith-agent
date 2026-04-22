@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useSession, signOut, signIn } from "next-auth/react";
 import Link from "next/link";
 
 // ─── Questions ────────────────────────────────────────────────────────────────
@@ -189,11 +190,18 @@ const PERSONALITY: Record<string, { title: string; desc: string; emoji: string }
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function CarQuizPage() {
+  const { data: session } = useSession();
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
-  const [phase, setPhase] = useState<"quiz" | "loading" | "results">("quiz");
+  const [phase, setPhase] = useState<"quiz" | "loading" | "email" | "results">("quiz");
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [animKey, setAnimKey] = useState(0);
+
+  const [emailVal, setEmailVal] = useState("");
+  const [nameVal, setNameVal] = useState("");
+  const [passwordVal, setPasswordVal] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [emailLoading, setEmailLoading] = useState(false);
 
   const currentQ = QUESTIONS[step];
   const progress = ((step) / QUESTIONS.length) * 100;
@@ -225,7 +233,7 @@ export default function CarQuizPage() {
       } catch {
         setVehicles([]);
       }
-      setPhase("results");
+      setPhase(session?.user?.role === "GUEST" ? "email" : "results");
     }
   };
 
@@ -235,6 +243,31 @@ export default function CarQuizPage() {
     setPhase("quiz");
     setVehicles([]);
     setAnimKey((k) => k + 1);
+  };
+
+  const handleEmailSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setEmailError("");
+    setEmailLoading(true);
+    try {
+      const res = await fetch("/api/auth/convert-guest", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: emailVal, name: nameVal || undefined, password: passwordVal }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setEmailError(data.error === "Email already registered" ? "That email is already in use." : "Something went wrong. Please try again.");
+        setEmailLoading(false);
+        return;
+      }
+      await signOut({ redirect: false });
+      await signIn("credentials", { email: emailVal, password: passwordVal, redirect: false });
+      setPhase("results");
+    } catch {
+      setEmailError("Something went wrong. Please try again.");
+      setEmailLoading(false);
+    }
   };
 
   const personality = PERSONALITY[answers[0] ?? "mixed"];
@@ -626,6 +659,76 @@ export default function CarQuizPage() {
               </div>
             )}
 
+            {/* Email capture phase (guests only) */}
+            {phase === "email" && (
+              <div className="quiz-results">
+                <div style={{ textAlign: "center", marginBottom: "24px" }}>
+                  <div style={{ fontSize: "32px", marginBottom: "8px" }}>🎯</div>
+                  <div className="quiz-results-heading" style={{ marginBottom: "4px" }}>Your matches are ready!</div>
+                  <p style={{ fontSize: "13px", color: "#64748b", marginTop: "4px" }}>
+                    Create a free account to see your results and save your preferences.
+                  </p>
+                </div>
+                <form onSubmit={handleEmailSubmit} style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "360px", margin: "0 auto" }}>
+                  <div>
+                    <label style={{ display: "block", fontSize: "11px", fontWeight: 600, color: "#374151", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "6px" }}>
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={emailVal}
+                      onChange={(e) => setEmailVal(e.target.value)}
+                      placeholder="you@example.com"
+                      style={{ width: "100%", border: "1px solid #CBD5E1", borderRadius: "6px", padding: "8px 12px", fontSize: "14px", boxSizing: "border-box" }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: "block", fontSize: "11px", fontWeight: 600, color: "#374151", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "6px" }}>
+                      Name <span style={{ fontWeight: 400, color: "#94a3b8" }}>(optional)</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={nameVal}
+                      onChange={(e) => setNameVal(e.target.value)}
+                      placeholder="Your name"
+                      style={{ width: "100%", border: "1px solid #CBD5E1", borderRadius: "6px", padding: "8px 12px", fontSize: "14px", boxSizing: "border-box" }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: "block", fontSize: "11px", fontWeight: 600, color: "#374151", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "6px" }}>
+                      Password
+                    </label>
+                    <input
+                      type="password"
+                      required
+                      minLength={8}
+                      value={passwordVal}
+                      onChange={(e) => setPasswordVal(e.target.value)}
+                      placeholder="Min. 8 characters"
+                      style={{ width: "100%", border: "1px solid #CBD5E1", borderRadius: "6px", padding: "8px 12px", fontSize: "14px", boxSizing: "border-box" }}
+                    />
+                  </div>
+                  {emailError && (
+                    <p style={{ fontSize: "12px", color: "#dc2626", background: "#fef2f2", border: "1px solid #fecaca", borderRadius: "4px", padding: "8px 12px" }}>
+                      {emailError}
+                    </p>
+                  )}
+                  <button
+                    type="submit"
+                    disabled={emailLoading}
+                    style={{ background: "#1E3D72", color: "#fff", border: "none", borderRadius: "6px", padding: "10px 0", fontSize: "14px", fontWeight: 600, cursor: emailLoading ? "not-allowed" : "pointer", opacity: emailLoading ? 0.6 : 1 }}
+                  >
+                    {emailLoading ? "Saving…" : "See My Results →"}
+                  </button>
+                  <p style={{ textAlign: "center", fontSize: "12px", color: "#94a3b8" }}>
+                    Already have an account?{" "}
+                    <a href="/login" style={{ color: "#1d4ed8", fontWeight: 600 }}>Sign in</a>
+                  </p>
+                </form>
+              </div>
+            )}
+
             {/* Results phase */}
             {phase === "results" && (
               <div className="quiz-results">
@@ -664,7 +767,14 @@ export default function CarQuizPage() {
                 )}
 
                 <div className="quiz-cta-row">
-                  <Link href="/customer/chat" className="quiz-cta-primary">
+                  <Link
+                    href={`/customer/chat?prefill=${encodeURIComponent(
+                      vehicles.length > 0
+                        ? `I just took your vehicle quiz and was matched with: ${vehicles.map(v => `${v.year} ${v.make} ${v.model}`).join(', ')}. Can you help me explore these options?`
+                        : `I just took your vehicle quiz but no exact matches were found. Can you help me find something that fits my needs?`
+                    )}`}
+                    className="quiz-cta-primary"
+                  >
                     Chat with Alex about these →
                   </Link>
                   <button className="quiz-cta-secondary" onClick={restart}>
