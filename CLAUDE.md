@@ -70,3 +70,31 @@ All user messages are passed through `redactPII()` (`/lib/pii.ts`) before being 
 ### Prompt Caching
 
 `lib/anthropic.ts` exports `buildCachedSystemBlock()` which adds `cache_control: { type: "ephemeral" }` to system prompts. All agents use this — don't remove it when modifying system prompts.
+
+### Subagent Usage Policy
+
+You must minimize the use of subagents.
+
+Do NOT spawn subagents unless absolutely necessary.
+Always prefer solving tasks directly within a single agent.
+Only use subagents if the task is clearly parallelizable or requires independent repeated operations over multiple items.
+
+The following tasks MUST NOT use subagents:
+
+Writing or editing a single piece of content
+Coding a single feature or debugging
+Answering questions or explaining concepts
+Any task that produces a single output
+
+Before spawning a subagent, you must internally justify:
+
+Why the task cannot be completed by a single agent
+Why parallelization provides clear efficiency gains
+
+If these conditions are not met, you MUST proceed without subagents.
+
+When subagents are used:
+
+Use at most one subagent unless explicitly required
+Prefer the cheapest available model for subagents
+Do not recursively spawn subagents
