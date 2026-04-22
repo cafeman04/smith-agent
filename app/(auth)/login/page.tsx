@@ -50,7 +50,7 @@ export default function LoginPage() {
       const { email: gEmail, password: gPassword } = await res.json();
       const result = await signIn("credentials", { email: gEmail, password: gPassword, redirect: false });
       if (result?.error) throw new Error("Sign-in failed");
-      router.push("/customer/quiz");
+      router.push("/customer/dashboard");
     } catch {
       setError("Could not start guest session. Please try again.");
       setGuestLoading(false);

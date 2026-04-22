@@ -12,7 +12,7 @@ export function LandingPage() {
   const [empPassword, setEmpPassword] = useState("");
   const [custError, setCustError] = useState("");
   const [empError, setEmpError] = useState("");
-  const [loading, setLoading] = useState<"customer" | "employee" | null>(null);
+  const [loading, setLoading] = useState<"customer" | "employee" | "guest" | null>(null);
   const router = useRouter();
 
   const handleCustomerSignIn = async (e: React.FormEvent) => {
@@ -38,6 +38,22 @@ export function LandingPage() {
       router.push("/salesperson/dashboard");
     } else {
       setEmpError("This portal is for employees only.");
+    }
+  };
+
+  const handleGuest = async () => {
+    setLoading("guest");
+    setCustError("");
+    try {
+      const res = await fetch("/api/auth/guest", { method: "POST" });
+      if (!res.ok) throw new Error();
+      const { email, password } = await res.json();
+      const result = await signIn("credentials", { email, password, redirect: false });
+      if (result?.error) throw new Error();
+      router.push("/customer/dashboard");
+    } catch {
+      setCustError("Could not start guest session. Please try again.");
+      setLoading(null);
     }
   };
 
@@ -248,6 +264,21 @@ export function LandingPage() {
         .lp-btn:hover:not(:disabled) { background: #163060; }
         .lp-btn:active:not(:disabled) { transform: scale(0.99); }
         .lp-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .lp-btn-ghost {
+          width: 100%;
+          padding: 10px 0;
+          border: 1px solid #D8E0EE;
+          border-radius: 6px;
+          background: transparent;
+          color: #374151;
+          font-size: 13px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: background 0.15s;
+        }
+        .lp-btn-ghost:hover:not(:disabled) { background: #F8FAFC; }
+        .lp-btn-ghost:disabled { opacity: 0.5; cursor: not-allowed; }
 
         .lp-card-footer {
           padding: 0 32px 24px;
@@ -658,7 +689,20 @@ export function LandingPage() {
             </div>
 
             <div className="lp-card-footer">
-              <p>Don&apos;t have an account? <Link href="/register">Create one — it&apos;s free</Link></p>
+              <div style={{ display: "flex", alignItems: "center", gap: "10px", margin: "12px 0 10px" }}>
+                <div style={{ flex: 1, height: "1px", background: "#D8E0EE" }} />
+                <span style={{ fontSize: "11px", color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.08em" }}>or</span>
+                <div style={{ flex: 1, height: "1px", background: "#D8E0EE" }} />
+              </div>
+              <button
+                type="button"
+                onClick={handleGuest}
+                disabled={loading !== null}
+                className="lp-btn-ghost"
+              >
+                {loading === "guest" ? "Starting…" : "Continue as Guest"}
+              </button>
+              <p style={{ marginTop: "12px" }}>Don&apos;t have an account? <Link href="/register">Create one — it&apos;s free</Link></p>
             </div>
 
           </div>

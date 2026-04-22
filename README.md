@@ -27,7 +27,7 @@ A full-stack Claude-powered dealership platform for mid-size car dealers.
 npm install
 
 # Set up environment
-cp .env.example .env.local
+cp .env
 # Add your ANTHROPIC_API_KEY to .env.local
 
 # Run migrations and seed
